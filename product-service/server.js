@@ -12,7 +12,8 @@ startConsumer().catch((err) => {
 app.use("/products", productRoutes);
 
 mongoose
-  .connect("mongodb://mongo-products:27017/products")
+  // .connect("mongodb://mongo-products:27017/products") /for docker
+  .connect("mongodb://localhost:27017/products")
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("Could not connect to MongoDB:", err));
 
