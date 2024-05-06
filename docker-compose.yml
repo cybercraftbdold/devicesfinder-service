@@ -3,12 +3,16 @@ services:
   mongo-users:
     image: mongo
     ports:
-      - "27017:27017"
+      - "27019:27017" # Changed to avoid conflict with existing MongoDB on port 27017
+    volumes:
+      - mongo-users-data:/data/db
 
   mongo-products:
     image: mongo
     ports:
-      - "27018:27017"
+      - "27020:27017" # Changed to a unique port
+    volumes:
+      - mongo-products-data:/data/db
 
   user-service:
     build: ./user-service
@@ -37,3 +41,7 @@ services:
       - product-service
     environment:
       - RABBITMQ_URL=amqps://zyhofqvj:cUzKnldbzpfhkWMvlK4-tIKUzJNG4kdE@kangaroo.rmq.cloudamqp.com/zyhofqvj
+
+volumes:
+  mongo-users-data:
+  mongo-products-data:
