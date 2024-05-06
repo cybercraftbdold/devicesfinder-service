@@ -1,29 +1,39 @@
 version: '3.8'
 services:
   mongo-users:
-    image: mongo                  # Official MongoDB image
+    image: mongo
     ports:
-      - "27017:27017"             # Port mapping for external access to the MongoDB instance for users
+      - "27017:27017"
 
   mongo-products:
-    image: mongo                  # Another MongoDB instance for products
+    image: mongo
     ports:
-      - "27018:27017"             # Port mapping, note the host port is different to avoid conflict
+      - "27018:27017"
 
   user-service:
-    build: ./user-service         # Specifies the directory containing the Dockerfile for the User Service
+    build: ./user-service
     ports:
-      - "3000:3000"               # Expose User Service on port 3000
+      - "3000:3000"
     depends_on:
-      - mongo-users               # User Service depends on the mongo-users service
+      - mongo-users
     environment:
       - RABBITMQ_URL=amqps://zyhofqvj:cUzKnldbzpfhkWMvlK4-tIKUzJNG4kdE@kangaroo.rmq.cloudamqp.com/zyhofqvj
 
   product-service:
-    build: ./product-service      # Specifies the directory containing the Dockerfile for the Product Service
+    build: ./product-service
     ports:
-      - "3001:3001"               # Expose Product Service on port 3001
+      - "3001:3001"
     depends_on:
-      - mongo-products            # Product Service depends on the mongo-products service
+      - mongo-products
+    environment:
+      - RABBITMQ_URL=amqps://zyhofqvj:cUzKnldbzpfhkWMvlK4-tIKUzJNG4kdE@kangaroo.rmq.cloudamqp.com/zyhofqvj
+
+  android-application-service:
+    build: ./android-application-service
+    ports:
+      - "8001:8001"
+    depends_on:
+      - mongo-users
+      - product-service
     environment:
       - RABBITMQ_URL=amqps://zyhofqvj:cUzKnldbzpfhkWMvlK4-tIKUzJNG4kdE@kangaroo.rmq.cloudamqp.com/zyhofqvj
