@@ -5,6 +5,10 @@ const connectRabbitMQ = require("../rabbitmqConnection");
 
 router.get("/", async (req, res) => {
   const users = await User.find();
+  // RabbitMQ: Send all retrieved user data
+  const channel = await connectRabbitMQ();
+  const msg = JSON.stringify(users);
+  channel.sendToQueue("allUsersDataQueue", Buffer.from(msg));
   res.json(users);
 });
 

@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const productRoutes = require("./routes/productRoutes");
 const startConsumer = require("./messageConsumer/startConsumer"); // Assumes your startConsumer function is exported from messageConsumer.js
+const startAllUsersConsumer = require("./messageConsumer/startAllUserConsumer");
 
 const app = express();
 app.use(express.json());
@@ -9,6 +10,8 @@ app.use(express.json());
 startConsumer().catch((err) => {
   console.error("Failed to start the RabbitMQ Consumer:", err);
 });
+startAllUsersConsumer().catch(console.error);
+
 app.use("/products", productRoutes);
 
 mongoose
