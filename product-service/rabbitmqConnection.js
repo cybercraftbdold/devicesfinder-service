@@ -7,7 +7,7 @@ async function connectRabbitMQ() {
     try {
         const connection = await amqp.connect(RABBITMQ_URL);
         const channel = await connection.createChannel();
-        await channel.assertQueue('userCreated');  // Queue for user creation events
+        await channel.assertQueue('userDataQueue');  // Queue for user creation events
         return channel;
     } catch (error) {
         console.error('Failed to connect to RabbitMQ:', error);

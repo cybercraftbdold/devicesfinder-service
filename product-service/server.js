@@ -1,9 +1,14 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const productRoutes = require("./routes/productRoutes");
+const startConsumer = require("./messageConsumer/startConsumer"); // Assumes your startConsumer function is exported from messageConsumer.js
 
 const app = express();
 app.use(express.json());
+// Start the RabbitMQ Consumer when the server starts
+startConsumer().catch((err) => {
+  console.error("Failed to start the RabbitMQ Consumer:", err);
+});
 app.use("/products", productRoutes);
 
 mongoose
@@ -13,8 +18,8 @@ mongoose
 
 const port = process.env.PORT || 3001;
 
-process.on('unhandledRejection', (reason, p) => {
-  console.error('Unhandled Rejection at:', p, 'reason:', reason);
+process.on("unhandledRejection", (reason, p) => {
+  console.error("Unhandled Rejection at:", p, "reason:", reason);
   // application specific logging, throwing an error, or other logic here
 });
 
