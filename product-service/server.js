@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const productRoutes = require("./routes/productRoutes");
 const startConsumer = require("./messageConsumer/startConsumer"); // Assumes your startConsumer function is exported from messageConsumer.js
-const startAllUsersConsumer = require("./messageConsumer/startAllUserConsumer");
+const { startAllUsersConsumer } = require("./messageConsumer/startAllUserConsumer");
 
 const app = express();
 app.use(express.json());
