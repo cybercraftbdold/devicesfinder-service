@@ -1,26 +1,20 @@
 version: '3.8'
 services:
-  mongo-users:
+  mongo:
     image: mongo
     ports:
-      - "27019:27017" # Changed to avoid conflict with existing MongoDB on port 27017
+      - "27019:27017"
     volumes:
-      - mongo-users-data:/data/db
-
-  mongo-products:
-    image: mongo
-    ports:
-      - "27020:27017" # Changed to a unique port
-    volumes:
-      - mongo-products-data:/data/db
+      - mongo-data:/data/db
 
   user-service:
     build: ./user-service
     ports:
       - "8002:8002"
     depends_on:
-      - mongo-users
+      - mongo
     environment:
+      - MONGO_DB_URL=mongodb://mongo:27017/users
       - RABBITMQ_URL=amqps://zyhofqvj:cUzKnldbzpfhkWMvlK4-tIKUzJNG4kdE@kangaroo.rmq.cloudamqp.com/zyhofqvj
 
   product-service:
@@ -28,8 +22,9 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - mongo-products
+      - mongo
     environment:
+      - MONGO_DB_URL=mongodb://mongo:27017/products
       - RABBITMQ_URL=amqps://zyhofqvj:cUzKnldbzpfhkWMvlK4-tIKUzJNG4kdE@kangaroo.rmq.cloudamqp.com/zyhofqvj
 
   android-application-service:
@@ -37,11 +32,58 @@ services:
     ports:
       - "8001:8001"
     depends_on:
-      - mongo-users
-      - product-service
+      - mongo
     environment:
+      - MONGO_DB_URL=mongodb://mongo:27017/android-applications
       - RABBITMQ_URL=amqps://zyhofqvj:cUzKnldbzpfhkWMvlK4-tIKUzJNG4kdE@kangaroo.rmq.cloudamqp.com/zyhofqvj
 
 volumes:
-  mongo-users-data:
-  mongo-products-data:
+  mongo-data:
+
+    # version: '3.8'
+    # services:
+    #   mongo-users:
+    #     image: mongo
+    #     ports:
+    #       - "27019:27017" # Changed to avoid conflict with existing MongoDB on port 27017
+    #     volumes:
+    #       - mongo-users-data:/data/db
+
+    #   mongo-products:
+    #     image: mongo
+    #     ports:
+    #       - "27020:27017" # Changed to a unique port
+    #     volumes:
+    #       - mongo-products-data:/data/db
+
+    #   user-service:
+    #     build: ./user-service
+    #     ports:
+    #       - "8002:8002"
+    #     depends_on:
+    #       - mongo-users
+    #     environment:
+    #       - RABBITMQ_URL=amqps://zyhofqvj:cUzKnldbzpfhkWMvlK4-tIKUzJNG4kdE@kangaroo.rmq.cloudamqp.com/zyhofqvj
+
+    #   product-service:
+    #     build: ./product-service
+    #     ports:
+    #       - "8000:8000"
+    #     depends_on:
+    #       - mongo-products
+    #     environment:
+    #       - RABBITMQ_URL=amqps://zyhofqvj:cUzKnldbzpfhkWMvlK4-tIKUzJNG4kdE@kangaroo.rmq.cloudamqp.com/zyhofqvj
+
+    #   android-application-service:
+    #     build: ./android-application-service
+    #     ports:
+    #       - "8001:8001"
+    #     depends_on:
+    #       - mongo-users
+    #       - product-service
+    #     environment:
+    #       - RABBITMQ_URL=amqps://zyhofqvj:cUzKnldbzpfhkWMvlK4-tIKUzJNG4kdE@kangaroo.rmq.cloudamqp.com/zyhofqvj
+
+    # volumes:
+    #   mongo-users-data:
+    #   mongo-products-data:
