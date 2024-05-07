@@ -8,6 +8,9 @@ const port = envConfig.PORT || 8001;
 const app = express();
 app.use(express.json());
 app.use(androidRouter);
+app.get("/", (req, res) => {
+  res.status(200).send("Android application server is running");
+});
 mongoose
   // .connect("mongodb://mongo:27017/android-applications")
   .connect(`${envConfig.MONGODB_URI}`)
