@@ -15,7 +15,8 @@ services:
       - mongo
     environment:
       - MONGO_DB_URL=mongodb://mongo:27017/users
-      - RABBITMQ_URL=amqps://zyhofqvj:cUzKnldbzpfhkWMvlK4-tIKUzJNG4kdE@kangaroo.rmq.cloudamqp.com/zyhofqvj
+      # - RABBITMQ_URL=amqps://zyhofqvj:cUzKnldbzpfhkWMvlK4-tIKUzJNG4kdE@kangaroo.rmq.cloudamqp.com/zyhofqvj
+      - RABBITMQ_URL=amqp://cybercraft:cybercraft@195.35.32.241:5672/
 
   product-service:
     build: ./product-service
@@ -25,7 +26,8 @@ services:
       - mongo
     environment:
       - MONGO_DB_URL=mongodb://mongo:27017/products
-      - RABBITMQ_URL=amqps://zyhofqvj:cUzKnldbzpfhkWMvlK4-tIKUzJNG4kdE@kangaroo.rmq.cloudamqp.com/zyhofqvj
+      # - RABBITMQ_URL=amqps://zyhofqvj:cUzKnldbzpfhkWMvlK4-tIKUzJNG4kdE@kangaroo.rmq.cloudamqp.com/zyhofqvj
+      - RABBITMQ_URL=amqp://cybercraft:cybercraft@195.35.32.241:5672/
 
   android-application-service:
     build: ./android-application-service
@@ -35,7 +37,8 @@ services:
       - mongo
     environment:
       - MONGO_DB_URL=mongodb://mongo:27017/android-applications
-      - RABBITMQ_URL=amqps://zyhofqvj:cUzKnldbzpfhkWMvlK4-tIKUzJNG4kdE@kangaroo.rmq.cloudamqp.com/zyhofqvj
+      # - RABBITMQ_URL=amqps://zyhofqvj:cUzKnldbzpfhkWMvlK4-tIKUzJNG4kdE@kangaroo.rmq.cloudamqp.com/zyhofqvj
+      - RABBITMQ_URL=amqp://cybercraft:cybercraft@195.35.32.241:5672/
 
 volumes:
   mongo-data:
