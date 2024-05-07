@@ -8,7 +8,7 @@ app.use("/users", userRoutes);
 
 mongoose
   // .connect("mongodb://mongo-users:27017/users")
-  .connect("mongodb://mongo:27019/users")
+  .connect("mongodb://mongo:27017/users")
   // .connect("mongodb://localhost:27017/users")
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("Could not connect to MongoDB:", err));

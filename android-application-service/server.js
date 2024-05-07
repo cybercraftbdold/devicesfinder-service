@@ -8,7 +8,7 @@ app.use(androidRouter);
 
 mongoose
   // .connect("mongodb://mongo-users:27017/android-application")
-  .connect("mongodb://mongo:27019/android-applications")
+  .connect("mongodb://mongo:27017/android-applications")
   // .connect("mongodb://localhost:27017/android-application")
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("Could not connect to MongoDB:", err));
