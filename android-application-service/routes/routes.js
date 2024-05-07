@@ -1,7 +1,5 @@
 const { Router } = require("express");
-const androidAiRouter = require("../routes/get-android/getandroid-route");
+const reviewRoute = require("./reviews-router/reviews.router");
 const androidRouter = Router();
-
-androidRouter.use(androidAiRouter);
-
+androidRouter.use(reviewRoute);
 module.exports = androidRouter;

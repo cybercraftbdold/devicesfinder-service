@@ -1,8 +1,8 @@
 const amqp = require("amqplib");
 
 // Use the CloudAMQP URL from your credentials
-const RABBITMQ_URL =
-  "amqps://zyhofqvj:cUzKnldbzpfhkWMvlK4-tIKUzJNG4kdE@kangaroo.rmq.cloudamqp.com/zyhofqvj";
+// const RABBITMQ_URL ="amqps://zyhofqvj:cUzKnldbzpfhkWMvlK4-tIKUzJNG4kdE@kangaroo.rmq.cloudamqp.com/zyhofqvj";
+const RABBITMQ_URL ="amqp://cybercraft:cybercraft@195.35.32.241:5672/";
 
 async function connectRabbitMQ() {
   try {
