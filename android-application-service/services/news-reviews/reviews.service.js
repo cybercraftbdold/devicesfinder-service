@@ -35,6 +35,25 @@ const createReivews = async (payload) => {
   }
 };
 
+const getAllReivews = async (payload) => {
+  try {
+    const res = await ReviewSchema.find({});
+
+    if (res) {
+      return {
+        isSuccess: true,
+        message: "Review Data Getting Successfully!",
+        response: res,
+      };
+    }
+  } catch (error) {
+    return {
+      isSuccess: false,
+      message: error.message,
+    };
+  }
+};
 module.exports = {
   createReivews,
+  getAllReivews,
 };
