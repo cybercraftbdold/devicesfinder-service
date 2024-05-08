@@ -1,9 +1,10 @@
 const { Router } = require("express");
 const {
   registrationController,
+  getAllUserController,
 } = require("../../controller/auth/auth.controller");
 const authRouter = Router();
 
 authRouter.post("/auth/create-user", registrationController);
-// reviewRoute.get("/review/get-review", getAllReviewsController);
+authRouter.get("/auth/get-users", getAllUserController);
 module.exports = authRouter;
