@@ -3,6 +3,7 @@ const {
   getAllUserService,
   loginService,
   generateQRCodeService,
+  verifyUserService,
 } = require("../../services/auth/auth.service");
 
 // create user
@@ -111,9 +112,36 @@ const generateQRCodeController = async (req, res, next) => {
   }
 };
 
+// verify twofa
+const verifyUserController = async (req, res, next) => {
+  try {
+    const payload = {
+      token: req?.body?.token,
+      email: req?.body?.email,
+    };
+    const result = await verifyUserService(payload);
+    if (result.success === true) {
+      res.json({
+        success: "true",
+        status_code: 200,
+        data: result,
+      });
+    } else if (result.success === false) {
+      res.json({
+        success: "false",
+        status_code: 400,
+        data: result,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   registrationController,
   getAllUserController,
   loginController,
   generateQRCodeController,
+  verifyUserController,
 };

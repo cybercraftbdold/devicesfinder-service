@@ -154,10 +154,43 @@ const generateQRCodeService = async (userEmail) => {
     // return null;
   }
 };
+// verify user using otp for update 2 factor authentication
+const verifyUserService = async (payload) => {
+  try {
+    const { token, email } = payload;
+    // Retrieve the user's secret key and verification status from the database
+    const userData = await UserModel.findOne({ email: email });
+    const userSecret = userData?.secretKey;
+    const isUserVerified = userData?.twoFactorEnabled;
+    if (!userSecret) {
+      return { success: false, message: "User secret key not found" };
+    }
+
+    const verifiedUser = speakeasy.totp.verify({
+      secret: userSecret,
+      encoding: "base32",
+      token: token,
+      window: 6,
+    });
+    if (verifiedUser) {
+      // Update the user's status as verified in the database
+      if (!isUserVerified) {
+        await UserModel.updateOne({ email: email }, { twoFactorEnabled: true });
+      }
+
+      return { success: true, message: "Two-step authentication successful" };
+    } else {
+      return { success: false, message: "Invalid or expired token" };
+    }
+  } catch (error) {
+    return { success: false, message: "Internal server error" };
+  }
+};
 
 module.exports = {
   registerService,
   getAllUserService,
   loginService,
   generateQRCodeService,
+  verifyUserService,
 };
