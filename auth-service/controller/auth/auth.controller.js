@@ -5,6 +5,7 @@ const {
   generateQRCodeService,
   verifyUserService,
   registrationByAdminService,
+  selfRegistrationService,
 } = require("../../services/auth/auth.service");
 
 // create user
@@ -154,6 +155,27 @@ const registrationByAdminController = async (req, res, next) => {
   }
 };
 
+// self registration controller
+const selfRegistrationController = async (req, res, next) => {
+  try {
+    const result = await selfRegistrationService(req.body);
+    // Prepare response based on the result from the service
+    if (result.success === true) {
+      res.json({
+        message: result.message,
+        status_code: 200,
+      });
+    } else {
+      res.json({
+        message: result.message,
+        status_code: 400,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   registrationController,
   getAllUserController,
@@ -161,4 +183,5 @@ module.exports = {
   generateQRCodeController,
   verifyUserController,
   registrationByAdminController,
+  selfRegistrationController,
 };

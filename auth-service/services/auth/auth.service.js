@@ -1,4 +1,5 @@
-const { createToken } = require("../../helpers/jwtHelpers");
+const { createToken, verifyToken } = require("../../helpers/jwtHelpers");
+const bcrypt = require("bcrypt");
 const UserModel = require("../../models/auth-model/auth.model");
 const speakeasy = require("speakeasy");
 
@@ -206,7 +207,7 @@ const registrationByAdminService = async (userData) => {
       "72h"
     );
     // Link to the profile update page
-    const updateProfileLink = `https://nctadmin.ccbd.dev/self-registation?token=${updateProfileToken}`;
+    const updateProfileLink = `${envConfig?.FRONTEND_BASE_URL}/self-registation?token=${updateProfileToken}`;
     // Sending an email to the new user with the profile update link
     const emailResult = await sendEmailToUser(
       user.email,
@@ -226,6 +227,50 @@ const registrationByAdminService = async (userData) => {
     };
   }
 };
+// self registration by user to email invited link
+const selfRegistrationService = async (data) => {
+  try {
+    const decoded = verifyToken(data.token, envConfig.JWT_SECRET);
+    const userEmail = decoded.id;
+
+    const user = await UserModel.findOne({ email: userEmail });
+    if (!user) {
+      return { success: false, message: "User Not Found!" };
+    }
+
+    if (user?.password) {
+      return {
+        success: false,
+        message: "Cannot update  profile from this link",
+      };
+    }
+    // Exclude 'email' and 'role' fields from the update payload
+    delete data.email;
+    delete data.role;
+    // Check if a new password is provided and hash it
+    if (data?.password) {
+      // Hash the new password
+      const hashedPassword = await bcrypt.hash(data.password, Number(12));
+      // Replace the plaintext password with the hashed version in the data object
+      data.password = hashedPassword;
+    }
+
+    const updateResult = await UserModel.updateOne(
+      { email: userEmail },
+      { $set: data }
+    );
+
+    // Check if the update was successful
+    if (updateResult.modifiedCount === 0) {
+      return { success: false, message: "Failed to update user information." };
+    }
+
+    return { success: true, message: "User information updated successfully." };
+  } catch (error) {
+    console.error("Self-registration error:", error);
+    return { success: false, message: "Internal server error." };
+  }
+};
 
 module.exports = {
   registerService,
@@ -234,4 +279,5 @@ module.exports = {
   generateQRCodeService,
   verifyUserService,
   registrationByAdminService,
+  selfRegistrationService,
 };
