@@ -4,6 +4,10 @@ const speakeasy = require("speakeasy");
 
 const envConfig = require("../../utils/env.config");
 const generateQRCodeImage = require("../../helpers/qrcode.helpers");
+const { sendEmailToUser } = require("../../helpers/mail.helpers");
+const {
+  registrationInvitaionTemplete,
+} = require("../../utils/html-templete/html.templete");
 
 // create user
 const registerService = async (userData) => {
@@ -186,6 +190,42 @@ const verifyUserService = async (payload) => {
     return { success: false, message: "Internal server error" };
   }
 };
+// registration user by admin
+const registrationByAdminService = async (userData) => {
+  try {
+    const existingUser = await UserModel.findOne({ email: userData.email });
+    if (existingUser) {
+      // If user already exists, throw an error
+      throw new Error("Email already in use");
+    }
+    const user = await UserModel.create(userData);
+    // Generate a token for the new user to update their profile
+    const updateProfileToken = await createToken(
+      { id: user.email },
+      envConfig.JWT_SECRET,
+      "72h"
+    );
+    // Link to the profile update page
+    const updateProfileLink = `https://nctadmin.ccbd.dev/self-registation?token=${updateProfileToken}`;
+    // Sending an email to the new user with the profile update link
+    const emailResult = await sendEmailToUser(
+      user.email,
+      registrationInvitaionTemplete(user.email, updateProfileLink) // invitation link
+    );
+    // Return success response
+    return {
+      isSuccess: true,
+      message: "Email send successfully",
+      emailResult,
+      Invitedlink: updateProfileLink,
+    };
+  } catch (error) {
+    return {
+      isSuccess: false,
+      message: error.message,
+    };
+  }
+};
 
 module.exports = {
   registerService,
@@ -193,4 +233,5 @@ module.exports = {
   loginService,
   generateQRCodeService,
   verifyUserService,
+  registrationByAdminService,
 };

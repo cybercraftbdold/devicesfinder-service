@@ -4,6 +4,7 @@ const {
   loginService,
   generateQRCodeService,
   verifyUserService,
+  registrationByAdminService,
 } = require("../../services/auth/auth.service");
 
 // create user
@@ -112,7 +113,7 @@ const generateQRCodeController = async (req, res, next) => {
   }
 };
 
-// verify twofa
+// verify two factor authentication
 const verifyUserController = async (req, res, next) => {
   try {
     const payload = {
@@ -138,10 +139,26 @@ const verifyUserController = async (req, res, next) => {
   }
 };
 
+// registration by admin  using invited link
+const registrationByAdminController = async (req, res, next) => {
+  try {
+    const result = await registrationByAdminService(req.body);
+    res.json({
+      message: result.message,
+      Invitedlink: result.Invitedlink,
+      emailResult: result.emailResult,
+      status_code: result.isSuccess ? 200 : 400,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   registrationController,
   getAllUserController,
   loginController,
   generateQRCodeController,
   verifyUserController,
+  registrationByAdminController,
 };
