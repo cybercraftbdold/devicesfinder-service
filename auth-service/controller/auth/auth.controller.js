@@ -1,6 +1,7 @@
 const {
   registerService,
   getAllUserService,
+  loginService,
 } = require("../../services/auth/auth.service");
 
 // create user
@@ -47,7 +48,43 @@ const getAllUserController = async (req, res, next) => {
   }
 };
 
+// login controller
+
+const loginController = async (req, res, next) => {
+  try {
+    const loginData = req.body;
+    const result = await loginService(loginData);
+    const { refreshToken, ...others } = result;
+    // Set refresh token in cookie
+    res.cookie("refreshToken", refreshToken, { httpOnly: true, secure: false });
+    // delete refreshToken
+    if ("refreshToken" in result) {
+      delete result.refreshToken;
+    }
+    if (result?.accessToken) {
+      res.json({
+        message: "logged in successfully",
+        status_code: 200,
+        isSuccess: true,
+        data: others,
+      });
+    } else if (result?.isSuccess === false) {
+      res.json({
+        message: result.message,
+        status_code: result.status_code,
+        isSuccess: false,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Something went wrong",
+      isSuccess: false,
+    });
+  }
+};
+
 module.exports = {
   registrationController,
   getAllUserController,
+  loginController,
 };

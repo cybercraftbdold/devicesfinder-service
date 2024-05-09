@@ -1,4 +1,6 @@
+const { createToken } = require("../../helpers/jwtHelpers");
 const UserModel = require("../../models/auth-model/auth.model");
+const envConfig = require("../../utils/env.config");
 
 // create user
 const registerService = async (userData) => {
@@ -23,8 +25,7 @@ const registerService = async (userData) => {
   }
 };
 
-// get all users
-
+// get all users service
 //=========================== Get All User Service ===================
 const getAllUserService = async (limit, skip = 0, searchText, filters) => {
   try {
@@ -68,7 +69,52 @@ const getAllUserService = async (limit, skip = 0, searchText, filters) => {
   }
 };
 
+// login user service
+const loginService = async (loginData) => {
+  const { email: userEmail, password } = loginData;
+  // Check is user exist
+  const isUserExist = await UserModel.isUserExist(userEmail);
+  if (!isUserExist) {
+    return {
+      status_code: 400,
+      isSuccess: false,
+      message: "User does not exist",
+    };
+  }
+
+  //Matching the password
+  if (
+    isUserExist.password &&
+    !(await UserModel.isPasswordMatched(password, isUserExist?.password))
+  ) {
+    return {
+      status_code: 400,
+      isSuccess: false,
+      message: "Incorrect email or password.",
+    };
+  }
+
+  const { email, role, twoFactorEnabled, name } = isUserExist;
+  // Access token for user persistance
+  const accessToken = createToken(
+    { email, role, twoFactorEnabled, name },
+    envConfig.JWT_SECRET,
+    "1d"
+  );
+  const refreshToken = createToken(
+    { email, role, twoFactorEnabled, name },
+    envConfig.JWT_REFRESH_SECRET,
+    "365d"
+  );
+
+  return {
+    accessToken,
+    refreshToken,
+  };
+};
+
 module.exports = {
   registerService,
-  getAllUserService
+  getAllUserService,
+  loginService,
 };
