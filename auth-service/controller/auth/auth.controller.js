@@ -2,6 +2,7 @@ const {
   registerService,
   getAllUserService,
   loginService,
+  generateQRCodeService,
 } = require("../../services/auth/auth.service");
 
 // create user
@@ -49,7 +50,6 @@ const getAllUserController = async (req, res, next) => {
 };
 
 // login controller
-
 const loginController = async (req, res, next) => {
   try {
     const loginData = req.body;
@@ -83,8 +83,37 @@ const loginController = async (req, res, next) => {
   }
 };
 
+// generate qr code controller for TOFA
+const generateQRCodeController = async (req, res, next) => {
+  try {
+    // Extract user email from request parameters
+    const userEmail = req?.params?.email;
+    // Call the AuthService to generate QR code
+    const result = await generateQRCodeService(userEmail);
+    // Check if QR code generation is successful
+    if (result?.qrcode) {
+      // If QR code is generated successfully
+      return res.status(200).json({
+        message: "QR code generated successfully",
+        status_code: 200,
+        data: result,
+      });
+    } else {
+      // If two-factor authentication is already enabled
+      return res.status(400).json({
+        message: "Two-factor authentication is already enabled for this user",
+        status_code: 400,
+      });
+    }
+  } catch (error) {
+    // If any error occurs during QR code generation, pass it to the error handling middleware
+    next(error);
+  }
+};
+
 module.exports = {
   registrationController,
   getAllUserController,
   loginController,
+  generateQRCodeController,
 };

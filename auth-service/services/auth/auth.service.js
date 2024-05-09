@@ -1,6 +1,9 @@
 const { createToken } = require("../../helpers/jwtHelpers");
 const UserModel = require("../../models/auth-model/auth.model");
+const speakeasy = require("speakeasy");
+
 const envConfig = require("../../utils/env.config");
+const generateQRCodeImage = require("../../helpers/qrcode.helpers");
 
 // create user
 const registerService = async (userData) => {
@@ -24,9 +27,7 @@ const registerService = async (userData) => {
     };
   }
 };
-
 // get all users service
-//=========================== Get All User Service ===================
 const getAllUserService = async (limit, skip = 0, searchText, filters) => {
   try {
     let query = {};
@@ -68,7 +69,6 @@ const getAllUserService = async (limit, skip = 0, searchText, filters) => {
     };
   }
 };
-
 // login user service
 const loginService = async (loginData) => {
   const { email: userEmail, password } = loginData;
@@ -112,9 +112,52 @@ const loginService = async (loginData) => {
     refreshToken,
   };
 };
+// Generate QRcode for two factor authentication
+const generateQRCodeService = async (userEmail) => {
+  const userData = await UserModel.isUserExist(userEmail);
+  if (!userData) {
+    // Handle case where user doesn't exist
+    return { isSuccess: false, message: "User not found." };
+  }
+  const TwoFactor = userData?.twoFactorEnabled;
+  const { name, secretKey } = userData;
+  if (!TwoFactor) {
+    let base32Secret;
+    // Check if user already has a secret key
+    if (!secretKey) {
+      // Generate a new secret key for the user
+      const newSecretKey = speakeasy.generateSecret();
+      base32Secret = newSecretKey.base32;
+      await UserModel.updateOne(
+        { email: userEmail },
+        { secretKey: base32Secret }
+      );
+    } else {
+      base32Secret = secretKey;
+    }
+
+    const companyName = "Nusaiba Construction & Technology";
+    // Include the username in the label, separated by a colon or hyphen
+    const label = encodeURIComponent(`${companyName}: ${name}`);
+    const otpauthUrl = `otpauth://totp/${label}?secret=${base32Secret}&issuer=${encodeURIComponent(
+      companyName
+    )}`;
+
+    // Generate QR code for the user
+    const imageUrl = await generateQRCodeImage(otpauthUrl);
+
+    return {
+      qrcode: imageUrl,
+    };
+  } else {
+    return { isSuccess: false, message: "User already enabled 2fa" };
+    // return null;
+  }
+};
 
 module.exports = {
   registerService,
   getAllUserService,
   loginService,
+  generateQRCodeService,
 };
