@@ -291,7 +291,6 @@ const deleteUserService = async (deletedId) => {
     };
   }
 };
-
 module.exports = {
   registerService,
   getAllUserService,

@@ -7,8 +7,14 @@ const {
   deleteRoleMenuController,
   updateRoleController,
 } = require("../../controller/roles-manage/roles.manage.controller");
+const requestValidator = require("../../middleware/request-validator");
+const { roleSchema } = require("../../validators/role.validator");
 const roleRouter = Router();
-roleRouter.post(`/auth/role/create-role`, createRoleController);
+roleRouter.post(
+  `/auth/role/create-role`,
+  requestValidator(roleSchema),
+  createRoleController
+);
 roleRouter.get(`/auth/role/get-all-role`, getAllRoleController);
 roleRouter.get(`/auth/role/get-single-role/:roleName`, getSingRoleController);
 roleRouter.delete(`/auth/role/delete-role`, deleteRoleController);
