@@ -8,6 +8,7 @@ const {
   selfRegistrationService,
   deleteUserService,
   refreshTokenService,
+  restartToFAService,
 } = require("../../services/auth/auth.service");
 
 // create user
@@ -227,6 +228,41 @@ const refreshTokenController = async (req, res, next) => {
     next(error);
   }
 };
+// Restart to factor authentication
+const restartToFAController = async (req, res) => {
+  try {
+    const email = req.params.email; // Assuming the user's ID is passed as a URL parameter
+    const { twoFactorEnabled } = req.body; // Expecting 'twoFactorEnabled' to be provided in the request body
+    // Validate the input to ensure it is a boolean
+    if (typeof twoFactorEnabled !== "boolean") {
+      return res.status(400).json({
+        message: "Invalid request. 'twoFactorEnabled' must be a boolean value.",
+        isSuccess: false,
+      });
+    }
+
+    const result = await restartToFAService(email, twoFactorEnabled);
+
+    if (result?.isSuccess) {
+      res.status(200).json({
+        message: result.message,
+        isSuccess: result.isSuccess,
+        response: result.response,
+      });
+    } else {
+      res.status(400).json({
+        message: result.message,
+        isSuccess: result.isSuccess,
+        response: result.response,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+      isSuccess: false,
+    });
+  }
+};
 
 module.exports = {
   registrationController,
@@ -238,4 +274,5 @@ module.exports = {
   selfRegistrationController,
   deleteUserController,
   refreshTokenController,
+  restartToFAController,
 };

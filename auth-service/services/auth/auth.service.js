@@ -323,6 +323,34 @@ const refreshTokenService = async (token) => {
     accessToken: newAccessToken,
   };
 };
+// restart to factor authentication
+const restartToFAService = async (email, twoFactorEnabled) => {
+  try {
+    // Assuming UserModel is your Mongoose model for the user collection
+    const res = await UserModel.updateOne(
+      { email: email },
+      { $set: { twoFactorEnabled: twoFactorEnabled, secretKey: "" } }
+    );
+    if (res.modifiedCount > 0) {
+      return {
+        isSuccess: true,
+        response: res,
+        message: "Two-factor authentication restart successfully",
+      };
+    } else {
+      return {
+        isSuccess: false,
+        message:
+          "No document found or the two-factor authentication status is already set to the desired value",
+      };
+    }
+  } catch (error) {
+    return {
+      isSuccess: false,
+      message: error.message,
+    };
+  }
+};
 
 module.exports = {
   registerService,
@@ -334,4 +362,5 @@ module.exports = {
   selfRegistrationService,
   deleteUserService,
   refreshTokenService,
+  restartToFAService,
 };
