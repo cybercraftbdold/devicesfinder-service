@@ -9,9 +9,11 @@ const {
 } = require("../../controller/roles-manage/roles.manage.controller");
 const requestValidator = require("../../middleware/request-validator");
 const { roleSchema } = require("../../validators/role.validator");
+const verifyToken = require("../../middleware/verify-token");
 const roleRouter = Router();
 roleRouter.post(
   `/auth/role/create-role`,
+  verifyToken,
   requestValidator(roleSchema),
   createRoleController
 );
