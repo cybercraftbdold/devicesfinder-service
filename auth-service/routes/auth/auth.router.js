@@ -8,6 +8,7 @@ const {
   registrationByAdminController,
   selfRegistrationController,
   deleteUserController,
+  refreshTokenController,
 } = require("../../controller/auth/auth.controller");
 const authRouter = Router();
 
@@ -20,5 +21,6 @@ authRouter.post("/auth/verify-2fa", verifyUserController);
 authRouter.post("/auth/registration-by-admin", registrationByAdminController);
 authRouter.post("/auth/registration-by-user", selfRegistrationController);
 authRouter.delete("/auth/delete-user/:id", deleteUserController);
+authRouter.get("/auth/refresh-token", refreshTokenController);
 
 module.exports = authRouter;

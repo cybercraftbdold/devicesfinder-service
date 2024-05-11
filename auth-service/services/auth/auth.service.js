@@ -291,6 +291,39 @@ const deleteUserService = async (deletedId) => {
     };
   }
 };
+// refresh token service
+const refreshTokenService = async (token) => {
+  let verifiedToken = null;
+  try {
+    verifiedToken = verifyToken(token, envConfig.JWT_REFRESH_SECRET);
+  } catch (error) {
+    return {
+      success: false,
+      message: "Invalid token",
+    };
+  }
+  const { email, role } = verifiedToken;
+  const isUserExist = await UserModel.findOne({ email: email });
+  if (!isUserExist) {
+    return {
+      success: false,
+      message: "User doesn't exist",
+    };
+  }
+  const { twoFactorEnabled, name } = isUserExist;
+
+  // Access token for user persistance
+  const newAccessToken = createToken(
+    { email, role, twoFactorEnabled, name },
+    envConfig.JWT_SECRET,
+    "1d"
+  );
+
+  return {
+    accessToken: newAccessToken,
+  };
+};
+
 module.exports = {
   registerService,
   getAllUserService,
@@ -300,4 +333,5 @@ module.exports = {
   registrationByAdminService,
   selfRegistrationService,
   deleteUserService,
+  refreshTokenService,
 };

@@ -7,6 +7,7 @@ const {
   registrationByAdminService,
   selfRegistrationService,
   deleteUserService,
+  refreshTokenService,
 } = require("../../services/auth/auth.service");
 
 // create user
@@ -189,6 +190,47 @@ const deleteUserController = async (req, res, next) => {
     next(error);
   }
 };
+// refresh token controller
+const refreshTokenController = async (req, res, next) => {
+  try {
+    // Retrieve refreshToken from the request cookies
+    const refreshToken = req.cookies?.refreshToken;
+    // Check if refreshToken exists
+    if (!refreshToken) {
+      return res.status(400).json({
+        message: "No refreshToken found in cookies",
+        status_code: 400,
+      });
+    }
+    const result = await refreshTokenService(refreshToken);
+    // Set cookie options
+    const cookieOptions = {
+      secure: false, // Change to true if your application uses HTTPS
+      httpOnly: true,
+    };
+
+    // Set the refreshToken cookie in the response
+    res.cookie("refreshToken", refreshToken, cookieOptions);
+
+    // Check if accessToken exists in the result
+    if (result.accessToken) {
+      // Send success response
+      res.json({
+        message: result,
+        status_code: 200,
+      });
+    } else {
+      // Send error response
+      res.json({
+        message: result,
+        status_code: 400,
+      });
+    }
+  } catch (error) {
+    // Forward error to the error handling middleware
+    next(error);
+  }
+};
 
 module.exports = {
   registrationController,
@@ -199,4 +241,5 @@ module.exports = {
   registrationByAdminController,
   selfRegistrationController,
   deleteUserController,
+  refreshTokenController,
 };
