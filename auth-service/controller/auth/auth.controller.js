@@ -87,7 +87,6 @@ const loginController = async (req, res, next) => {
     });
   }
 };
-
 // generate qr code controller for TOFA
 const generateQRCodeController = async (req, res, next) => {
   try {
@@ -115,7 +114,6 @@ const generateQRCodeController = async (req, res, next) => {
     next(error);
   }
 };
-
 // verify two factor authentication
 const verifyUserController = async (req, res, next) => {
   try {
@@ -141,7 +139,6 @@ const verifyUserController = async (req, res, next) => {
     next(error);
   }
 };
-
 // registration by admin  using invited link
 const registrationByAdminController = async (req, res, next) => {
   try {
@@ -156,7 +153,6 @@ const registrationByAdminController = async (req, res, next) => {
     next(error);
   }
 };
-
 // self registration controller
 const selfRegistrationController = async (req, res, next) => {
   try {
