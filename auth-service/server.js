@@ -1,5 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
+
 require("dotenv").config();
 const envConfig = require("./utils/env.config");
 const authenticationRouter = require("./routes/routes");
@@ -7,6 +9,7 @@ const port = envConfig.PORT || 8003;
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 app.use(authenticationRouter);
 app.get("/", (req, res) => {
   res.status(200).send("Auth server is running");
