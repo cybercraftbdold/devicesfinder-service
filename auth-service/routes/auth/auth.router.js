@@ -7,6 +7,7 @@ const {
   verifyUserController,
   registrationByAdminController,
   selfRegistrationController,
+  deleteUserController,
 } = require("../../controller/auth/auth.controller");
 const authRouter = Router();
 
@@ -18,5 +19,6 @@ authRouter.get("/auth/generate-qrcode/:email", generateQRCodeController);
 authRouter.post("/auth/verify-2fa", verifyUserController);
 authRouter.post("/auth/registration-by-admin", registrationByAdminController);
 authRouter.post("/auth/registration-by-user", selfRegistrationController);
+authRouter.delete("/auth/delete-user/:id", deleteUserController);
 
 module.exports = authRouter;

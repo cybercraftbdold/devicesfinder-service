@@ -271,6 +271,26 @@ const selfRegistrationService = async (data) => {
     return { success: false, message: "Internal server error." };
   }
 };
+// delete user service
+const deleteUserService = async (deletedId) => {
+  try {
+    const result = await UserModel.deleteOne({ _id: deletedId });
+    if (result.deletedCount === 1) {
+      return {
+        isSuccess: true,
+        message: "User Deleted Successfully!",
+      };
+    } else {
+      return { isSuccess: false, message: "User not found." };
+    }
+  } catch (error) {
+    console.error(`Error deleting user: ${error.message}`);
+    return {
+      isSuccess: false,
+      message: "An unexpected error occurred.",
+    };
+  }
+};
 
 module.exports = {
   registerService,
@@ -280,4 +300,5 @@ module.exports = {
   verifyUserService,
   registrationByAdminService,
   selfRegistrationService,
+  deleteUserService,
 };

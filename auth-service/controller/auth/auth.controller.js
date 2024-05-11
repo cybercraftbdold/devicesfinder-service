@@ -6,6 +6,7 @@ const {
   verifyUserService,
   registrationByAdminService,
   selfRegistrationService,
+  deleteUserService,
 } = require("../../services/auth/auth.service");
 
 // create user
@@ -175,6 +176,19 @@ const selfRegistrationController = async (req, res, next) => {
     next(error);
   }
 };
+// user delete controller
+const deleteUserController = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const result = await deleteUserService(id);
+    res.json({
+      message: result.message,
+      status_code: result.isSuccess ? 200 : 400,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 module.exports = {
   registrationController,
@@ -184,4 +198,5 @@ module.exports = {
   verifyUserController,
   registrationByAdminController,
   selfRegistrationController,
+  deleteUserController,
 };
