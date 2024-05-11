@@ -141,7 +141,7 @@ const generateQRCodeService = async (userEmail) => {
       base32Secret = secretKey;
     }
 
-    const companyName = "Nusaiba Construction & Technology";
+    const companyName = "Mystery Box Admin";
     // Include the username in the label, separated by a colon or hyphen
     const label = encodeURIComponent(`${companyName}: ${name}`);
     const otpauthUrl = `otpauth://totp/${label}?secret=${base32Secret}&issuer=${encodeURIComponent(
