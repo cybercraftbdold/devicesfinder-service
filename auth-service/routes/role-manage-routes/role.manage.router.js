@@ -8,11 +8,11 @@ const {
   updateRoleController,
 } = require("../../controller/roles-manage/roles.manage.controller");
 const roleRouter = Router();
-roleRouter.post(`/role/create-role`, createRoleController);
-roleRouter.get(`/role/get-all-role`, getAllRoleController);
-roleRouter.get(`/role/get-single-role/:roleName`, getSingRoleController);
-roleRouter.delete(`/role/delete-role`, deleteRoleController);
-roleRouter.delete(`/role/delete-role-menu/:id`, deleteRoleMenuController);
-roleRouter.put(`/role/update-role/:id`, updateRoleController);
+roleRouter.post(`/auth/role/create-role`, createRoleController);
+roleRouter.get(`/auth/role/get-all-role`, getAllRoleController);
+roleRouter.get(`/auth/role/get-single-role/:roleName`, getSingRoleController);
+roleRouter.delete(`/auth/role/delete-role`, deleteRoleController);
+roleRouter.delete(`/auth/role/delete-role-menu/:id`, deleteRoleMenuController);
+roleRouter.put(`/auth/role/update-role/:id`, updateRoleController);
 
 module.exports = roleRouter;
