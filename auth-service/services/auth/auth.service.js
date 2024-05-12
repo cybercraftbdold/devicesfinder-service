@@ -351,6 +351,88 @@ const restartToFAService = async (email, twoFactorEnabled) => {
     };
   }
 };
+// update user / admin admin name
+const updateUserService = async (userData) => {
+  try {
+    const {
+      params: { email },
+      body,
+    } = userData;
+
+    const existingUser = await UserModel.findOne({ email: email });
+    if (!existingUser) {
+      return {
+        success: false,
+        message: "User not found",
+      };
+    }
+
+    const { oldPassword, newPassword } = body;
+    let bodyToUpdate = { ...body };
+
+    // Check if user wants to change the password
+    if (oldPassword && newPassword) {
+      // Validate provided data
+      if (oldPassword === newPassword) {
+        return {
+          success: false,
+          message: "You can't use old password as new password",
+        };
+      }
+
+      // Compare the provided old password with the stored hashed password
+      const isPasswordCorrect = await bcrypt.compare(
+        oldPassword,
+        existingUser.password
+      );
+      if (!isPasswordCorrect) {
+        return {
+          success: false,
+          message: "Invalid old password",
+        };
+      }
+
+      // Hash the new password
+      const hashedPassword = await bcrypt.hash(
+        newPassword,
+        Number(configuration.bcrypt_salt_rounds)
+      );
+
+      // Update body with hashed password
+      bodyToUpdate = { ...bodyToUpdate, password: hashedPassword };
+    }
+
+    // Update user's data with the updated body
+    await UserModel.findOneAndUpdate(
+      { email: existingUser.email },
+      bodyToUpdate,
+      {
+        new: true,
+      }
+    );
+
+    // Fetch the updated user data
+    const updatedUserData = await UserModel.findOne({ email });
+
+    if (!updatedUserData) {
+      return {
+        success: false,
+        message: "Failed to fetch updated user data",
+      };
+    }
+
+    return {
+      success: true,
+      data: updatedUserData,
+      message: "User updated successfully",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: "Failed to update user",
+    };
+  }
+};
 
 module.exports = {
   registerService,
@@ -363,4 +445,5 @@ module.exports = {
   deleteUserService,
   refreshTokenService,
   restartToFAService,
+  updateUserService,
 };

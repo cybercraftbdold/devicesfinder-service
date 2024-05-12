@@ -9,6 +9,7 @@ const {
   deleteUserService,
   refreshTokenService,
   restartToFAService,
+  updateUserService,
 } = require("../../services/auth/auth.service");
 
 // create user
@@ -263,6 +264,35 @@ const restartToFAController = async (req, res) => {
     });
   }
 };
+//Update User Controller
+const updateUserController = async (req, res, next) => {
+  try {
+    const payload = {
+      body: req.body,
+      params: req.params,
+    };
+    const result = await updateUserService(payload);
+
+    if ("data" in result && result.data && "toObject" in result.data) {
+      const userObject = result.data.toObject();
+      // Destructure the object to omit password and secretKey
+      const { password, secretKey, ...safeUserData } = userObject;
+      // Return the safe user data
+      res.json({
+        message: result.message,
+        status_code: 200,
+        data: result.data ? { safeUserData } : {},
+      });
+    } else {
+      res.json({
+        message: result.message,
+        status_code: 400,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
 
 module.exports = {
   registrationController,
@@ -275,4 +305,5 @@ module.exports = {
   deleteUserController,
   refreshTokenController,
   restartToFAController,
+  updateUserController,
 };
