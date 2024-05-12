@@ -11,6 +11,7 @@ const {
   refreshTokenController,
   restartToFAController,
   updateUserController,
+  getSingleUserController,
 } = require("../../controller/auth/auth.controller");
 const authRouter = Router();
 
@@ -26,5 +27,6 @@ authRouter.delete("/auth/delete-user/:id", deleteUserController);
 authRouter.get("/auth/refresh-token", refreshTokenController);
 authRouter.patch("/auth/restart-2fa/:email", restartToFAController);
 authRouter.patch("/auth/update-user/:email", updateUserController);
+authRouter.get("/auth/get-single-user/:email", getSingleUserController);
 
 module.exports = authRouter;

@@ -433,6 +433,29 @@ const updateUserService = async (userData) => {
     };
   }
 };
+// get single users
+const getSingleService = async (email) => {
+  try {
+    const user = await UserModel?.findOne({ email: email });
+    if (!user) {
+      return {
+        success: false,
+        message: "User not found",
+      };
+    } else {
+      return {
+        success: true,
+        data: user,
+        message: "Data fetching successfully",
+      };
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: "Failed to fetching user",
+    };
+  }
+};
 
 module.exports = {
   registerService,
@@ -446,4 +469,5 @@ module.exports = {
   refreshTokenService,
   restartToFAService,
   updateUserService,
+  getSingleService,
 };

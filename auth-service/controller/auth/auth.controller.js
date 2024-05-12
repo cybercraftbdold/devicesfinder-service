@@ -10,6 +10,7 @@ const {
   refreshTokenService,
   restartToFAService,
   updateUserService,
+  getSingleService,
 } = require("../../services/auth/auth.service");
 
 // create user
@@ -293,7 +294,27 @@ const updateUserController = async (req, res, next) => {
     next(error);
   }
 };
+const getSingleUserController = async (req, res, next) => {
+  try {
+    const email = req?.params?.email;
+    const result = await getSingleService(email);
 
+    if (result?.success) {
+      res.json({
+        message: result.message,
+        status_code: 200,
+        data: result,
+      });
+    } else {
+      res.json({
+        message: result.message,
+        status_code: 400,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
 module.exports = {
   registrationController,
   getAllUserController,
@@ -306,4 +327,5 @@ module.exports = {
   refreshTokenController,
   restartToFAController,
   updateUserController,
+  getSingleUserController,
 };
