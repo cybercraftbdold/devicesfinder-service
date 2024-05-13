@@ -39,8 +39,8 @@ services:
       - MONGO_DB_URL=mongodb://mongo:27017/android-applications
       # - RABBITMQ_URL=amqps://zyhofqvj:cUzKnldbzpfhkWMvlK4-tIKUzJNG4kdE@kangaroo.rmq.cloudamqp.com/zyhofqvj
       - RABBITMQ_URL=amqp://cybercraft:cybercraft@195.35.32.241:5672/
-      
-# auth service 
+
+  # auth service 
   auth-service:
     build: ./auth-service
     ports:
@@ -49,6 +49,17 @@ services:
       - mongo
     environment:
       - MONGO_DB_URL=mongodb://mongo:27017/mystery-auth
+      # - RABBITMQ_URL=amqps://zyhofqvj:cUzKnldbzpfhkWMvlK4-tIKUzJNG4kdE@kangaroo.rmq.cloudamqp.com/zyhofqvj
+      - RABBITMQ_URL=amqp://cybercraft:cybercraft@195.35.32.241:5672/
+      # auth service 
+  mobile-service:
+    build: ./mobile-service
+    ports:
+      - "8004:8004"
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_DB_URL=mongodb://mongo:27017/mobile-specification
       # - RABBITMQ_URL=amqps://zyhofqvj:cUzKnldbzpfhkWMvlK4-tIKUzJNG4kdE@kangaroo.rmq.cloudamqp.com/zyhofqvj
       - RABBITMQ_URL=amqp://cybercraft:cybercraft@195.35.32.241:5672/
 

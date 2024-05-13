@@ -13,8 +13,8 @@ RUN npm install
 # Bundle app source inside Docker image
 COPY . .
 
-# Make port 3002 available to the world outside this container
-EXPOSE 8003
+# Make port 3004 available to the world outside this container
+EXPOSE 8004
 
 # Define environment variable
 ENV NAME World
