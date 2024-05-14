@@ -12,6 +12,7 @@ const {
   updateUserService,
   getSingleService,
   changePasswordService,
+  forgotPasswordService,
 } = require("../../services/auth/auth.service");
 
 // create user
@@ -337,6 +338,31 @@ const changePasswordController = async (req, res, next) => {
     next(error);
   }
 };
+// forgot password controller
+const forgotPasswordController = async (req, res) => {
+  try {
+    const email = req.params.email;
+    const result = await forgotPasswordService(email);
+    if (result && result.accepted && result.accepted.length > 0) {
+      // Email sent successfully
+      res.status(200).json({
+        message: "Email sent successfully.",
+        isSuccess: true,
+      });
+    } else {
+      // Email failed to send
+      res.status(400).json({
+        message: "User Not Exist!.",
+        isSuccess: false,
+      });
+    }
+  } catch (error) {
+    res.status(400).json({
+      message: "Failed to send email.",
+      isSuccess: false,
+    });
+  }
+};
 module.exports = {
   registrationController,
   getAllUserController,
@@ -351,4 +377,5 @@ module.exports = {
   updateUserController,
   getSingleUserController,
   changePasswordController,
+  forgotPasswordController,
 };

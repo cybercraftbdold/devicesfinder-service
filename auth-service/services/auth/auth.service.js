@@ -1,4 +1,8 @@
-const { createToken, verifyToken } = require("../../helpers/jwtHelpers");
+const {
+  createToken,
+  verifyToken,
+  createResetToken,
+} = require("../../helpers/jwtHelpers");
 const bcrypt = require("bcrypt");
 const UserModel = require("../../models/auth-model/auth.model");
 const speakeasy = require("speakeasy");
@@ -8,6 +12,7 @@ const generateQRCodeImage = require("../../helpers/qrcode.helpers");
 const { sendEmailToUser } = require("../../helpers/mail.helpers");
 const {
   registrationInvitaionTemplete,
+  forgotPasswordTemplete,
 } = require("../../utils/html-templete/html.templete");
 
 // create user
@@ -457,28 +462,26 @@ const getSingleService = async (email) => {
   }
 };
 
-// reset password service
-// const resetPassword = async (payload) => {
-//   try {
-//     const { token, newPassword } = payload;
-//     const decoded = verifyToken(token, configuration.jwt.secret);
-//     const userId = decoded.id;
+// forgot password service
+const forgotPasswordService = async (email) => {
+  const user = await UserModel.findOne({ email: email });
+  if (!user) {
+    throw new Error("User not found");
+  }
+  const passResetToken = await createResetToken(
+    { id: user?._id },
+    envConfig.JWT_SECRET,
+    "50m"
+  );
 
-//     // Update password
-//     const user = await UserModel.findById(userId);
-//     if (!user) {
-//       return { success: false, message: "Invalid or expired token" };
-//     }
-
-//     user.password = newPassword;
-//     await user.save();
-
-//     // Respond with success message
-//     return { success: true, message: "Password Reset Successfully" };
-//   } catch (error) {
-//     return { success: false, message: "Internal server error" };
-//   }
-// };
+  const resetLink = `${envConfig.FRONTEND_BASE_URL}/reset-password?token=${passResetToken}`;
+  const userEmail = user?.email;
+  const result = await sendEmailToUser(
+    userEmail,
+    forgotPasswordTemplete(user, resetLink)
+  );
+  return result;
+};
 
 // Change password service for profile
 const changePasswordService = async (currentUser, payload) => {
@@ -545,4 +548,5 @@ module.exports = {
   updateUserService,
   getSingleService,
   changePasswordService,
+  forgotPasswordService,
 };
