@@ -1,7 +1,7 @@
 const envConfig = require("../utils/env.config");
 const jwt = require("jsonwebtoken");
 
-const verifyToken = (req, res, next) => {
+const verifyJWT = (req, res, next) => {
   const authorization = req?.headers?.authorization;
   if (!authorization) {
     return res?.status(401)?.json({
@@ -38,7 +38,7 @@ const verifyToken = (req, res, next) => {
   });
 };
 
-module.exports = verifyToken;
+module.exports = { verifyJWT };
 
 // const envConfig = require("../utils/env.config");
 // const jwt = require("jsonwebtoken");

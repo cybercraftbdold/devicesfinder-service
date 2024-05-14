@@ -11,6 +11,7 @@ const {
   restartToFAService,
   updateUserService,
   getSingleService,
+  changePasswordService,
 } = require("../../services/auth/auth.service");
 
 // create user
@@ -315,6 +316,27 @@ const getSingleUserController = async (req, res, next) => {
     next(error);
   }
 };
+// password change controller
+const changePasswordController = async (req, res, next) => {
+  try {
+    const user = req.decoded;
+    const payload = req.body;
+    const result = await changePasswordService(user, payload);
+    if (result.success === true) {
+      res.json({
+        message: result.message,
+        status_code: result.success,
+      });
+    } else {
+      res.json({
+        message: result.message,
+        status_code: result.success,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
 module.exports = {
   registrationController,
   getAllUserController,
@@ -328,4 +350,5 @@ module.exports = {
   restartToFAController,
   updateUserController,
   getSingleUserController,
+  changePasswordController,
 };

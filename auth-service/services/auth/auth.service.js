@@ -457,6 +457,80 @@ const getSingleService = async (email) => {
   }
 };
 
+// reset password service
+// const resetPassword = async (payload) => {
+//   try {
+//     const { token, newPassword } = payload;
+//     const decoded = verifyToken(token, configuration.jwt.secret);
+//     const userId = decoded.id;
+
+//     // Update password
+//     const user = await UserModel.findById(userId);
+//     if (!user) {
+//       return { success: false, message: "Invalid or expired token" };
+//     }
+
+//     user.password = newPassword;
+//     await user.save();
+
+//     // Respond with success message
+//     return { success: true, message: "Password Reset Successfully" };
+//   } catch (error) {
+//     return { success: false, message: "Internal server error" };
+//   }
+// };
+
+// Change password service for profile
+const changePasswordService = async (currentUser, payload) => {
+  const { oldPassword, newPassword } = payload;
+  // Validate provided data
+  if (!oldPassword || !newPassword) {
+    return {
+      success: false,
+      message: "Old password and new password are required",
+    };
+  }
+  // Ensure that the password field in the database is not null or undefined
+  if (oldPassword === newPassword) {
+    return { success: false, message: "You can't use old password" };
+  }
+
+  try {
+    const existingUser = await UserModel.findOne({ email: currentUser.email });
+
+    if (!existingUser) {
+      return { success: false, message: "User not found!" };
+    }
+
+    // Compare the provided old password with the stored hashed password
+    const isPasswordCorrect = await bcrypt.compare(
+      oldPassword,
+      existingUser.password
+    );
+    if (!isPasswordCorrect) {
+      return { success: false, message: "Invalid old password!" };
+    }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(newPassword, Number(12));
+    const updateData = {
+      password: hashedPassword,
+    };
+
+    await UserModel.findOneAndUpdate(
+      { email: existingUser.email },
+      updateData,
+      {
+        new: true,
+      }
+    );
+
+    return { success: true, message: "Password updated successfully" };
+  } catch (error) {
+    return { success: false, message: "Internal server error" };
+  }
+};
+
 module.exports = {
   registerService,
   getAllUserService,
@@ -470,4 +544,5 @@ module.exports = {
   restartToFAService,
   updateUserService,
   getSingleService,
+  changePasswordService,
 };
