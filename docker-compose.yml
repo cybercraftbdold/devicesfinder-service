@@ -30,7 +30,7 @@ services:
       - RABBITMQ_URL=amqp://cybercraft:cybercraft@195.35.32.241:5672/
 
   android-application-service:
-    build: ./android-application-service
+    build: ./android-application/android-1-service
     ports:
       - "8001:8001"
     depends_on:
@@ -53,7 +53,8 @@ services:
       - RABBITMQ_URL=amqp://cybercraft:cybercraft@195.35.32.241:5672/
       # auth service 
   mobile-service:
-    build: ./mobile-service
+    # build: ./mobile-service
+    build: ./mobile-specifications/mobile-1-service
     ports:
       - "8004:8004"
     depends_on:
