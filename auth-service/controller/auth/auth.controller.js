@@ -13,7 +13,9 @@ const {
   getSingleService,
   changePasswordService,
   forgotPasswordService,
+  resetPasswordService,
 } = require("../../services/auth/auth.service");
+const envConfig = require("../../utils/env.config");
 
 // create user
 const registrationController = async (req, res, next) => {
@@ -363,6 +365,30 @@ const forgotPasswordController = async (req, res) => {
     });
   }
 };
+// reset password after forgot
+const resetPasswordController = async (req, res) => {
+  try {
+    const { token, newPassword } = req.body;
+    const payload = {
+      token,
+      newPassword,
+    };
+    const result = await resetPasswordService(payload);
+    if (result.success) {
+      res.json({
+        message: result.message,
+        status_code: 200,
+      });
+    } else {
+      res.json({
+        message: result.message,
+        status_code: 400,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
 module.exports = {
   registrationController,
   getAllUserController,
@@ -378,4 +404,5 @@ module.exports = {
   getSingleUserController,
   changePasswordController,
   forgotPasswordController,
+  resetPasswordController,
 };

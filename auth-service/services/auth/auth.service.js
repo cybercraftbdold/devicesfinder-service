@@ -483,6 +483,28 @@ const forgotPasswordService = async (email) => {
   return result;
 };
 
+const resetPasswordService = async (payload) => {
+  try {
+    const { token, newPassword } = payload;
+    const decoded = verifyToken(token, envConfig.JWT_SECRET);
+    const userId = decoded.id;
+
+    // Update password
+    const user = await UserModel.findById(userId);
+    if (!user) {
+      return { success: false, message: "Invalid or expired token" };
+    }
+
+    user.password = newPassword;
+    await user.save();
+
+    // Respond with success message
+    return { success: true, message: "Password Reset Successfully" };
+  } catch (error) {
+    return { success: false, message: "Internal server error" };
+  }
+};
+
 // Change password service for profile
 const changePasswordService = async (currentUser, payload) => {
   const { oldPassword, newPassword } = payload;
@@ -549,4 +571,5 @@ module.exports = {
   getSingleService,
   changePasswordService,
   forgotPasswordService,
+  resetPasswordService,
 };

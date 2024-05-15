@@ -14,6 +14,7 @@ const {
   getSingleUserController,
   changePasswordController,
   forgotPasswordController,
+  resetPasswordController,
 } = require("../../controller/auth/auth.controller");
 const { verifyJWT } = require("../../middleware/verify-token");
 const authRouter = Router();
@@ -33,5 +34,6 @@ authRouter.patch("/auth/update-user/:email", updateUserController);
 authRouter.get("/auth/get-single-user/:email", getSingleUserController);
 authRouter.post("/auth/change-password", verifyJWT, changePasswordController);
 authRouter.post("/auth/forgot-password/:email", forgotPasswordController);
+authRouter.put("/auth/reset-password", resetPasswordController);
 
 module.exports = authRouter;
