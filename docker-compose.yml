@@ -29,14 +29,15 @@ services:
       # - RABBITMQ_URL=amqps://zyhofqvj:cUzKnldbzpfhkWMvlK4-tIKUzJNG4kdE@kangaroo.rmq.cloudamqp.com/zyhofqvj
       - RABBITMQ_URL=amqp://cybercraft:cybercraft@195.35.32.241:5672/
 
-  android-application-service:
+  # android 1 service
+  android-1-service:
     build: ./android-application/android-1-service
     ports:
       - "8001:8001"
     depends_on:
       - mongo
     environment:
-      - MONGO_DB_URL=mongodb://mongo:27017/android-applications
+      - MONGO_DB_URL=mongodb://mongo:27017/android-1
       # - RABBITMQ_URL=amqps://zyhofqvj:cUzKnldbzpfhkWMvlK4-tIKUzJNG4kdE@kangaroo.rmq.cloudamqp.com/zyhofqvj
       - RABBITMQ_URL=amqp://cybercraft:cybercraft@195.35.32.241:5672/
 
@@ -51,16 +52,28 @@ services:
       - MONGO_DB_URL=mongodb://mongo:27017/mystery-auth
       # - RABBITMQ_URL=amqps://zyhofqvj:cUzKnldbzpfhkWMvlK4-tIKUzJNG4kdE@kangaroo.rmq.cloudamqp.com/zyhofqvj
       - RABBITMQ_URL=amqp://cybercraft:cybercraft@195.35.32.241:5672/
-      # auth service 
-  mobile-service:
+
+  # mobile service
+  mobile-1-service:
     # build: ./mobile-service
     build: ./mobile-specifications/mobile-1-service
     ports:
-      - "8004:8004"
+      - "8004:8004" #Port 8004 is already in use, so we switch to 8007.
     depends_on:
       - mongo
     environment:
-      - MONGO_DB_URL=mongodb://mongo:27017/mobile-specification
+      - MONGO_DB_URL=mongodb://mongo:27017/mobile-1
+      # - RABBITMQ_URL=amqps://zyhofqvj:cUzKnldbzpfhkWMvlK4-tIKUzJNG4kdE@kangaroo.rmq.cloudamqp.com/zyhofqvj
+      - RABBITMQ_URL=amqp://cybercraft:cybercraft@195.35.32.241:5672/
+  # mystery box service    
+  mysterybox-service:
+    build: ./mysterybox-service
+    ports:
+      - "8005:8005"
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_DB_URL=mongodb://mongo:27017/mystery-box
       # - RABBITMQ_URL=amqps://zyhofqvj:cUzKnldbzpfhkWMvlK4-tIKUzJNG4kdE@kangaroo.rmq.cloudamqp.com/zyhofqvj
       - RABBITMQ_URL=amqp://cybercraft:cybercraft@195.35.32.241:5672/
 
