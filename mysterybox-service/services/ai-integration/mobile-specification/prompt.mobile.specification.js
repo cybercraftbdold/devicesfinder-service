@@ -56,7 +56,7 @@ const updateMobileGptPromptService = async (id, data) => {
 const getMobileGptPromptService = async (websiteName) => {
   try {
     if (websiteName) {
-      const res = await MobileSpecificationPromptModel.findOne({
+      const res = await MobileSpecificationPromptModel.find({
         websiteName: websiteName,
       });
       return {
