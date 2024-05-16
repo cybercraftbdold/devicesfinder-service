@@ -9,7 +9,7 @@ const mobileKeywordInfoSchema = new Schema(
     },
 
     profile: {
-      profileTitle: String,
+      phoneName: String,
       relevantURL: String,
     },
 
@@ -20,9 +20,21 @@ const mobileKeywordInfoSchema = new Schema(
       vendorWebsite: String,
       vendorSocial: String,
     },
-    featured: {
+    types: {
       type: [String],
       require: true,
+    },
+    features: {
+      specification: String,
+      faqs: [String],
+      comparison: String,
+      userReview: {
+        name: String,
+        description: String,
+        profileImg: String,
+      },
+      reviewNews: String,
+      buyingGuide: String,
     },
   },
   {
@@ -48,6 +60,18 @@ const mobileBlogKeywordSchema = new Schema(
     types: {
       type: [String],
       require: true,
+    },
+    features: {
+      specification: String,
+      faqs: [String],
+      comparison: String,
+      userReview: {
+        name: String,
+        description: String,
+        profileImg: String,
+      },
+      reviewNews: String,
+      buyingGuide: String,
     },
   },
   {

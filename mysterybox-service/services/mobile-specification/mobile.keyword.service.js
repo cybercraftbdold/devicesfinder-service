@@ -5,13 +5,14 @@ const {
 
 // create mobile specification
 const createMobileProfileKeywordService = async (payload) => {
-  let { keywords, profile, vendor, featured } = payload;
+  let { keywords, profile, vendor, types, features } = payload;
   try {
     const mobileKeywordModel = new MobileProfileKeywordModel({
       keywords,
       profile,
       vendor,
-      featured,
+      types,
+      features,
     });
 
     // Attempt to save the new blog post to the database
@@ -33,13 +34,14 @@ const createMobileProfileKeywordService = async (payload) => {
 
 // create mobile blog keyword
 const createMobileBlogKeywordService = async (payload) => {
-  let { mainKeyword, relevantKeyword, relevantUrl, types } = payload;
+  let { mainKeyword, relevantKeyword, relevantUrl, types, features } = payload;
   try {
     const mobileKeywordModel = new MobileBlogKeywordModel({
       mainKeyword,
       relevantKeyword,
       relevantUrl,
       types,
+      features,
     });
 
     // Attempt to save the new blog post to the database
