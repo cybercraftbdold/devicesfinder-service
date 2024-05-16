@@ -1,12 +1,12 @@
 const {
-  createMobileSpecificationService,
-} = require("../../services/mobile-specification/mobile.specification.service");
+  createMobileProfileKeywordService,
+} = require("../../services/mobile-specification/mobile.keyword.service");
 
-// create mobile specification controller
-const createMobileSpecificationController = async (req, res, next) => {
+// create mobile profile keyword controller
+const createMobileProfileKeywordController = async (req, res, next) => {
   try {
     const payload = req.body;
-    const result = await createMobileSpecificationService(payload);
+    const result = await createMobileProfileKeywordService(payload);
     if (result.isSuccess) {
       res.json({
         message: result.message,
@@ -24,5 +24,5 @@ const createMobileSpecificationController = async (req, res, next) => {
 };
 
 module.exports = {
-  createMobileSpecificationController,
+  createMobileProfileKeywordController,
 };

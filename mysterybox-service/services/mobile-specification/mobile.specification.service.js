@@ -1,6 +1,6 @@
 const MobileSpecificationContentModel = require("../../models/mobile-specification/mobile.specification.model");
 
-// create ai prompt for mobile specification (prompt and api key)
+// create mobile specification
 const createMobileSpecificationService = async (payload) => {
   let { title, status, specification, metaInformation } = payload;
   try {
