@@ -6,6 +6,10 @@ const promMobileSpecificationSchema = new Schema(
       type: String,
       required: true,
     },
+    websiteName: {
+      type: String,
+      required: true,
+    },
     prompt: {
       type: String,
       required: true,

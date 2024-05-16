@@ -2,13 +2,14 @@ const MobileSpecificationPromptModel = require("../../../models/ai-integration/m
 
 // create ai prompt for mobile specification (prompt and api key)
 const createMobileGptPromptService = async (payload) => {
-  let { title, prompt, openAiKey, isOn } = payload;
+  let { title, prompt, openAiKey, isOn, websiteName } = payload;
   try {
     // Proceed to create a new BlogModel instance with the updated metaInformation
     const mobileSpecificationPromptModel = new MobileSpecificationPromptModel({
       title,
       prompt,
       openAiKey,
+      websiteName,
       isOn,
     });
 
@@ -52,20 +53,31 @@ const updateMobileGptPromptService = async (id, data) => {
 };
 
 // get prompt key for mobile specification
-const getMobileGptPromptService = async () => {
+const getMobileGptPromptService = async (websiteName) => {
   try {
-    const res = await MobileSpecificationPromptModel.find({});
-    if (res) {
+    if (websiteName) {
+      const res = await MobileSpecificationPromptModel.findOne({
+        websiteName: websiteName,
+      });
       return {
         isSuccess: true,
         response: res,
-        message: "data getting successfully",
+        message: "Site name getting successfully",
       };
     } else {
-      return {
-        isSuccess: false,
-        message: "Something wrong",
-      };
+      const res = await MobileSpecificationPromptModel.find({});
+      if (res) {
+        return {
+          isSuccess: true,
+          response: res,
+          message: "data getting successfully",
+        };
+      } else {
+        return {
+          isSuccess: false,
+          message: "Something wrong",
+        };
+      }
     }
   } catch (error) {
     return {

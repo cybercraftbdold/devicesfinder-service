@@ -52,7 +52,8 @@ const updateMobileGptPromptController = async (req, res, next) => {
 // get mobile specification prompt
 const getMobileGptPromptController = async (req, res, next) => {
   try {
-    const result = await getMobileGptPromptService();
+    const websiteName = req?.query?.websiteName;
+    const result = await getMobileGptPromptService(websiteName);
     // Prepare response based on the result from the service
     if (result.isSuccess) {
       res.json({
