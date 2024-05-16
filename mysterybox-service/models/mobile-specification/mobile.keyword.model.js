@@ -1,5 +1,6 @@
 const { Schema, model } = require("mongoose");
 
+// profile keyword model
 const mobileKeywordInfoSchema = new Schema(
   {
     keywords: {
@@ -29,5 +30,37 @@ const mobileKeywordInfoSchema = new Schema(
   }
 );
 
-const MobileKeywordModel = model("mobile-keyword", mobileKeywordInfoSchema);
-module.exports = MobileKeywordModel;
+// blog post keyword
+const mobileBlogKeywordSchema = new Schema(
+  {
+    mainKeyword: {
+      type: String,
+      require: true,
+    },
+    relevantKeyword: {
+      type: String,
+      require: true,
+    },
+    relevantUrl: {
+      type: String,
+      require: true,
+    },
+    types: {
+      type: [String],
+      require: true,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+const MobileProfileKeywordModel = model(
+  "mobile-profile-keyword",
+  mobileKeywordInfoSchema
+);
+const MobileBlogKeywordModel = model(
+  "mobile-blog-keyword",
+  mobileBlogKeywordSchema
+);
+module.exports = { MobileProfileKeywordModel, MobileBlogKeywordModel };
