@@ -2,6 +2,7 @@ const { Router } = require("express");
 const {
   createMobileSpecificationController,
   generateMobileSpecificationController,
+  getMobileSpecificationController,
 } = require("../../controller/mobile-specifications/mobile.specification.contoller");
 const mobileSpecificationRouter = Router();
 // base path
@@ -18,4 +19,9 @@ mobileSpecificationRouter.post(
   createMobileSpecificationController
 );
 
+// get all mobile specification router
+mobileSpecificationRouter.get(
+  `${baseRoute}/get-mobile-specifications`,
+  getMobileSpecificationController
+);
 module.exports = mobileSpecificationRouter;

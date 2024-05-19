@@ -53,8 +53,67 @@ const createMobileSpecificationService = async (payload) => {
     };
   }
 };
+// get mobile specification
+const getMobileSpecificationService = async (
+  limit,
+  skip,
+  searchText,
+  filters,
+  sortField = "createdAt",
+  sortOrder = "desc"
+) => {
+  try {
+    let query = {};
+    if (searchText) {
+      query.$or = [
+        { title: { $regex: searchText, $options: "i" } },
+        { specification: { $regex: searchText, $options: "i" } },
+      ];
+    }
+    // apply filters if they are provided
+    if (filters) {
+      // Check phoneId
+      if (filters.phoneId) {
+        query["phone.phoneId"] = filters.phoneId;
+      }
+      if (filters.status) {
+        query.status = filters.status;
+        // query.status = { $regex: new RegExp(filters.status, "i") };
+      }
+    }
+
+    // Determine sort order
+    const sort = {};
+    sort[sortField] = sortOrder.toLowerCase() === "asc" ? 1 : -1;
+
+    const res = await MobileSpecificationContentModel.aggregate([
+      { $match: query },
+      // { $sort: { createdAt: -1 } },
+      { $sort: sort },
+      {
+        $facet: {
+          data: [{ $skip: skip }, { $limit: limit }],
+          totalCount: [{ $count: "value" }],
+        },
+      },
+    ]);
+    if (res) {
+      return {
+        isSuccess: true,
+        response: res,
+        message: "Data getting successfull",
+      };
+    }
+  } catch (error) {
+    return {
+      isSuccess: false,
+      message: error.message,
+    };
+  }
+};
 
 module.exports = {
   createMobileSpecificationService,
   generateMobileSpecificationService,
+  getMobileSpecificationService,
 };
