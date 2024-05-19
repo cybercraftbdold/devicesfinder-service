@@ -24,14 +24,14 @@ const generateMobileSpecificationService = async (payload) => {
 };
 // create mobile specification after generate mobile specification content using open ai
 const createMobileSpecificationService = async (payload) => {
-  let { title, status, specification, metaInformation } = payload;
-  const content = await generateMobileSpecification(payload);
+  let { title, status, specification, metaInformation, phone } = payload;
   try {
     // Proceed to create a new BlogModel instance with the updated metaInformation
     const mobileSpecificationContentModel = new MobileSpecificationContentModel(
       {
         title,
         status,
+        phone,
         specification,
         metaInformation,
       }
@@ -43,7 +43,6 @@ const createMobileSpecificationService = async (payload) => {
       return {
         isSuccess: true,
         response: res,
-        gptResponse: content,
         message: "Mobile specification create successfull",
       };
     }

@@ -15,8 +15,7 @@ const createMobileSpecificationController = async (req, res, next) => {
       res.json({
         message: result.message,
         isSuccess: result.isSuccess,
-        res: result?.response,
-        content: result?.gptResponse,
+        data: result?.response,
       });
     } else {
       res.json({

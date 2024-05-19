@@ -6,12 +6,15 @@ const mobileSpecificationContentSchema = new Schema(
       type: String,
       required: true,
     },
+    phone: {
+      phoneId: String,
+    },
     status: {
       type: String,
       required: true,
     },
     specification: {
-      type: String,
+      type: Schema.Types.Mixed,
       required: true,
     },
     metaInformation: {
