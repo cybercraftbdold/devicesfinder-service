@@ -28,7 +28,12 @@ const generateGptContent = async (payload) => {
       data,
       { headers }
     );
-    return response.data.choices[0].message.content;
+    const gptContent = response.data.choices[0].message.content;
+
+    // Parse the JSON content
+    const parsedJson = JSON.parse(gptContent);
+    // return response.data.choices[0].message.content;
+    return parsedJson;
   } catch (error) {
     // Error handling remains unchanged
     if (error.response) {
