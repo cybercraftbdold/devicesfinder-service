@@ -4,7 +4,7 @@ const {
   getMobileFaqService,
 } = require("../../services/mobile-specification/mobile.faq.service");
 
-// create mobile specification controller
+// create mobile faq controller
 const createMobileFaqController = async (req, res, next) => {
   try {
     const payload = req.body;
@@ -25,7 +25,7 @@ const createMobileFaqController = async (req, res, next) => {
     next(error);
   }
 };
-// generate content for mobile specification using open ai
+// generate content for mobile faq using open ai
 const generateMobileFaqController = async (req, res, next) => {
   try {
     const payload = req.body;
@@ -46,7 +46,7 @@ const generateMobileFaqController = async (req, res, next) => {
     next(error);
   }
 };
-//get all mobile specification
+//get all mobile faq
 const getMobileFaqController = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
@@ -54,7 +54,6 @@ const getMobileFaqController = async (req, res) => {
     const skip = (page - 1) * limit;
     const searchText = req?.query?.searchText;
     const phoneId = req?.query?.phoneId;
-    const status = req?.query?.status;
     const sortField = req?.query?.sortField || "createdAt";
     const sortOrder = req?.query?.sortOrder || "desc";
     // filters
@@ -63,9 +62,9 @@ const getMobileFaqController = async (req, res) => {
     if (phoneId) {
       filters.phoneId = phoneId;
     }
-    if (status) {
-      filters.status = status;
-    }
+    // if (status) {
+    //   filters.status = status;
+    // }
     const result = await getMobileFaqService(
       limit,
       skip,

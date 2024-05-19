@@ -3,9 +3,9 @@ const {
   generateMobileSpecification,
 } = require("../ai-integration/mobile-specification/generate.mobile.specification.service");
 
-// generate mobile specification content using  open ai
+// generate mobile faq content using  open ai
 const generateMobileFaqService = async (payload) => {
-  // let { title, status, specification, metaInformation } = payload;
+  // let { title, status, faq, metaInformation } = payload;
   const generatedContent = await generateMobileSpecification(payload);
   try {
     if (generatedContent) {
@@ -22,7 +22,7 @@ const generateMobileFaqService = async (payload) => {
     };
   }
 };
-// create mobile specification after generate mobile specification content using open ai
+// create mobile faq after generate mobile faq content using open ai
 const createMobileFaqService = async (payload) => {
   let { title, faqList, mobileInfo } = payload;
   try {
@@ -39,7 +39,7 @@ const createMobileFaqService = async (payload) => {
       return {
         isSuccess: true,
         response: res,
-        message: "Mobile specification create successfull",
+        message: "Mobile faq create successfull",
       };
     }
   } catch (error) {
@@ -49,7 +49,7 @@ const createMobileFaqService = async (payload) => {
     };
   }
 };
-// get mobile specification
+// get mobile faq fa
 const getMobileFaqService = async (
   limit,
   skip,
@@ -61,21 +61,17 @@ const getMobileFaqService = async (
   try {
     let query = {};
     if (searchText) {
-      query.$or = [
-        { title: { $regex: searchText, $options: "i" } },
-        { specification: { $regex: searchText, $options: "i" } },
-      ];
+      query.$or = [{ title: { $regex: searchText, $options: "i" } }];
     }
     // apply filters if they are provided
     if (filters) {
       // Check phoneId
       if (filters.phoneId) {
-        query["phone.phoneId"] = filters.phoneId;
+        query["mobileInfo.phoneId"] = filters.phoneId;
       }
-      if (filters.status) {
-        query.status = filters.status;
-        // query.status = { $regex: new RegExp(filters.status, "i") };
-      }
+      // if (filters.status) {
+      //   query.status = filters.status;
+      // }
     }
 
     // Determine sort order
