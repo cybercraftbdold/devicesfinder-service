@@ -9,6 +9,7 @@ const generateMobileSpecification = async (payload) => {
     const response = await generateGptContent({
       openAiKey: openAiKey,
       prompt: prompt,
+      isText: payload?.isText,
     });
     if (response) {
       return {

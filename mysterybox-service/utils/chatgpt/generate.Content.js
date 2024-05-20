@@ -29,9 +29,8 @@ const generateGptContent = async (payload) => {
       { headers }
     );
     const gptContent = response.data.choices[0].message.content;
-
     // Parse the JSON content
-    const parsedJson = JSON.parse(gptContent);
+    const parsedJson = payload?.isText ? gptContent : JSON.parse(gptContent);
     // return response.data.choices[0].message.content;
     return parsedJson;
   } catch (error) {
