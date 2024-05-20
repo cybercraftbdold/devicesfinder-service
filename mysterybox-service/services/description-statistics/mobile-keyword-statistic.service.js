@@ -1,15 +1,10 @@
 const MobileFaqModel = require("../../models/mobile-specification/mobile.faq.model");
-const {
-  MobileBlogKeywordModel,
-  MobileProfileKeywordModel,
-} = require("../../models/mobile-specification/mobile.keyword.model");
 const MobileSpecificationContentModel = require("../../models/mobile-specification/mobile.specification.model");
 const UserReviewModel = require("../../models/user-review/user.reivew.model");
 
 const getKeywordCountService = async (filters) => {
   try {
-    const mobileBlogKeywordModel = MobileBlogKeywordModel;
-    const mobileProfileKeywordModel = MobileProfileKeywordModel;
+    const userReviewModel = UserReviewModel;
     const mobileFaqModel = MobileFaqModel;
     const mobileSpecificationContentModel = MobileSpecificationContentModel;
 
@@ -20,6 +15,7 @@ const getKeywordCountService = async (filters) => {
     }
 
     const mobileFaqCount = await mobileFaqModel.countDocuments(query);
+    const userReviewCount = await userReviewModel.countDocuments(query);
     const mobileSpecificationContentCount =
       await mobileSpecificationContentModel.countDocuments(query);
 
@@ -29,6 +25,7 @@ const getKeywordCountService = async (filters) => {
       counts: {
         mobileFaqCount,
         mobileSpecificationContentCount,
+        userReviewCount,
       },
     };
   } catch (error) {
