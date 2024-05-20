@@ -1,4 +1,7 @@
 const {
+  countMobileKeywordLookup,
+} = require("../../db-query/mobile-specification/mobileKeywordLookup");
+const {
   MobileProfileKeywordModel,
   MobileBlogKeywordModel,
 } = require("../../models/mobile-specification/mobile.keyword.model");
@@ -70,56 +73,7 @@ const getMobileProfileKeywordService = async (
           data: [
             { $skip: skip },
             { $limit: limit },
-            {
-              $addFields: {
-                _idString: { $toString: "$_id" }, // for object id
-              },
-            },
-            // count total faq
-            {
-              $lookup: {
-                from: "mobile-faqs", // Collection name
-                localField: "_idString", // _id
-                foreignField: "mobileInfo.phoneId",
-                as: "faqData",
-              },
-            },
-            // count total mobile specification
-            {
-              $lookup: {
-                from: "mobile-specifications",
-                localField: "_idString",
-                foreignField: "mobileInfo.phoneId",
-                as: "specificationData",
-              },
-            },
-
-            // count total user reviews
-            {
-              $lookup: {
-                from: "user-reviews",
-                localField: "_idString",
-                foreignField: "mobileInfo.phoneId",
-                as: "userReviewData",
-              },
-            },
-            // Adds the faqCount, Etc field, which counts the number of related FAQs, Specification and others.
-            {
-              $addFields: {
-                faqCount: { $size: "$faqData" },
-                specificationCount: { $size: "$specificationData" },
-                userReviewCount: { $size: "$userReviewData" },
-              },
-            },
-            // Removes the Data field from the result.
-            {
-              $project: {
-                _idString: 0,
-                faqData: 0,
-                specificationData: 0,
-                userReviewData: 0,
-              },
-            },
+            ...countMobileKeywordLookup(), // count mobile specifiaction faq and more
           ],
           totalCount: [{ $count: "value" }],
         },
@@ -204,7 +158,11 @@ const getMobileBlogKeywordService = async (
       { $sort: sort },
       {
         $facet: {
-          data: [{ $skip: skip }, { $limit: limit }],
+          data: [
+            { $skip: skip },
+            { $limit: limit },
+            ...countMobileKeywordLookup(), // count mobile specifiaction faq and more
+          ],
           totalCount: [{ $count: "value" }],
         },
       },
