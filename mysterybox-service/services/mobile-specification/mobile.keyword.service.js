@@ -48,15 +48,13 @@ const getMobileProfileKeywordService = async (
         { "keywords.relevantKeyword": { $regex: searchText, $options: "i" } },
       ];
     }
-    // apply filters if they are provided
+    // Apply filters if they are provided
     if (filters) {
-      // Check phoneId
       if (filters.phoneId) {
-        query["phone.phoneId"] = filters.phoneId;
+        query["keywords.mainKeyword"] = filters.phoneId;
       }
       if (filters.status) {
         query.status = filters.status;
-        // query.status = { $regex: new RegExp(filters.status, "i") };
       }
     }
 
@@ -66,23 +64,78 @@ const getMobileProfileKeywordService = async (
 
     const res = await MobileProfileKeywordModel.aggregate([
       { $match: query },
-      // { $sort: { createdAt: -1 } },
       { $sort: sort },
       {
         $facet: {
-          data: [{ $skip: skip }, { $limit: limit }],
+          data: [
+            { $skip: skip },
+            { $limit: limit },
+            {
+              $addFields: {
+                _idString: { $toString: "$_id" }, // for object id
+              },
+            },
+            // count total faq
+            {
+              $lookup: {
+                from: "mobile-faqs", // Collection name
+                localField: "_idString", // _id
+                foreignField: "mobileInfo.phoneId",
+                as: "faqData",
+              },
+            },
+            // count total mobile specification
+            {
+              $lookup: {
+                from: "mobile-specifications",
+                localField: "_idString",
+                foreignField: "mobileInfo.phoneId",
+                as: "specificationData",
+              },
+            },
+
+            // count total user reviews
+            {
+              $lookup: {
+                from: "user-reviews",
+                localField: "_idString",
+                foreignField: "mobileInfo.phoneId",
+                as: "userReviewData",
+              },
+            },
+            // Adds the faqCount, Etc field, which counts the number of related FAQs, Specification and others.
+            {
+              $addFields: {
+                faqCount: { $size: "$faqData" },
+                specificationCount: { $size: "$specificationData" },
+                userReviewCount: { $size: "$userReviewData" },
+              },
+            },
+            // Removes the Data field from the result.
+            {
+              $project: {
+                _idString: 0,
+                faqData: 0,
+                specificationData: 0,
+                userReviewData: 0,
+              },
+            },
+          ],
           totalCount: [{ $count: "value" }],
         },
       },
     ]);
+
     if (res) {
       return {
         isSuccess: true,
         response: res,
-        message: "Data getting successfull",
+        totalCount: res[0].totalCount[0] ? res[0].totalCount[0].value : 0,
+        message: "Data retrieval successful",
       };
     }
   } catch (error) {
+    console.error("Error during data retrieval:", error);
     return {
       isSuccess: false,
       message: error.message,
