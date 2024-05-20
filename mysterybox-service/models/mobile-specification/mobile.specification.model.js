@@ -6,7 +6,7 @@ const mobileSpecificationContentSchema = new Schema(
       type: String,
       required: true,
     },
-    phone: {
+    mobileInfo: {
       phoneId: String,
     },
     status: {

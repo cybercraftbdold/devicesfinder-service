@@ -24,14 +24,14 @@ const generateMobileSpecificationService = async (payload) => {
 };
 // create mobile specification after generate mobile specification content using open ai
 const createMobileSpecificationService = async (payload) => {
-  let { title, status, specification, metaInformation, phone } = payload;
+  let { title, status, specification, metaInformation, mobileInfo } = payload;
   try {
     // Proceed to create a new BlogModel instance with the updated metaInformation
     const mobileSpecificationContentModel = new MobileSpecificationContentModel(
       {
         title,
         status,
-        phone,
+        mobileInfo,
         specification,
         metaInformation,
       }
@@ -74,7 +74,7 @@ const getMobileSpecificationService = async (
     if (filters) {
       // Check phoneId
       if (filters.phoneId) {
-        query["phone.phoneId"] = filters.phoneId;
+        query["mobileInfo.phoneId"] = filters.phoneId;
       }
       if (filters.status) {
         query.status = filters.status;
