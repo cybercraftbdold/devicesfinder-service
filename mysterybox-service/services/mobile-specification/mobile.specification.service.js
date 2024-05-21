@@ -111,9 +111,46 @@ const getMobileSpecificationService = async (
     };
   }
 };
+// update status specification
+const updateMobileStatusService = async (id, data) => {
+  try {
+    const isExisting = await MobileSpecificationContentModel.findOne({
+      _id: id,
+    });
+    if (!isExisting) {
+      return {
+        isSuccess: false,
+        message: "Data not found!",
+      };
+    }
+    const res = await MobileSpecificationContentModel.updateOne(
+      { _id: id },
+      { $set: data }
+    );
+
+    if (res.modifiedCount > 0) {
+      return {
+        isSuccess: true,
+        response: res,
+        message: "Specification updated successfull",
+      };
+    } else {
+      return {
+        isSuccess: false,
+        message: "Something wrong please try again",
+      };
+    }
+  } catch (error) {
+    return {
+      isSuccess: false,
+      message: error?.message,
+    };
+  }
+};
 
 module.exports = {
   createMobileSpecificationService,
   generateMobileSpecificationService,
   getMobileSpecificationService,
+  updateMobileStatusService,
 };

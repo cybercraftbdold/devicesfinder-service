@@ -2,6 +2,7 @@ const {
   createMobileSpecificationService,
   generateMobileSpecificationService,
   getMobileSpecificationService,
+  updateMobileStatusService,
 } = require("../../services/mobile-specification/mobile.specification.service");
 // create mobile specification controller
 const createMobileSpecificationController = async (req, res, next) => {
@@ -95,8 +96,35 @@ const getMobileSpecificationController = async (req, res) => {
   }
 };
 
+//get all mobile specification
+const updateMobileStatusController = async (req, res) => {
+  const id = req?.params?.id;
+  const data = req?.body;
+  try {
+    const result = await updateMobileStatusService(id, data);
+    if (result.isSuccess) {
+      res.status(200).json({
+        message: result?.message,
+        isSuccess: result.isSuccess,
+        data: result?.data,
+      });
+    } else {
+      res.status(400).json({
+        message: result?.message,
+        isSuccess: false,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+      isSuccess: false,
+    });
+  }
+};
+
 module.exports = {
   createMobileSpecificationController,
   generateMobileSpecificationController,
   getMobileSpecificationController,
+  updateMobileStatusController,
 };

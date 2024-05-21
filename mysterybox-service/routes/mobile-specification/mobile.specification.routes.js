@@ -3,6 +3,7 @@ const {
   createMobileSpecificationController,
   generateMobileSpecificationController,
   getMobileSpecificationController,
+  updateMobileStatusController,
 } = require("../../controller/mobile-specifications/mobile.specification.contoller");
 const mobileSpecificationRouter = Router();
 // base path
@@ -18,10 +19,14 @@ mobileSpecificationRouter.post(
   `${baseRoute}/create-mobile-specification`,
   createMobileSpecificationController
 );
-
 // get all mobile specification router
 mobileSpecificationRouter.get(
   `${baseRoute}/get-mobile-specifications`,
   getMobileSpecificationController
+);
+// update mobile specification status
+mobileSpecificationRouter.patch(
+  `${baseRoute}/update-status-mobile-specification/:id`,
+  updateMobileStatusController
 );
 module.exports = mobileSpecificationRouter;
