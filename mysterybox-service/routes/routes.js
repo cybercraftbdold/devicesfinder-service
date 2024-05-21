@@ -7,6 +7,7 @@ const mobileFaqRouter = require("./mobile-specification/mobile.faq.routes");
 const mobileUserReviewRouter = require("./mobile-specification/mobile.user-review.routes");
 const mobileKeywordStatisticRouter = require("./description-statistics/mobile-keyword-statistic.routes");
 const mobileBuyingGuideRouter = require("./mobile-specification/mobile.Buying-guide.routes");
+const manageWebsiteRouter = require("./manage-mystery-box/manage.website.routes");
 const mysteryboxRouter = Router();
 mysteryboxRouter.use(reviewRouter);
 mysteryboxRouter.use(promptMobileRouter);
@@ -15,7 +16,7 @@ mysteryboxRouter.use(mobileProfileKywordRoutes);
 mysteryboxRouter.use(mobileFaqRouter);
 mysteryboxRouter.use(mobileUserReviewRouter);
 mysteryboxRouter.use(mobileBuyingGuideRouter);
-// description statistics
+// management
 mysteryboxRouter.use(mobileKeywordStatisticRouter);
-
+mysteryboxRouter.use(manageWebsiteRouter);
 module.exports = mysteryboxRouter;
