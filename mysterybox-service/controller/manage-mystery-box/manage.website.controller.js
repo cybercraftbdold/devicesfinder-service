@@ -32,13 +32,14 @@ const getWebsitesController = async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
     const searchText = req?.query?.searchText;
+    const status = req?.query?.status;
     const sortField = req?.query?.sortField || "createdAt";
     const sortOrder = req?.query?.sortOrder || "desc";
     // filters
     const filters = {};
-    // if (status) {
-    //   filters.status = status;
-    // }
+    if (status) {
+      filters.status = status;
+    }
     const result = await getWebsitesService(
       limit,
       skip,
