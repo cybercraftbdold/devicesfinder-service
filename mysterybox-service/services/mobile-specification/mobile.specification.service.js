@@ -140,7 +140,6 @@ const combainMobileSpecificationContent = async (id) => {
       ...combainMobileContentLookup(),
     ]);
 
-    console.log("Aggregation result:", JSON.stringify(res, null, 2));
     return { isSuccess: true, data: res };
   } catch (error) {
     console.error("Error in aggregation:", error);
@@ -152,8 +151,7 @@ const combainMobileSpecificationContent = async (id) => {
 };
 
 // update status specification
-const updateMobileStatusService = async (id, data) => {
-  await combainMobileSpecificationContent(id);
+const updateMobileStatusService = async (id, status) => {
   try {
     const isExisting = await MobileSpecificationContentModel.findOne({
       _id: id,
@@ -166,15 +164,41 @@ const updateMobileStatusService = async (id, data) => {
     }
     const res = await MobileSpecificationContentModel.updateOne(
       { _id: id },
-      { $set: data }
+      { $set: { status: status } }
     );
-
     if (res.modifiedCount > 0) {
-      return {
-        isSuccess: true,
-        response: res,
-        message: "Specification updated successfull",
-      };
+      const data = await MobileSpecificationContentModel.findOne({
+        _id: id,
+      });
+      if (data?.status?.toLocaleLowerCase() === "active") {
+        const combainContentResponse = await combainMobileSpecificationContent(
+          id
+        );
+        if (combainContentResponse?.isSuccess) {
+          return {
+            isSuccess: true,
+            response: combainContentResponse?.data,
+            message:
+              "Updated successfull and Succcessfully published mobile spacification",
+          };
+        } else {
+          await MobileSpecificationContentModel.updateOne(
+            { _id: id },
+            { $set: { status: "draft" } }
+          );
+          return {
+            isSuccess: true,
+            response: res,
+            message: "updated not working! Combain content generate failed",
+          };
+        }
+      } else {
+        return {
+          isSuccess: true,
+          response: res,
+          message: "Status updated successfull",
+        };
+      }
     } else {
       return {
         isSuccess: false,

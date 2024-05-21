@@ -99,14 +99,16 @@ const getMobileSpecificationController = async (req, res) => {
 //get all mobile specification
 const updateMobileStatusController = async (req, res) => {
   const id = req?.params?.id;
-  const data = req?.body;
+  const data = req?.body?.status;
+  const status = data.toLowerCase();
+
   try {
-    const result = await updateMobileStatusService(id, data);
+    const result = await updateMobileStatusService(id, status);
     if (result.isSuccess) {
       res.status(200).json({
         message: result?.message,
         isSuccess: result.isSuccess,
-        data: result?.data,
+        data: result?.response,
       });
     } else {
       res.status(400).json({
