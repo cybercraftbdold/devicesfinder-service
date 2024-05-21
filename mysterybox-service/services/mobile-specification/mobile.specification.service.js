@@ -1,3 +1,8 @@
+const {
+  allowUserReviewsProperty,
+  allowFaqProperty,
+  allowBuyingGuideProperty,
+} = require("../../db-query/mobile-specification/allow-property/allow-specification-property");
 const MobileSpecificationContentModel = require("../../models/mobile-specification/mobile.specification.model");
 const {
   generateMobileSpecification,
@@ -111,8 +116,102 @@ const getMobileSpecificationService = async (
     };
   }
 };
+// create main content when update mobile specification status
+const createMobileSpecificationContent = async (id) => {
+  console.log("working");
+
+  try {
+    const initialData = await MobileSpecificationContentModel.findOne({
+      _id: id,
+    });
+    if (!initialData) {
+      return {
+        isSuccess: false,
+        message: "No data found for the provided ID.",
+      };
+    }
+
+    // Assuming initialData.mobileInfo.phoneId exists and is the right ID to match against
+    const phoneId = initialData.mobileInfo.phoneId;
+
+    const res = await MobileSpecificationContentModel.aggregate([
+      {
+        $match: {
+          "mobileInfo.phoneId": phoneId,
+        },
+      },
+      // relation mobile buying guides
+      {
+        $lookup: {
+          from: "mobile-buying-guides",
+          localField: "mobileInfo.phoneId",
+          foreignField: "mobileInfo.phoneId",
+          as: "buyingGuide",
+        },
+      },
+      // relation mobile faq
+      {
+        $lookup: {
+          from: "mobile-faqs",
+          localField: "mobileInfo.phoneId",
+          foreignField: "mobileInfo.phoneId",
+          as: "faqs",
+        },
+      },
+      // relation to user reviews
+      {
+        $lookup: {
+          from: "user-reviews",
+          localField: "mobileInfo.phoneId",
+          foreignField: "mobileInfo.phoneId",
+          as: "userReviews",
+        },
+      },
+      // relation to mobile specification
+      {
+        $lookup: {
+          from: "user-reviews",
+          localField: "mobileInfo.phoneId",
+          foreignField: "mobileInfo.phoneId",
+          as: "userReviews",
+        },
+      },
+
+      {
+        $project: {
+          // _id: 1, // 1 = add 0 = remove
+          title: 1,
+          specification: 1,
+          metaInformation: 1,
+          mobileInfo: 1,
+          faqs: {
+            $map: allowFaqProperty,
+          },
+          buyingGuide: {
+            $map: allowBuyingGuideProperty,
+          },
+          // userReviews: 1, //get all user reviews
+          userReviews: {
+            $map: allowUserReviewsProperty,
+          },
+        },
+      },
+    ]);
+
+    console.log("Aggregation result:", JSON.stringify(res, null, 2));
+    return { isSuccess: true, data: res };
+  } catch (error) {
+    console.error("Error in aggregation:", error);
+    return {
+      isSuccess: false,
+      message: error.message,
+    };
+  }
+};
+
 // update status specification
 const updateMobileStatusService = async (id, data) => {
+  await createMobileSpecificationContent(id);
   try {
     const isExisting = await MobileSpecificationContentModel.findOne({
       _id: id,
