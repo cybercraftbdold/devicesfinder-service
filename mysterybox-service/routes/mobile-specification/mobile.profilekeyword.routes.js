@@ -5,6 +5,11 @@ const {
   getMobileBlogKeywordController,
   createMobileBlogKeywordController,
 } = require("../../controller/mobile-specifications/mobile.keyword.controller");
+const requestValidator = require("../../middleware/request-validator");
+const {
+  mobileBlogKeywordSchema,
+  mobileProfileKeywordSchema,
+} = require("../../validators/mobile-specification/mobile-keyword-validator/mobile-keyword.validator");
 const mobileProfileKywordRoutes = Router();
 // base path
 const baseRoute = "/mystery-box";
@@ -12,6 +17,7 @@ const baseRoute = "/mystery-box";
 // post route for create mobile specification prompt
 mobileProfileKywordRoutes.post(
   `${baseRoute}/create-mobile-profile-keyword`,
+  requestValidator(mobileProfileKeywordSchema),
   createMobileProfileKeywordController
 );
 // get all profile keyword
@@ -23,6 +29,7 @@ mobileProfileKywordRoutes.get(
 // post route for create mobile specification prompt
 mobileProfileKywordRoutes.post(
   `${baseRoute}/create-mobile-blog-keyword`,
+  requestValidator(mobileBlogKeywordSchema),
   createMobileBlogKeywordController
 );
 
