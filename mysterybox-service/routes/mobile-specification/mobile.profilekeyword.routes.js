@@ -3,11 +3,8 @@ const {
   createMobileProfileKeywordController,
   getMobileProfileKeywordController,
   getMobileBlogKeywordController,
-} = require("../../controller/mobile-specifications/mobile.keyword.controller");
-const {
   createMobileBlogKeywordController,
-} = require("../../controller/mobile-specifications/mobile.specification.contoller");
-
+} = require("../../controller/mobile-specifications/mobile.keyword.controller");
 const mobileProfileKywordRoutes = Router();
 // base path
 const baseRoute = "/mystery-box";

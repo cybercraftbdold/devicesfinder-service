@@ -1,7 +1,4 @@
 const {
-  createMobileBlogKeywordService,
-} = require("../../services/mobile-specification/mobile.keyword.service");
-const {
   createMobileSpecificationService,
   generateMobileSpecificationService,
   getMobileSpecificationService,
@@ -16,26 +13,6 @@ const createMobileSpecificationController = async (req, res, next) => {
         message: result.message,
         isSuccess: result.isSuccess,
         data: result?.response,
-      });
-    } else {
-      res.json({
-        message: result.message,
-        isSuccess: false,
-      });
-    }
-  } catch (error) {
-    next(error);
-  }
-};
-// create mobile blog keyword controller controller
-const createMobileBlogKeywordController = async (req, res, next) => {
-  try {
-    const payload = req.body;
-    const result = await createMobileBlogKeywordService(payload);
-    if (result.isSuccess) {
-      res.json({
-        message: result.message,
-        isSuccess: result.isSuccess,
       });
     } else {
       res.json({
@@ -120,7 +97,6 @@ const getMobileSpecificationController = async (req, res) => {
 
 module.exports = {
   createMobileSpecificationController,
-  createMobileBlogKeywordController,
   generateMobileSpecificationController,
   getMobileSpecificationController,
 };

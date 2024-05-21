@@ -24,17 +24,9 @@ const mobileKeywordInfoSchema = new Schema(
       type: [String],
       require: true,
     },
-    features: {
-      specification: String,
-      faqs: [String],
-      comparison: String,
-      userReview: {
-        name: String,
-        description: String,
-        profileImg: String,
-      },
-      reviewNews: String,
-      buyingGuide: String,
+    websiteInfo: {
+      websiteName: String,
+      websiteId: String,
     },
   },
   {
@@ -61,17 +53,9 @@ const mobileBlogKeywordSchema = new Schema(
       type: [String],
       require: true,
     },
-    features: {
-      specification: String,
-      faqs: [String],
-      comparison: String,
-      userReview: {
-        name: String,
-        description: String,
-        profileImg: String,
-      },
-      reviewNews: String,
-      buyingGuide: String,
+    websiteInfo: {
+      websiteName: String,
+      websiteId: String,
     },
   },
   {

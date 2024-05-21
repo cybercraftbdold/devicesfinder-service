@@ -2,6 +2,7 @@ const {
   createMobileProfileKeywordService,
   getMobileProfileKeywordService,
   getMobileBlogKeywordService,
+  createMobileBlogKeywordService,
 } = require("../../services/mobile-specification/mobile.keyword.service");
 
 // create mobile profile keyword controller
@@ -13,6 +14,7 @@ const createMobileProfileKeywordController = async (req, res, next) => {
       res.json({
         message: result.message,
         isSuccess: result.isSuccess,
+        data: result.response,
       });
     } else {
       res.json({
@@ -24,7 +26,27 @@ const createMobileProfileKeywordController = async (req, res, next) => {
     next(error);
   }
 };
-
+// create mobile blog keyword controller controller
+const createMobileBlogKeywordController = async (req, res, next) => {
+  try {
+    const payload = req.body;
+    const result = await createMobileBlogKeywordService(payload);
+    if (result.isSuccess) {
+      res.json({
+        message: result.message,
+        isSuccess: result.isSuccess,
+        data: result.response,
+      });
+    } else {
+      res.json({
+        message: result.message,
+        isSuccess: false,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
 //get all mobile profile keyword controller
 const getMobileProfileKeywordController = async (req, res) => {
   try {
@@ -116,4 +138,5 @@ module.exports = {
   createMobileProfileKeywordController,
   getMobileProfileKeywordController,
   getMobileBlogKeywordController,
+  createMobileBlogKeywordController,
 };
