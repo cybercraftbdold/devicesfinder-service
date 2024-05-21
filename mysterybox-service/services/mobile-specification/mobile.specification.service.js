@@ -1,8 +1,6 @@
 const {
-  allowUserReviewsProperty,
-  allowFaqProperty,
-  allowBuyingGuideProperty,
-} = require("../../db-query/mobile-specification/allow-property/allow-specification-property");
+  combainMobileContentLookup,
+} = require("../../db-query/mobile-specification/lookup/combain-mobile-content-lookup");
 const MobileSpecificationContentModel = require("../../models/mobile-specification/mobile.specification.model");
 const {
   generateMobileSpecification,
@@ -116,10 +114,8 @@ const getMobileSpecificationService = async (
     };
   }
 };
-// create main content when update mobile specification status
-const createMobileSpecificationContent = async (id) => {
-  console.log("working");
-
+// combain data for generate mobile specification
+const combainMobileSpecificationContent = async (id) => {
   try {
     const initialData = await MobileSpecificationContentModel.findOne({
       _id: id,
@@ -140,62 +136,8 @@ const createMobileSpecificationContent = async (id) => {
           "mobileInfo.phoneId": phoneId,
         },
       },
-      // relation mobile buying guides
-      {
-        $lookup: {
-          from: "mobile-buying-guides",
-          localField: "mobileInfo.phoneId",
-          foreignField: "mobileInfo.phoneId",
-          as: "buyingGuide",
-        },
-      },
-      // relation mobile faq
-      {
-        $lookup: {
-          from: "mobile-faqs",
-          localField: "mobileInfo.phoneId",
-          foreignField: "mobileInfo.phoneId",
-          as: "faqs",
-        },
-      },
-      // relation to user reviews
-      {
-        $lookup: {
-          from: "user-reviews",
-          localField: "mobileInfo.phoneId",
-          foreignField: "mobileInfo.phoneId",
-          as: "userReviews",
-        },
-      },
-      // relation to mobile specification
-      {
-        $lookup: {
-          from: "user-reviews",
-          localField: "mobileInfo.phoneId",
-          foreignField: "mobileInfo.phoneId",
-          as: "userReviews",
-        },
-      },
-
-      {
-        $project: {
-          // _id: 1, // 1 = add 0 = remove
-          title: 1,
-          specification: 1,
-          metaInformation: 1,
-          mobileInfo: 1,
-          faqs: {
-            $map: allowFaqProperty,
-          },
-          buyingGuide: {
-            $map: allowBuyingGuideProperty,
-          },
-          // userReviews: 1, //get all user reviews
-          userReviews: {
-            $map: allowUserReviewsProperty,
-          },
-        },
-      },
+      // combain all content with mobile specification
+      ...combainMobileContentLookup(),
     ]);
 
     console.log("Aggregation result:", JSON.stringify(res, null, 2));
@@ -211,7 +153,7 @@ const createMobileSpecificationContent = async (id) => {
 
 // update status specification
 const updateMobileStatusService = async (id, data) => {
-  await createMobileSpecificationContent(id);
+  await combainMobileSpecificationContent(id);
   try {
     const isExisting = await MobileSpecificationContentModel.findOne({
       _id: id,
