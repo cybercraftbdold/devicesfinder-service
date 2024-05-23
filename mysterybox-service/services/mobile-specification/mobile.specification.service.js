@@ -48,6 +48,16 @@ const createMobileSpecificationService = async (payload) => {
       }
     );
 
+    // check Already have an specification
+    const isExistingSpecification = await MobileSpecificationContentModel.find({
+      "mobileInfo.phoneId": mobileInfo.phoneId,
+    });
+    if (isExistingSpecification?.length > 0) {
+      return {
+        isSuccess: false,
+        message: "Already have an specification for the same mobile keyword!",
+      };
+    }
     // Attempt to save the new blog post to the database
     const res = await mobileSpecificationContentModel.save();
     if (res) {

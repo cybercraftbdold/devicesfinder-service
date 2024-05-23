@@ -33,7 +33,16 @@ const createMobileFaqService = async (payload) => {
       mobileInfo,
       websiteInfo,
     });
-
+    // check Already have an specification
+    const isExistingFaq = await MobileFaqModel.find({
+      "mobileInfo.phoneId": mobileInfo.phoneId,
+    });
+    if (isExistingFaq?.length > 0) {
+      return {
+        isSuccess: false,
+        message: "Already have an faq for the same mobile keyword!",
+      };
+    }
     // Attempt to save the new blog post to the database
     const res = await mobileFaqModel.save();
     if (res) {

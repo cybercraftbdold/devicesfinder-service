@@ -34,7 +34,16 @@ const createMobileUserReviewService = async (payload) => {
       mobileInfo,
       websiteInfo,
     });
-
+    // check Already have an specification
+    const isExistingUserReview = await UserReviewModel.find({
+      "mobileInfo.phoneId": mobileInfo.phoneId,
+    });
+    if (isExistingUserReview?.length > 0) {
+      return {
+        isSuccess: false,
+        message: "Already have an user review for the same mobile keyword!",
+      };
+    }
     // Attempt to save the new blog post to the database
     const res = await mobileUserReviewModel.save();
     if (res) {
