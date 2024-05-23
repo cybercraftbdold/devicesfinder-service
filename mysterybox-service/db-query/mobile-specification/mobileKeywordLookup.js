@@ -47,13 +47,13 @@ const countMobileKeywordLookup = () => [
       as: "reviewData",
     },
   },
-  //   relation to collection mobile comparisons
-  {
+   //   relation to collection mobile comparisons
+   {
     $lookup: {
       from: "mobile-comparisons",
       localField: "_idString",
       foreignField: "mobileInfo.phoneId",
-      as: "comparisionData",
+      as: "comparisonData",
     },
   },
   //   add attribute
