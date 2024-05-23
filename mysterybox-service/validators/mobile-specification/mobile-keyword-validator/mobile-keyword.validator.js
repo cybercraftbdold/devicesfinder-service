@@ -8,7 +8,7 @@ const mobileProfileKeywordSchema = Joi.object({
   }).required(),
   profile: Joi.object({
     phoneName: Joi.string().required(),
-    relevantURL: Joi.string().uri().required(),
+    relevantUrl: Joi.array().required(),
   }).required(),
   vendor: Joi.object({
     vendorName: Joi.string().required(),
@@ -23,7 +23,7 @@ const mobileProfileKeywordSchema = Joi.object({
 const mobileBlogKeywordSchema = Joi.object({
   mainKeyword: Joi.string().required(),
   relevantKeyword: Joi.string().required(),
-  relevantUrl: Joi.string().uri().required(),
+  relevantUrl: Joi.array().required(),
   types: Joi.array().items(Joi.string()).required(),
 });
 

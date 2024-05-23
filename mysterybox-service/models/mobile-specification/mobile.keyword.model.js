@@ -10,7 +10,7 @@ const mobileKeywordInfoSchema = new Schema(
 
     profile: {
       phoneName: String,
-      relevantURL: String,
+      relevantUrl: [String],
     },
 
     vendor: {
@@ -46,7 +46,7 @@ const mobileBlogKeywordSchema = new Schema(
       require: true,
     },
     relevantUrl: {
-      type: String,
+      type: [String],
       require: true,
     },
     types: {
