@@ -1,19 +1,20 @@
 const { Schema, model } = require("mongoose");
 
+const phoneDetailSchema = new Schema(
+  {
+    specificationId: String,
+    title: String,
+    specification: Schema.Types.Mixed,
+  },
+  { _id: false }
+);
 const mobileComparisonSchema = new Schema(
   {
     title: {
       type: String,
       required: true,
     },
-    phoneIds: {
-      type: [String],
-      required: true,
-    },
-    phones: {
-      type: Schema.Types.Array,
-      required: true,
-    },
+    phones: [phoneDetailSchema],
     mobileInfo: {
       phoneId: {
         type: String,

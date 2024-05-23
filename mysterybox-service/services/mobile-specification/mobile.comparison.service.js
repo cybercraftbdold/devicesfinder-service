@@ -2,8 +2,7 @@ const MobileComparisonModel = require("../../models/mobile-specification/mobile.
 
 // create mobile comparison  mobile comparison content
 const createMobileComparisonService = async (payload) => {
-  let { title, phones, metaInformation, mobileInfo, websiteInfo, phoneIds } =
-    payload;
+  let { title, phones, metaInformation, mobileInfo, websiteInfo } = payload;
   try {
     // Proceed to create a new BlogModel instance with the updated metaInformation
     const mobileComparisonModel = new MobileComparisonModel({
@@ -12,19 +11,18 @@ const createMobileComparisonService = async (payload) => {
       mobileInfo,
       websiteInfo,
       metaInformation,
-      phoneIds,
     });
 
     // check Already have an comparison
-    const isExistingMobileComparison = await MobileComparisonModel.find({
-      "mobileInfo.phoneId": mobileInfo.phoneId,
-    });
-    if (isExistingMobileComparison?.length > 0) {
-      return {
-        isSuccess: false,
-        message: "Already have an comparison for the same mobile keyword!",
-      };
-    }
+    // const isExistingMobileComparison = await MobileComparisonModel.find({
+    //   "mobileInfo.phoneId": mobileInfo.phoneId,
+    // });
+    // if (isExistingMobileComparison?.length > 0) {
+    //   return {
+    //     isSuccess: false,
+    //     message: "Already have an comparison for the same mobile keyword!",
+    //   };
+    // }
     // Attempt to save the new blog post to the database
     const res = await mobileComparisonModel.save();
     if (res) {

@@ -47,6 +47,15 @@ const countMobileKeywordLookup = () => [
       as: "reviewData",
     },
   },
+  //   relation to collection mobile comparisons
+  {
+    $lookup: {
+      from: "mobile-comparisons",
+      localField: "_idString",
+      foreignField: "mobileInfo.phoneId",
+      as: "comparisionData",
+    },
+  },
   //   add attribute
   {
     $addFields: {
@@ -55,6 +64,7 @@ const countMobileKeywordLookup = () => [
       userReviewCount: { $size: "$userReviewData" },
       buyingGuideCount: { $size: "$buyingData" },
       reviewCount: { $size: "$reviewData" },
+      comparisonCount: { $size: "$comparisonData" },
     },
   },
   //   remove data
@@ -66,6 +76,7 @@ const countMobileKeywordLookup = () => [
       userReviewData: 0,
       buyingData: 0,
       reviewData: 0,
+      comparisonData: 0,
     },
   },
 ];
