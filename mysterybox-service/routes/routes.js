@@ -9,6 +9,7 @@ const mobileKeywordStatisticRouter = require("./description-statistics/mobile-ke
 const mobileBuyingGuideRouter = require("./mobile-specification/mobile.Buying-guide.routes");
 const manageWebsiteRouter = require("./manage-mystery-box/manage.website.routes");
 const mobileReviewRouter = require("./mobile-specification/mobile.review.routes");
+const mobileBlogRouter = require("./mobile-specification/mobile.blog.routes");
 const mysteryboxRouter = Router();
 mysteryboxRouter.use(reviewRouter);
 mysteryboxRouter.use(promptMobileRouter);
@@ -18,6 +19,7 @@ mysteryboxRouter.use(mobileFaqRouter);
 mysteryboxRouter.use(mobileUserReviewRouter);
 mysteryboxRouter.use(mobileBuyingGuideRouter);
 mysteryboxRouter.use(mobileReviewRouter);
+mysteryboxRouter.use(mobileBlogRouter);
 // management
 mysteryboxRouter.use(mobileKeywordStatisticRouter);
 mysteryboxRouter.use(manageWebsiteRouter);
