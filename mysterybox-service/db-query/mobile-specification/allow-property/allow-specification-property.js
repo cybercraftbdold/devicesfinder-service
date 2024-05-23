@@ -27,9 +27,32 @@ const allowFaqProperty = {
     faqList: "$$faq.faqList",
   },
 };
+// allow mobile reivew data property
+const allowReviewProperty = {
+  input: "$mobileReview",
+  as: "review",
+  in: {
+    title: "$$review.title",
+    description: "$$review.description",
+    metaInformation: "$$review.metaInformation",
+  },
+};
+
+// allow mobile comparison data property
+const allowComparisonProperty = {
+  input: "$mobileComparisons",
+  as: "comparison",
+  in: {
+    title: "$$comparison.title",
+    phones: "$$comparison.phones",
+    metaInformation: "$$comparison.metaInformation",
+  },
+};
 
 module.exports = {
   allowUserReviewsProperty,
   allowFaqProperty,
   allowBuyingGuideProperty,
+  allowReviewProperty,
+  allowComparisonProperty,
 };

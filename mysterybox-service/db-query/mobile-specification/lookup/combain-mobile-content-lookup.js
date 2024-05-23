@@ -2,6 +2,8 @@ const {
   allowFaqProperty,
   allowBuyingGuideProperty,
   allowUserReviewsProperty,
+  allowReviewProperty,
+  allowComparisonProperty,
 } = require("../allow-property/allow-specification-property");
 
 const combainMobileContentLookup = () => [
@@ -32,16 +34,24 @@ const combainMobileContentLookup = () => [
       as: "userReviews",
     },
   },
-  // relation to mobile specification
-  //TODO: should be fixed from for database collection
-  // {
-  //   $lookup: {
-  //     from: "user-reviews",
-  //     localField: "mobileInfo.phoneId",
-  //     foreignField: "mobileInfo.phoneId",
-  //     as: "userReviews",
-  //   },
-  // },
+  // relation to mobile
+  {
+    $lookup: {
+      from: "mobile-reviews",
+      localField: "mobileInfo.phoneId",
+      foreignField: "mobileInfo.phoneId",
+      as: "mobileReview",
+    },
+  },
+  // relation to comparison
+  {
+    $lookup: {
+      from: "mobile-comparisons",
+      localField: "mobileInfo.phoneId",
+      foreignField: "mobileInfo.phoneId",
+      as: "mobileComparisons",
+    },
+  },
 
   {
     $project: {
@@ -49,6 +59,12 @@ const combainMobileContentLookup = () => [
       specification: 1,
       metaInformation: 1,
       mobileInfo: 1,
+      mobileComparisons: {
+        $map: allowComparisonProperty,
+      },
+      mobileReview: {
+        $map: allowReviewProperty,
+      },
       faqs: {
         $map: allowFaqProperty,
       },
