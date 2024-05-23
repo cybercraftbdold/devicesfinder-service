@@ -1,5 +1,7 @@
 const UserReviewModel = require("../../models/user-review/user.reivew.model");
-const { generateMobileSpecification } = require("../ai-integration/mobile-specification/generate.mobile.specification.service");
+const {
+  generateMobileSpecification,
+} = require("../ai-integration/mobile-specification/generate.mobile.specification.service");
 // generate mobile user review content using  open ai
 const generateMobileUserReviewService = async (payload) => {
   // let { title, status, user review, metaInformation } = payload;
@@ -21,7 +23,7 @@ const generateMobileUserReviewService = async (payload) => {
 };
 // create mobile user review after generate mobile user review content using open ai
 const createMobileUserReviewService = async (payload) => {
-  let { name, email, rating, description, mobileInfo } = payload;
+  let { name, email, rating, description, mobileInfo, websiteInfo } = payload;
   try {
     // Proceed to create a new BlogModel instance with the updated metaInformation
     const mobileUserReviewModel = new UserReviewModel({
@@ -30,6 +32,7 @@ const createMobileUserReviewService = async (payload) => {
       rating,
       description,
       mobileInfo,
+      websiteInfo,
     });
 
     // Attempt to save the new blog post to the database

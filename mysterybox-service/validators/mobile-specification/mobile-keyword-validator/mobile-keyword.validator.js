@@ -18,10 +18,6 @@ const mobileProfileKeywordSchema = Joi.object({
     vendorSocial: Joi.string().uri().required(),
   }).required(),
   types: Joi.array().items(Joi.string()).required(),
-  websiteInfo: Joi.object({
-    websiteName: Joi.string().required(),
-    websiteId: Joi.string().required(),
-  }).required(),
 });
 // mobile blog keyword schema
 const mobileBlogKeywordSchema = Joi.object({
@@ -29,10 +25,6 @@ const mobileBlogKeywordSchema = Joi.object({
   relevantKeyword: Joi.string().required(),
   relevantUrl: Joi.string().uri().required(),
   types: Joi.array().items(Joi.string()).required(),
-  websiteInfo: Joi.object({
-    websiteName: Joi.string().required(),
-    websiteId: Joi.string().required(),
-  }).required(),
 });
 
 module.exports = {

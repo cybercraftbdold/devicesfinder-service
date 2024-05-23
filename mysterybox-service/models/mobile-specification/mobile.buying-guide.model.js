@@ -10,7 +10,20 @@ const mobileBuyingGuideSchema = new Schema(
       required: true,
     },
     mobileInfo: {
-      phoneId: String,
+      phoneId: {
+        type: String,
+        required: true,
+      },
+    },
+    websiteInfo: {
+      websiteName: {
+        type: String,
+        required: true,
+      },
+      websiteId: {
+        type: String,
+        required: true,
+      },
     },
   },
   {

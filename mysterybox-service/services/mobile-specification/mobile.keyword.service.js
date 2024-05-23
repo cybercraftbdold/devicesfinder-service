@@ -99,15 +99,13 @@ const getMobileProfileKeywordService = async (
 
 // create mobile blog keyword
 const createMobileBlogKeywordService = async (payload) => {
-  let { mainKeyword, relevantKeyword, relevantUrl, types, websiteInfo } =
-    payload;
+  let { mainKeyword, relevantKeyword, relevantUrl, types } = payload;
   try {
     const mobileKeywordModel = new MobileBlogKeywordModel({
       mainKeyword,
       relevantKeyword,
       relevantUrl,
       types,
-      websiteInfo,
     });
 
     // Attempt to save the new blog post to the database

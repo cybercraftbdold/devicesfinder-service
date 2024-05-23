@@ -33,14 +33,15 @@ const combainMobileContentLookup = () => [
     },
   },
   // relation to mobile specification
-  {
-    $lookup: {
-      from: "user-reviews",
-      localField: "mobileInfo.phoneId",
-      foreignField: "mobileInfo.phoneId",
-      as: "userReviews",
-    },
-  },
+  //TODO: should be fixed from for database collection
+  // {
+  //   $lookup: {
+  //     from: "user-reviews",
+  //     localField: "mobileInfo.phoneId",
+  //     foreignField: "mobileInfo.phoneId",
+  //     as: "userReviews",
+  //   },
+  // },
 
   {
     $project: {

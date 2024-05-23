@@ -22,13 +22,14 @@ const generateMobileBuyingGuideService = async (payload) => {
 };
 // create mobile buying guide after generate mobile buying guide content using open ai
 const createMobileBuyingGuideService = async (payload) => {
-  let { title, description, mobileInfo } = payload;
+  let { title, description, mobileInfo, websiteInfo } = payload;
   try {
     // Proceed to create a new BlogModel instance with the updated metaInformation
     const mobileBuyingGuideModel = new MobileBuyingGuideModel({
       title,
       description,
       mobileInfo,
+      websiteInfo,
     });
 
     // Attempt to save the new blog post to the database

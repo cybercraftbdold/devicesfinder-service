@@ -24,13 +24,14 @@ const generateMobileFaqService = async (payload) => {
 };
 // create mobile faq after generate mobile faq content using open ai
 const createMobileFaqService = async (payload) => {
-  let { title, faqList, mobileInfo } = payload;
+  let { title, faqList, mobileInfo, websiteInfo } = payload;
   try {
     // Proceed to create a new BlogModel instance with the updated metaInformation
     const mobileFaqModel = new MobileFaqModel({
       title,
       faqList,
       mobileInfo,
+      websiteInfo,
     });
 
     // Attempt to save the new blog post to the database
