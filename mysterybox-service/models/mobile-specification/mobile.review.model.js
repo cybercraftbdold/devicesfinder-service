@@ -39,5 +39,5 @@ const mobileReviewSchema = new Schema(
   }
 );
 
-const MobileReviewModel = model("mobile-reivew", mobileReviewSchema);
+const MobileReviewModel = model("mobile-review", mobileReviewSchema);
 module.exports = MobileReviewModel;

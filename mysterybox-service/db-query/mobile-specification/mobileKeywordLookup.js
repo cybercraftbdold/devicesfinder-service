@@ -32,10 +32,19 @@ const countMobileKeywordLookup = () => [
   //   relation to collection buying guide
   {
     $lookup: {
-      from: "mobile-buying-guides", // Collection name
-      localField: "_idString", // Local field
-      foreignField: "mobileInfo.phoneId", // Foreign field
+      from: "mobile-buying-guides",
+      localField: "_idString",
+      foreignField: "mobileInfo.phoneId",
       as: "buyingData",
+    },
+  },
+  //   relation to collection buying guide
+  {
+    $lookup: {
+      from: "mobile-reviews",
+      localField: "_idString",
+      foreignField: "mobileInfo.phoneId",
+      as: "reviewData",
     },
   },
   //   add attribute
@@ -45,6 +54,7 @@ const countMobileKeywordLookup = () => [
       specificationCount: { $size: "$specificationData" },
       userReviewCount: { $size: "$userReviewData" },
       buyingGuideCount: { $size: "$buyingData" },
+      reviewCount: { $size: "$reviewData" },
     },
   },
   //   remove data
@@ -55,6 +65,7 @@ const countMobileKeywordLookup = () => [
       specificationData: 0,
       userReviewData: 0,
       buyingData: 0,
+      reviewData: 0,
     },
   },
 ];
