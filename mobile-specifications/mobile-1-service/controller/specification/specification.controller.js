@@ -1,3 +1,4 @@
+const determineSearchType = require("../../helpers/determineSearchType");
 const {
   getSpecificationService,
   getSingleSpecificationService,
@@ -49,15 +50,22 @@ const getSpecificationController = async (req, res) => {
   }
 };
 
+// get single specification by canonical url or id or title
 const getSingleSpecificationController = async (req, res) => {
-  const id = req.params.id;
+  const identifier = req.params.identifier;
+  const searchBy = determineSearchType(identifier);
   try {
-    const result = await getSingleSpecificationService(id);
+    const result = await getSingleSpecificationService(identifier, searchBy);
     if (result && result.isSuccess) {
       res.status(200).json({
         message: result?.message,
         isSuccess: result.isSuccess,
         data: result?.response,
+      });
+    } else {
+      res.status(404).json({
+        message: result.message,
+        isSuccess: result.isSuccess,
       });
     }
   } catch (error) {

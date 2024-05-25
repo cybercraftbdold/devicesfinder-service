@@ -1,5 +1,5 @@
+const { ObjectId } = require("mongodb");
 const MobileSpecificationModel = require("../../models/specification-model/specification.model");
-
 // get mobile specification
 const getSpecificationService = async (
   limit,
@@ -52,14 +52,43 @@ const getSpecificationService = async (
 };
 
 // get mobile specification
-const getSingleSpecificationService = async (id) => {
+const getSingleSpecificationService = async (identifier, searchBy) => {
   try {
-    const res = await MobileSpecificationModel.findOne({ _id: id });
-    if (res) {
+    let pipeline = [];
+    if (searchBy === "id") {
+      pipeline.push({
+        $match: { _id: new ObjectId(identifier) },
+      });
+    } else if (searchBy === "title") {
+      pipeline.push({
+        $match: { title: identifier },
+      });
+    } else if (searchBy === "canonicalUrl") {
+      pipeline.push({
+        $match: { "metaInformation.canonicalUrl": identifier },
+      });
+    } else {
+      return {
+        isSuccess: false,
+        message: "Invalid search criteria provided.",
+      };
+    }
+
+    pipeline.push({
+      $limit: 1,
+    });
+
+    const res = await MobileSpecificationModel.aggregate(pipeline);
+    if (res.length > 0) {
       return {
         isSuccess: true,
-        response: res,
-        message: "Data getting successfull",
+        response: res[0],
+        message: "Data fetching successful",
+      };
+    } else {
+      return {
+        isSuccess: false,
+        message: "No document found matching the provided criteria.",
       };
     }
   } catch (error) {

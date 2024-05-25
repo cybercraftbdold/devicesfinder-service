@@ -11,7 +11,7 @@ specificationRouter.get(
   getSpecificationController
 );
 specificationRouter.get(
-  `${baseRoute}/get-single-specification/:id`,
+  `${baseRoute}/get-single-specification/:identifier`,
   getSingleSpecificationController
 );
 
