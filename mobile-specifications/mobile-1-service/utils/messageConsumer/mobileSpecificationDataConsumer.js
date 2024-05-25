@@ -1,3 +1,4 @@
+const ComparisonModel = require("../../models/specification-model/comparison.model");
 const MobileSpecificationModel = require("../../models/specification-model/specification.model");
 const UserReviewModel = require("../../models/specification-model/user-review.model");
 const connectRabbitMQ = require("../rabbitmqConnection");
@@ -10,7 +11,6 @@ async function startMobileSpecificationConsumer() {
       // console.log(mobileSpecificationData);
       try {
         // Save each specification to the database
-        const comparison = mobileSpecificationData.mobileComparisons[0];
         const specificationData = {
           title: mobileSpecificationData?.title[0],
           specification: mobileSpecificationData?.specification[0],
@@ -24,14 +24,13 @@ async function startMobileSpecificationConsumer() {
         );
         if (specificationResponse?._id) {
           const userReviews = mobileSpecificationData?.userReviews[0];
-          const reviewData = {
-            specificationId: specificationResponse?._id,
-            name: userReviews?.name,
-            email: userReviews?.email,
-            rating: userReviews?.rating,
-            description: userReviews?.description,
-          };
-          await UserReviewModel.create(reviewData);
+          const comparison = mobileSpecificationData.mobileComparisons[0];
+          comparison.specificationId = specificationResponse?._id;
+          userReviews.specificationId = specificationResponse?._id;
+          // user review model
+          await UserReviewModel.create(userReviews);
+          // comparison model
+          await ComparisonModel.create(comparison);
         }
         console.log("Data saved to database successfully.");
       } catch (error) {

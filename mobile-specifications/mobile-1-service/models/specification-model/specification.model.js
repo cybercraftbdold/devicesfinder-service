@@ -13,28 +13,6 @@ const metaInfoSchema = new Schema(
   { _id: false }
 );
 
-// Define schema for the mobile specification comparisons
-const comparisonSchema = new Schema(
-  {
-    title: String,
-    phones: [
-      {
-        specificationId: String,
-        title: String,
-        specification: {
-          processor: String,
-          display: String,
-          battery: String,
-          camera: String,
-          os: String,
-        },
-      },
-    ],
-    metaInformation: metaInfoSchema,
-  },
-  { _id: false }
-);
-
 // Define schema for the reviews
 const reviewSchema = new Schema(
   {
@@ -65,17 +43,6 @@ const buyingGuideSchema = new Schema({
   description: String,
 });
 
-// Define schema for user reviews
-const userReviewSchema = new Schema(
-  {
-    name: String,
-    email: String,
-    rating: Number,
-    description: String,
-  },
-  { _id: false }
-);
-
 // Define the main schema for Mobile Specification
 const mobileSpecificationSchema = new Schema(
   {
@@ -88,11 +55,9 @@ const mobileSpecificationSchema = new Schema(
       General: String,
     },
     metaInformation: metaInfoSchema,
-    mobileComparisons: [comparisonSchema],
     mobileReview: [reviewSchema],
     faqs: [faqSchema],
     buyingGuide: [buyingGuideSchema],
-    userReviews: [userReviewSchema],
   },
   { timestamps: true }
 );
