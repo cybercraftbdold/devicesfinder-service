@@ -8,11 +8,12 @@ async function startMobileSpecificationConsumer() {
   channel.consume("mobileSpecificationDataQueue", async (message) => {
     if (message) {
       const mobileSpecificationData = JSON.parse(message.content.toString())[0];
+      const website = mobileSpecificationData?.websiteInfo;
       // console.log(mobileSpecificationData);
       try {
         // Save each specification to the database
         const specificationData = {
-          title: mobileSpecificationData?.title[0],
+          title: mobileSpecificationData?.title,
           specification: mobileSpecificationData?.specification[0],
           metaInformation: mobileSpecificationData?.metaInformation,
           mobileReview: mobileSpecificationData?.mobileReview[0],

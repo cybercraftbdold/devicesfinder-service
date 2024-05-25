@@ -198,12 +198,13 @@ const updateMobileStatusService = async (id, status) => {
         );
         if (combainContentResponse?.isSuccess) {
           // published content to database
-          const websiteId = isExisting?.websiteInfo?.websiteId;
+          const websiteInfo = isExisting?.websiteInfo;
+          combainContentResponse.data[0].websiteInfo = websiteInfo;
+          console.log(combainContentResponse)
           // rabbit mq connection for sending data into mobile service
           await sendQueue(
             "mobileSpecificationDataQueue",
-            combainContentResponse?.data,
-            (isResponse = true)
+            combainContentResponse?.data
           );
           return {
             isSuccess: true,
