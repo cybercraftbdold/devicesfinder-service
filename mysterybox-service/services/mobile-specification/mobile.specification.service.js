@@ -3,6 +3,10 @@ const {
 } = require("../../db-query/mobile-specification/lookup/combain-mobile-content-lookup");
 const MobileSpecificationContentModel = require("../../models/mobile-specification/mobile.specification.model");
 const {
+  connectRabbitMQ,
+} = require("../../utils/rabbitMQConnection/rabbitmqConnection");
+const sendQueue = require("../../utils/rabbitMQConnection/sendQueue");
+const {
   generateMobileSpecification,
 } = require("../ai-integration/mobile-specification/generate.mobile.specification.service");
 
@@ -193,8 +197,14 @@ const updateMobileStatusService = async (id, status) => {
           id
         );
         if (combainContentResponse?.isSuccess) {
-          const websiteId = isExisting?.websiteInfo?.websiteId;
           // published content to database
+          const websiteId = isExisting?.websiteInfo?.websiteId;
+          // rabbit mq connection for sending data into mobile service
+          await sendQueue(
+            "mobileSpecificationDataQueue",
+            combainContentResponse?.data,
+            (isResponse = true)
+          );
           return {
             isSuccess: true,
             response: combainContentResponse?.data,

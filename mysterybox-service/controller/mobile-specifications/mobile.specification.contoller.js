@@ -108,19 +108,10 @@ const updateMobileStatusController = async (req, res) => {
   try {
     const result = await updateMobileStatusService(id, status);
     if (result.isSuccess) {
-      // rabbit mq connection for sending data into mobile service
-      const channel = await connectRabbitMQ();
-      const msg = JSON.stringify(result?.response);
-      channel.sendToQueue("mobileSpecificationDataQueue", Buffer.from(msg));
       res.status(200).json({
         message: result?.message,
         isSuccess: result.isSuccess,
         data: result?.response,
-      });
-    } else {
-      res.status(400).json({
-        message: result?.message,
-        isSuccess: false,
       });
     }
   } catch (error) {

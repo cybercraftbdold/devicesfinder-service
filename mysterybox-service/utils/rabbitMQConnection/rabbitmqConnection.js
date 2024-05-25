@@ -7,6 +7,7 @@ async function connectRabbitMQ() {
     const connection = await amqp.connect(RABBITMQ_URL);
     const channel = await connection.createChannel();
     await channel.assertQueue("mobileSpecificationDataQueue", { durable: true });
+    await channel.assertQueue("responseQueue", { durable: true });
     // await channel.assertQueue("allUsersDataQueue", { durable: true });
     return channel;
   } catch (error) {

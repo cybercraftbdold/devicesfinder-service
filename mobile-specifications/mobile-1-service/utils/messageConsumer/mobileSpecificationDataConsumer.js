@@ -3,14 +3,9 @@ const connectRabbitMQ = require("../rabbitmqConnection");
 
 async function startMobileSpecificationConsumer() {
   const channel = await connectRabbitMQ();
-  // await channel.assertQueue("mysteryDataQueue", { durable: true });
   channel.consume("mobileSpecificationDataQueue", async (message) => {
     if (message) {
       const mobileSpecificationData = JSON.parse(message.content.toString());
-      console.log(
-        "Mobile specification Data Received:",
-        mobileSpecificationData
-      );
       try {
         // Save each specification to the database
         await MobileSpecificationModel.create(mobileSpecificationData);
@@ -18,7 +13,6 @@ async function startMobileSpecificationConsumer() {
       } catch (error) {
         console.error("Failed to save data:", error);
       }
-
       channel.ack(message);
     }
   });
