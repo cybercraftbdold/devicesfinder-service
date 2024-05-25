@@ -14,7 +14,7 @@ async function startMobileSpecificationConsumer() {
         const specificationData = {
           title: mobileSpecificationData?.title[0],
           specification: mobileSpecificationData?.specification[0],
-          metaInformation: mobileSpecificationData?.metaInformation[0],
+          metaInformation: mobileSpecificationData?.metaInformation,
           mobileReview: mobileSpecificationData?.mobileReview[0],
           buyingGuide: mobileSpecificationData?.buyingGuide[0],
           faqs: mobileSpecificationData?.faqs[0],

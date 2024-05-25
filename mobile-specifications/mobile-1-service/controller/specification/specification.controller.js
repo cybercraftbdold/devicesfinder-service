@@ -1,5 +1,6 @@
 const {
   getSpecificationService,
+  getSingleSpecificationService,
 } = require("../../services/specification/specification.service");
 
 //get all mobile specification
@@ -48,6 +49,25 @@ const getSpecificationController = async (req, res) => {
   }
 };
 
+const getSingleSpecificationController = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const result = await getSingleSpecificationService(id);
+    if (result && result.isSuccess) {
+      res.status(200).json({
+        message: result?.message,
+        isSuccess: result.isSuccess,
+        data: result?.response,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+      isSuccess: false,
+    });
+  }
+};
 module.exports = {
   getSpecificationController,
+  getSingleSpecificationController,
 };

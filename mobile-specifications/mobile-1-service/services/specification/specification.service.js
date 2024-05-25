@@ -51,4 +51,23 @@ const getSpecificationService = async (
   }
 };
 
-module.exports = { getSpecificationService };
+// get mobile specification
+const getSingleSpecificationService = async (id) => {
+  try {
+    const res = await MobileSpecificationModel.findOne({ _id: id });
+    if (res) {
+      return {
+        isSuccess: true,
+        response: res,
+        message: "Data getting successfull",
+      };
+    }
+  } catch (error) {
+    return {
+      isSuccess: false,
+      message: error.message,
+    };
+  }
+};
+
+module.exports = { getSpecificationService, getSingleSpecificationService };
