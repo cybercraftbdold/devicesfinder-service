@@ -49,3 +49,24 @@ const generateGptContent = async (payload) => {
 module.exports = {
   generateGptContent,
 };
+
+// const formatHtmlResponse = (content) => {
+//   // Extracting list items and formatting them
+//   const listRegex = /\d+\.\s(.+?)(?=\n|$)/g;
+//   let listItems = [];
+//   let match;
+
+//   while ((match = listRegex.exec(content))) {
+//     listItems.push(`<li>${match[1]}</li>`);
+//   }
+
+//   // If list items are found, wrap them in <ul>
+//   if (listItems.length > 0) {
+//     content = content.replace(listRegex, "").trim(); // Remove list from content
+//     const listHtml = `<ul>${listItems.join("\n")}</ul>`;
+//     content = content.replace(/\\n\\n/g, "</p><p>") + listHtml; // Adding listHtml to content
+//   }
+
+//   // Default paragraph wrap
+//   return `<p>${content}</p>`;
+// };

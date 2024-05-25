@@ -4,6 +4,9 @@ const {
   getMobileSpecificationService,
   updateMobileStatusService,
 } = require("../../services/mobile-specification/mobile.specification.service");
+const {
+  connectRabbitMQ,
+} = require("../../utils/rabbitMQConnection/rabbitmqConnection");
 // create mobile specification controller
 const createMobileSpecificationController = async (req, res, next) => {
   try {
@@ -105,6 +108,10 @@ const updateMobileStatusController = async (req, res) => {
   try {
     const result = await updateMobileStatusService(id, status);
     if (result.isSuccess) {
+      // rabbit mq connection for sending data into mobile service
+      const channel = await connectRabbitMQ();
+      const msg = JSON.stringify(result?.response);
+      channel.sendToQueue("mobileSpecificationDataQueue", Buffer.from(msg));
       res.status(200).json({
         message: result?.message,
         isSuccess: result.isSuccess,

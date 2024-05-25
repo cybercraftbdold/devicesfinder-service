@@ -2,6 +2,9 @@ const {
   createMobileReview,
   getAllReviewService,
 } = require("../../services/reivew/review.service");
+const {
+  getSpecificationData,
+} = require("../../utils/messageConsumer/mobileSpecificationDataConsumer");
 
 // create review controller
 const createReviewController = async (req, res, next) => {
@@ -29,10 +32,13 @@ const getAllReviewController = async (req, res, next) => {
     const result = await getAllReviewService(limit, skip, searchText, {
       role,
     });
+
+    const resRabbit = getSpecificationData();
     if (result.isSuccess) {
       res.status(200).json({
         message: "Users fetched successfully",
         data: result.users,
+        resRabbit: resRabbit,
         totalUsers: result.totalUsers,
         page,
         limit,

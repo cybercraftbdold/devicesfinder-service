@@ -1,11 +1,13 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-
 require("dotenv").config();
 const envConfig = require("./utils/env.config");
 const authenticationRouter = require("./routes/routes");
+const { startMobileSpecificationConsumer } = require("./utils/messageConsumer/mobileSpecificationDataConsumer");
 const port = envConfig.PORT || 8004;
+// Start the mobile specification consumer
+startMobileSpecificationConsumer();
 
 const app = express();
 app.use(express.json());

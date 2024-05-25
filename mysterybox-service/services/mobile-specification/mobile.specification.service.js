@@ -193,6 +193,8 @@ const updateMobileStatusService = async (id, status) => {
           id
         );
         if (combainContentResponse?.isSuccess) {
+          const websiteId = isExisting?.websiteInfo?.websiteId;
+          // published content to database
           return {
             isSuccess: true,
             response: combainContentResponse?.data,
