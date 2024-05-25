@@ -180,7 +180,7 @@ const verifyUserService = async (payload) => {
       secret: userSecret,
       encoding: "base32",
       token: token,
-      window: 6,
+      window: 1,
     });
     if (verifiedUser) {
       // Update the user's status as verified in the database
