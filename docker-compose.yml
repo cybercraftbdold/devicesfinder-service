@@ -58,7 +58,7 @@ services:
     # build: ./mobile-service
     build: ./mobile-specifications/mobile-1-service
     ports:
-      - "8007:8004" #Port 8004 is already in use, so we switch to 8007.
+      - "8004:8004" #Port 8004 is already in use, so we switch to 8007.
     depends_on:
       - mongo
     environment:
