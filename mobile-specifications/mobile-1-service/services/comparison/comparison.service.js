@@ -1,7 +1,7 @@
 const { ObjectId } = require("mongodb");
-const MobileSpecificationModel = require("../../models/specification-model/specification.model");
-// get mobile specification
-const getSpecificationService = async (
+const ComparisonModel = require("../../models/specification-model/comparison.model");
+// get comparison
+const getComparisonService = async (
   limit,
   skip,
   searchText,
@@ -25,7 +25,7 @@ const getSpecificationService = async (
     const sort = {};
     sort[sortField] = sortOrder.toLowerCase() === "asc" ? 1 : -1;
 
-    const res = await MobileSpecificationModel.aggregate([
+    const res = await ComparisonModel.aggregate([
       { $match: query },
       // { $sort: { createdAt: -1 } },
       { $sort: sort },
@@ -50,8 +50,8 @@ const getSpecificationService = async (
     };
   }
 };
-// get mobile specification
-const getSingleSpecificationService = async (identifier, searchBy) => {
+// // get mobile specification
+const getSingleComparisonService = async (identifier, searchBy) => {
   try {
     let pipeline = [];
     if (searchBy === "id") {
@@ -77,7 +77,7 @@ const getSingleSpecificationService = async (identifier, searchBy) => {
       $limit: 1,
     });
 
-    const res = await MobileSpecificationModel.aggregate(pipeline);
+    const res = await ComparisonModel.aggregate(pipeline);
     if (res.length > 0) {
       return {
         isSuccess: true,
@@ -98,4 +98,7 @@ const getSingleSpecificationService = async (identifier, searchBy) => {
   }
 };
 
-module.exports = { getSpecificationService, getSingleSpecificationService };
+module.exports = {
+  getComparisonService,
+  getSingleComparisonService,
+};
