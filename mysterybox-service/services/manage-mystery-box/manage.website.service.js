@@ -10,6 +10,19 @@ const addWebsiteService = async (payload) => {
       status,
     });
 
+    // Check if the website already exists
+    const existingSite = await WebsiteModelModel.findOne({
+      $or: [{ websiteName }, { websiteUrl }],
+    });
+
+    if (existingSite) {
+      return {
+        isSuccess: false,
+        message:
+          "Website name or URL already in use. Please use different credentials.",
+      };
+    }
+
     // Attempt to save the new blog post to the database
     const res = await websiteModelModel.save();
     if (res) {

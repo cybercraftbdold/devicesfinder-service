@@ -4,12 +4,18 @@ const manageWebsiteSchema = new Schema(
   {
     websiteName: {
       type: String,
+      require: true,
+      unique: true,
     },
     websiteUrl: {
       type: String,
+      require: true,
+      unique: true,
     },
     status: {
       type: String,
+      require: true,
+      unique: true,
     },
   },
   {
