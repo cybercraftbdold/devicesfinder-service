@@ -1,4 +1,4 @@
-const ReviewModel = require("../../models/review-model/review.model");
+const ReviewModel = require("../../models/specification-model/specification.model");
 // create user
 const createMobileReview = async (payload) => {
   try {

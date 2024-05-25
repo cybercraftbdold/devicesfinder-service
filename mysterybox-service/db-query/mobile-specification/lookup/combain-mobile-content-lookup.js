@@ -55,6 +55,7 @@ const combainMobileContentLookup = () => [
 
   {
     $project: {
+      _id: 0,
       title: 1,
       specification: 1,
       metaInformation: 1,

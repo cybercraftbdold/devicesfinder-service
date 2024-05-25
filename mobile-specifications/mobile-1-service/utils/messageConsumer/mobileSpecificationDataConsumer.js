@@ -1,4 +1,4 @@
-const MobileSpecificationModel = require("../../models/review-model/review.model");
+const MobileSpecificationModel = require("../../models/specification-model/specification.model");
 const connectRabbitMQ = require("../rabbitmqConnection");
 
 async function startMobileSpecificationConsumer() {
