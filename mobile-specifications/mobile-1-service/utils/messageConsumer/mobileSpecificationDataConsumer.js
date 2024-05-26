@@ -14,7 +14,7 @@ async function startMobileSpecificationConsumer() {
         // Save each specification to the database
         const specificationData = {
           title: mobileSpecificationData?.title,
-          specification: mobileSpecificationData?.specification[0],
+          specification: mobileSpecificationData?.specification,
           metaInformation: mobileSpecificationData?.metaInformation,
           mobileReview: mobileSpecificationData?.mobileReview[0],
           buyingGuide: mobileSpecificationData?.buyingGuide[0],

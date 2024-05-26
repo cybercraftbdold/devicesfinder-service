@@ -52,7 +52,7 @@ const mobileSpecificationSchema = new Schema(
       phoneId: String,
     },
     specification: {
-      General: String,
+      type: Schema.Types.Mixed,
     },
     metaInformation: metaInfoSchema,
     mobileReview: [reviewSchema],
