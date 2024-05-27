@@ -3,30 +3,55 @@ const { Schema, model } = require("mongoose");
 // profile keyword model
 const mobileKeywordInfoSchema = new Schema(
   {
-    keywords: {
-      mainKeyword: String,
-      relevantKeyword: String,
+    deviceTitle: {
+      type: String,
+      require: true,
     },
-
-    profile: {
-      phoneName: String,
-      relevantUrl: [String],
+    deviceType: {
+      type: String,
+      require: true,
     },
-
-    vendor: {
-      vendorName: String,
-      vendorPhone: String,
-      vendorEmail: String,
-      vendorWebsite: String,
-      vendorSocial: String,
+    deviceSubType: {
+      type: String,
+      require: true,
     },
-    types: {
+    relevantUrl: {
       type: [String],
       require: true,
     },
-    websiteInfo: {
-      websiteName: String,
-      websiteId: String,
+
+    keyword: {
+      mainKeyword: {
+        type: String,
+        require: true,
+      },
+      releventKeyword: {
+        type: [String],
+        require: true,
+      },
+    },
+    // manucature information
+    manufacture: {
+      manufactureName: {
+        type: String,
+        require: true,
+      },
+      manufactureWebsite: {
+        type: String,
+        require: true,
+      },
+      manufacturePhone: {
+        type: String,
+        require: true,
+      },
+      manufactureSocial: {
+        type: [String],
+        require: true,
+      },
+      manufactureEmail: {
+        type: [String],
+        require: true,
+      },
     },
   },
   {
