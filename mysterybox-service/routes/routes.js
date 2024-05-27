@@ -12,6 +12,7 @@ const mobileReviewRouter = require("./mobile-specification/mobile.review.routes"
 const mobileBlogRouter = require("./mobile-specification/mobile.blog.routes");
 const mobileComparisonRouter = require("./mobile-specification/mobile.comparison.routes");
 const mobileManufactureRoute = require("./mobile-specification/mobile.manufacture.routes");
+const mobileImageRoute = require("./mobile-specification/mobile.image.routes");
 const mysteryboxRouter = Router();
 mysteryboxRouter.use(reviewRouter);
 mysteryboxRouter.use(promptMobileRouter);
@@ -24,6 +25,7 @@ mysteryboxRouter.use(mobileReviewRouter);
 mysteryboxRouter.use(mobileBlogRouter);
 mysteryboxRouter.use(mobileComparisonRouter);
 mysteryboxRouter.use(mobileManufactureRoute);
+mysteryboxRouter.use(mobileImageRoute);
 // management
 mysteryboxRouter.use(mobileKeywordStatisticRouter);
 mysteryboxRouter.use(manageWebsiteRouter);
