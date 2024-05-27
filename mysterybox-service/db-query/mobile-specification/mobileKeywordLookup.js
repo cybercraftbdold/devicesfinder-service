@@ -56,6 +56,15 @@ const countMobileKeywordLookup = () => [
       as: "comparisonData",
     },
   },
+  //   relation to collection mobile comparisons
+  {
+    $lookup: {
+      from: "mobile-images",
+      localField: "_idString",
+      foreignField: "mobileInfo.phoneId",
+      as: "imagesdata",
+    },
+  },
   //   add attribute
   {
     $addFields: {
@@ -65,6 +74,24 @@ const countMobileKeywordLookup = () => [
       buyingGuideCount: { $size: "$buyingData" },
       reviewCount: { $size: "$reviewData" },
       comparisonCount: { $size: "$comparisonData" },
+      // image logic
+      imageCount: { $size: "$imagesdata" },
+      contentImageCount: {
+        $sum: {
+          $map: {
+            input: "$imagesdata",
+            as: "image",
+            in: { $size: { $ifNull: ["$$image.contentImages", []] } },
+          },
+        },
+      },
+      hasProfileImage: {
+        $cond: [
+          { $gt: [{ $size: "$imagesdata.profileImage" }, 0] },
+          true,
+          false,
+        ],
+      },
     },
   },
   //   remove data
@@ -77,6 +104,7 @@ const countMobileKeywordLookup = () => [
       buyingData: 0,
       reviewData: 0,
       comparisonData: 0,
+      imagesdata: 0,
     },
   },
 ];
