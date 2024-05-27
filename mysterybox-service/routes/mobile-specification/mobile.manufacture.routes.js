@@ -3,6 +3,7 @@ const requestValidator = require("../../middleware/request-validator");
 const {
   createMobileManufactureController,
   getMobileManufactureController,
+  deleteMobileManufactureController,
 } = require("../../controller/mobile-specifications/mobile.manufacture.controller");
 const {
   mobileManufactureSchema,
@@ -17,10 +18,15 @@ mobileManufactureRoute.post(
   requestValidator(mobileManufactureSchema),
   createMobileManufactureController
 );
-// get all profile keyword
+// get all manufacture
 mobileManufactureRoute.get(
   `${baseRoute}/get-mobile-manufactures`,
   getMobileManufactureController
+);
+// delete manufacture
+mobileManufactureRoute.delete(
+  `${baseRoute}/delete-mobile-manufacture/:id`,
+  deleteMobileManufactureController
 );
 
 module.exports = mobileManufactureRoute;
