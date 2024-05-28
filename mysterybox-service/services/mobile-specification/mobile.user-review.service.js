@@ -1,3 +1,4 @@
+const deleteItem = require("../../helpers/deleteItem");
 const UserReviewModel = require("../../models/user-review/user.reivew.model");
 const {
   generateMobileSpecification,
@@ -104,9 +105,14 @@ const getMobileUserReviewService = async (
     };
   }
 };
+// delete mobile user review
+const deleteMobileUserReviewService = async (id) => {
+  return await deleteItem(id, UserReviewModel);
+};
 
 module.exports = {
   generateMobileUserReviewService,
   createMobileUserReviewService,
   getMobileUserReviewService,
+  deleteMobileUserReviewService,
 };
