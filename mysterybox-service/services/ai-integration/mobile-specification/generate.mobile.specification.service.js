@@ -15,11 +15,17 @@ const generateMobileSpecification = async (payload) => {
       jsonResponseFormat: payload?.jsonResponseFormat,
       isMetaInformation: payload?.isMetaInformation,
     });
-    if (response) {
+    console.log(!response.isSuccess);
+    if (response.isSuccess) {
       return {
         isSuccess: true,
-        response: response,
+        response: response?.response,
         message: "Content Generate Successfull",
+      };
+    } else {
+      return {
+        isSuccess: false,
+        message: response?.message,
       };
     }
   } catch (error) {

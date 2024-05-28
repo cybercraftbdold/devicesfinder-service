@@ -19,7 +19,7 @@ const generateMobileSpecificationService = async (payload) => {
       return {
         isSuccess: true,
         response: generatedContent,
-        message: "Content generated successfull",
+        message: generatedContent?.message,
       };
     }
   } catch (error) {

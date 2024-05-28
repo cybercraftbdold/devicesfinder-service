@@ -18,12 +18,12 @@ const generateGptContent = async (payload) => {
         payload?.jsonResponseFormat
       }-${jsonFormateConstant}`;
     } else {
-      return { message: "Json formate missing!" };
+      return { message: "Json formate missing!", isSuccess: false };
     }
   } else if (payload?.isTextFormat) {
     prompt = `${payload?.prompt}`;
   } else {
-    return { message: "Paramiter missing!" };
+    return { message: "Paramiter missing!", isSuccess: false };
   }
 
   const headers = {
@@ -65,7 +65,7 @@ const generateGptContent = async (payload) => {
       sendResponseData = gptContent;
     }
     // return response.data.choices[0].message.content;
-    return sendResponseData;
+    return { response: sendResponseData, isSuccess: true };
   } catch (error) {
     // Error handling remains unchanged
     if (error.response) {
