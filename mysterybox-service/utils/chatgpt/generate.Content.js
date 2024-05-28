@@ -1,5 +1,9 @@
 const axios = require("axios");
-const { isHtmlFormatConstant } = require("./gpt.constant");
+const {
+  isHtmlFormatConstant,
+  metaInformationConstant,
+  jsonFormateConstant,
+} = require("./gpt.constant");
 const generateGptContent = async (payload) => {
   const OPENAI_API_KEY = payload.openAiKey || process?.env.OPEN_API_KEY;
   let prompt = payload?.prompt;
@@ -7,7 +11,15 @@ const generateGptContent = async (payload) => {
   if (payload?.isHtmlFormat) {
     prompt = `${payload?.prompt}-${isHtmlFormatConstant}`;
   } else if (payload?.isJsonFormat) {
-    prompt = `${payload?.prompt}`;
+    if (payload?.jsonResponseFormat) {
+      prompt = `${payload?.prompt}-${
+        payload.isMetaInformation ? metaInformationConstant : ""
+      } - Please Follow This Content format - ${
+        payload?.jsonResponseFormat
+      }-${jsonFormateConstant}`;
+    } else {
+      return { message: "Json formate missing!" };
+    }
   } else if (payload?.isTextFormat) {
     prompt = `${payload?.prompt}`;
   } else {

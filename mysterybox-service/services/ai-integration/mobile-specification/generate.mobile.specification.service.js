@@ -12,6 +12,8 @@ const generateMobileSpecification = async (payload) => {
       isTextFormat: payload?.isTextFormat,
       isHtmlFormat: payload?.isHtmlFormat,
       isJsonFormat: payload?.isJsonFormat,
+      jsonResponseFormat: payload?.jsonResponseFormat,
+      isMetaInformation: payload?.isMetaInformation,
     });
     if (response) {
       return {
