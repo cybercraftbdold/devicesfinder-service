@@ -48,6 +48,15 @@ const allowComparisonProperty = {
     metaInformation: "$$comparison.metaInformation",
   },
 };
+// allow mobile images data property
+const allowImageProperty = {
+  input: "$mobileImage",
+  as: "image",
+  in: {
+    profileImage: "$$image.profileImage",
+    contentImages: "$$image.contentImages",
+  },
+};
 
 module.exports = {
   allowUserReviewsProperty,
@@ -55,4 +64,5 @@ module.exports = {
   allowBuyingGuideProperty,
   allowReviewProperty,
   allowComparisonProperty,
+  allowImageProperty,
 };

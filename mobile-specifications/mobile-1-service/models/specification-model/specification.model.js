@@ -54,6 +54,10 @@ const mobileSpecificationSchema = new Schema(
     specification: {
       type: Schema.Types.Mixed,
     },
+    images: {
+      type: Schema.Types.Mixed,
+      require:true
+    },
     metaInformation: metaInfoSchema,
     mobileReview: [reviewSchema],
     faqs: [faqSchema],

@@ -4,6 +4,7 @@ const {
   allowUserReviewsProperty,
   allowReviewProperty,
   allowComparisonProperty,
+  allowImageProperty,
 } = require("../allow-property/allow-specification-property");
 
 const combainMobileContentLookup = () => [
@@ -52,6 +53,15 @@ const combainMobileContentLookup = () => [
       as: "mobileComparisons",
     },
   },
+  // relation to images
+  {
+    $lookup: {
+      from: "mobile-images",
+      localField: "mobileInfo.phoneId",
+      foreignField: "mobileInfo.phoneId",
+      as: "mobileImage",
+    },
+  },
 
   {
     $project: {
@@ -75,6 +85,9 @@ const combainMobileContentLookup = () => [
       // userReviews: 1, //get all user reviews
       userReviews: {
         $map: allowUserReviewsProperty,
+      },
+      mobileImage: {
+        $map: allowImageProperty,
       },
     },
   },

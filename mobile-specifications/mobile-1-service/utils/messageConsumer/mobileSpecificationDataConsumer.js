@@ -10,6 +10,7 @@ async function startMobileSpecificationConsumer() {
       const mobileSpecificationData = JSON.parse(message.content.toString())[0];
       const website = mobileSpecificationData?.websiteInfo;
       // console.log(mobileSpecificationData);
+
       try {
         // Save each specification to the database
         const specificationData = {
@@ -17,6 +18,7 @@ async function startMobileSpecificationConsumer() {
           specification: mobileSpecificationData?.specification,
           metaInformation: mobileSpecificationData?.metaInformation,
           mobileReview: mobileSpecificationData?.mobileReview[0],
+          images: mobileSpecificationData?.mobileImage[0],
           buyingGuide: mobileSpecificationData?.buyingGuide[0],
           faqs: mobileSpecificationData?.faqs[0],
         };
