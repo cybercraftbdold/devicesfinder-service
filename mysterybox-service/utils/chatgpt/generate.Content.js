@@ -13,7 +13,7 @@ const generateGptContent = async (payload) => {
   } else if (payload?.isJsonFormat) {
     if (payload?.jsonResponseFormat) {
       prompt = `${payload?.prompt}-${
-        payload.isMetaInformation ? metaInformationConstant : ""
+        payload.isMetaInformation && metaInformationConstant
       } - Please Follow This Content format - ${
         payload?.jsonResponseFormat
       }-${jsonFormateConstant}`;

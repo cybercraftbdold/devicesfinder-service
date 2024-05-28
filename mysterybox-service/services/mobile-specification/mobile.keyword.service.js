@@ -42,7 +42,9 @@ const getMobileProfileKeywordService = async (
     if (searchText) {
       query.$or = [
         { "keywords.mainKeyword": { $regex: searchText, $options: "i" } },
-        { "keywords.relevantKeyword": { $regex: searchText, $options: "i" } },
+        { deviceTitle: { $regex: searchText, $options: "i" } },
+        { deviceType: { $regex: searchText, $options: "i" } },
+        { deviceSubType: { $regex: searchText, $options: "i" } },
       ];
     }
     // Apply filters if they are provided
