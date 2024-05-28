@@ -2,6 +2,7 @@ const {
   createMobileBuyingGuideService,
   generateMobileBuyingGuideService,
   getMobileBuyingGuideService,
+  deleteMobileBuyingGuideService,
 } = require("../../services/mobile-specification/mobile.buying-guide.service");
 
 // create mobile buying guide controller
@@ -94,9 +95,34 @@ const getMobileBuyingGuideController = async (req, res) => {
     });
   }
 };
-
+// delete mobile buying guide
+const deleteMobileBuyingGuideController = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const result = await deleteMobileBuyingGuideService(id);
+    if (result?.isSuccess) {
+      res.status(200).json({
+        message: result?.message,
+        isSuccess: result?.isSuccess,
+        response: result?.response,
+      });
+    } else {
+      res.status(404).json({
+        message: result?.message,
+        isSuccess: false,
+        response: result?.response,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: error?.message,
+      isSuccess: false,
+    });
+  }
+};
 module.exports = {
   createMobileBuyingGuideController,
   generateMobileBuyingGuideController,
   getMobileBuyingGuideController,
+  deleteMobileBuyingGuideController,
 };

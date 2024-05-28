@@ -3,6 +3,7 @@ const {
   createMobileBuyingGuideController,
   generateMobileBuyingGuideController,
   getMobileBuyingGuideController,
+  deleteMobileBuyingGuideController,
 } = require("../../controller/mobile-specifications/mobile.buying-guide.contoller");
 
 const mobileBuyingGuideRouter = Router();
@@ -24,5 +25,10 @@ mobileBuyingGuideRouter.post(
 mobileBuyingGuideRouter.get(
   `${baseRoute}/get-mobile-buying-guides`,
   getMobileBuyingGuideController
+);
+// get all mobile buying-guide router
+mobileBuyingGuideRouter.delete(
+  `${baseRoute}/delete-mobile-buying-guide/:id`,
+  deleteMobileBuyingGuideController
 );
 module.exports = mobileBuyingGuideRouter;

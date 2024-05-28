@@ -1,3 +1,4 @@
+const deleteItem = require("../../helpers/deleteItem");
 const MobileBuyingGuideModel = require("../../models/mobile-specification/mobile.buying-guide.model");
 const {
   generateMobileSpecification,
@@ -112,8 +113,14 @@ const getMobileBuyingGuideService = async (
   }
 };
 
+// delete mobile user review
+const deleteMobileBuyingGuideService = async (id) => {
+  return await deleteItem(id, MobileBuyingGuideModel);
+};
+
 module.exports = {
   generateMobileBuyingGuideService,
   createMobileBuyingGuideService,
   getMobileBuyingGuideService,
+  deleteMobileBuyingGuideService,
 };
