@@ -3,6 +3,7 @@ const {
   generateMobileSpecificationService,
   getMobileSpecificationService,
   updateMobileStatusService,
+  deleteMobileSpecificationService,
 } = require("../../services/mobile-specification/mobile.specification.service");
 const {
   connectRabbitMQ,
@@ -121,10 +122,35 @@ const updateMobileStatusController = async (req, res) => {
     });
   }
 };
-
+// delete mobile specifications
+const deleteMobileSpecificationController = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const result = await deleteMobileSpecificationService(id);
+    if (result?.isSuccess) {
+      res.status(200).json({
+        message: result?.message,
+        isSuccess: result?.isSuccess,
+        response: result?.response,
+      });
+    } else {
+      res.status(404).json({
+        message: result?.message,
+        isSuccess: false,
+        response: result?.response,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: error?.message,
+      isSuccess: false,
+    });
+  }
+};
 module.exports = {
   createMobileSpecificationController,
   generateMobileSpecificationController,
   getMobileSpecificationController,
   updateMobileStatusController,
+  deleteMobileSpecificationController,
 };

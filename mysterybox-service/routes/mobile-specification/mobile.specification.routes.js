@@ -4,6 +4,7 @@ const {
   generateMobileSpecificationController,
   getMobileSpecificationController,
   updateMobileStatusController,
+  deleteMobileSpecificationController,
 } = require("../../controller/mobile-specifications/mobile.specification.contoller");
 const mobileSpecificationRouter = Router();
 // base path
@@ -28,5 +29,10 @@ mobileSpecificationRouter.get(
 mobileSpecificationRouter.patch(
   `${baseRoute}/update-status-mobile-specification/:id`,
   updateMobileStatusController
+);
+// delete mobile specification
+mobileSpecificationRouter.delete(
+  `${baseRoute}/delete-mobile-specification/:id`,
+  deleteMobileSpecificationController
 );
 module.exports = mobileSpecificationRouter;

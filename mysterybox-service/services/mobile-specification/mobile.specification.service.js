@@ -243,9 +243,33 @@ const updateMobileStatusService = async (id, status) => {
   }
 };
 
+// delete mobile profile keyword
+const deleteMobileSpecificationService = async (id) => {
+  try {
+    const res = await MobileSpecificationContentModel.findByIdAndDelete({
+      _id: id,
+    });
+    if (res) {
+      return {
+        isSuccess: true,
+        response: res,
+        message: "Delete Sucessfully Completed",
+      };
+    } else {
+      return { isSuccess: false, message: "Data Not Found" };
+    }
+  } catch (error) {
+    return {
+      isSuccess: false,
+      message: error.message,
+    };
+  }
+};
+
 module.exports = {
   createMobileSpecificationService,
   generateMobileSpecificationService,
   getMobileSpecificationService,
   updateMobileStatusService,
+  deleteMobileSpecificationService,
 };
