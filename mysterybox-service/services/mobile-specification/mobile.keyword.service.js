@@ -175,9 +175,31 @@ const getMobileBlogKeywordService = async (
   }
 };
 
+// delete mobile profile keyword
+const deleteMobileProfileKeywordService = async (id) => {
+  try {
+    const res = await MobileProfileKeywordModel.findByIdAndDelete({ _id: id });
+    if (res) {
+      return {
+        isSuccess: true,
+        response: res,
+        message: "Delete Sucessfully Completed",
+      };
+    } else {
+      return { isSuccess: false, message: "Data Not Found" };
+    }
+  } catch (error) {
+    return {
+      isSuccess: false,
+      message: error.message,
+    };
+  }
+};
+
 module.exports = {
   createMobileProfileKeywordService,
   createMobileBlogKeywordService,
   getMobileProfileKeywordService,
   getMobileBlogKeywordService,
+  deleteMobileProfileKeywordService,
 };
