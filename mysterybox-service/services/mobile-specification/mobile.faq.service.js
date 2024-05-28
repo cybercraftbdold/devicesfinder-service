@@ -1,3 +1,4 @@
+const deleteItem = require("../../helpers/deleteItem");
 const MobileFaqModel = require("../../models/mobile-specification/mobile.faq.model");
 const {
   generateMobileSpecification,
@@ -59,7 +60,7 @@ const createMobileFaqService = async (payload) => {
     };
   }
 };
-// get mobile faq fa
+// get mobile faq
 const getMobileFaqService = async (
   limit,
   skip,
@@ -114,8 +115,13 @@ const getMobileFaqService = async (
   }
 };
 
+// delete mobile faq
+const deleteMobileFaqService = async (id) => {
+  return await deleteItem(id, MobileFaqModel);
+};
 module.exports = {
   generateMobileFaqService,
   createMobileFaqService,
   getMobileFaqService,
+  deleteMobileFaqService,
 };

@@ -2,6 +2,7 @@ const {
   createMobileFaqService,
   generateMobileFaqService,
   getMobileFaqService,
+  deleteMobileFaqService,
 } = require("../../services/mobile-specification/mobile.faq.service");
 
 // create mobile faq controller
@@ -95,8 +96,35 @@ const getMobileFaqController = async (req, res) => {
   }
 };
 
+// delete mobile faq
+const deleteMobileFaqController = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const result = await deleteMobileFaqService(id);
+    if (result?.isSuccess) {
+      res.status(200).json({
+        message: result?.message,
+        isSuccess: result?.isSuccess,
+        response: result?.response,
+      });
+    } else {
+      res.status(404).json({
+        message: result?.message,
+        isSuccess: false,
+        response: result?.response,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: error?.message,
+      isSuccess: false,
+    });
+  }
+};
+
 module.exports = {
   createMobileFaqController,
   generateMobileFaqController,
   getMobileFaqController,
+  deleteMobileFaqController,
 };

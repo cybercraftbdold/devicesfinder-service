@@ -3,6 +3,7 @@ const {
   createMobileFaqController,
   generateMobileFaqController,
   getMobileFaqController,
+  deleteMobileFaqController,
 } = require("../../controller/mobile-specifications/mobile.faq.contoller");
 
 const mobileFaqRouter = Router();
@@ -22,4 +23,9 @@ mobileFaqRouter.post(
 
 // get all mobile faq router
 mobileFaqRouter.get(`${baseRoute}/get-mobile-faqs`, getMobileFaqController);
+// delete mobile faq
+mobileFaqRouter.delete(
+  `${baseRoute}/delete-mobile-faq/:id`,
+  deleteMobileFaqController
+);
 module.exports = mobileFaqRouter;
