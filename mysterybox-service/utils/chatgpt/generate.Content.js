@@ -1,12 +1,23 @@
 const axios = require("axios");
+const { isHtmlFormatConstant } = require("./gpt.constant");
 const generateGptContent = async (payload) => {
   const OPENAI_API_KEY = payload.openAiKey || process?.env.OPEN_API_KEY;
+  let prompt = payload?.prompt;
+  // check prompt
+  if (payload?.isHtmlFormat) {
+    prompt = `${payload?.prompt}-${isHtmlFormatConstant}`;
+  } else if (payload?.isJsonFormat) {
+    prompt = `${payload?.prompt}`;
+  } else if (payload?.isTextFormat) {
+    prompt = `${payload?.prompt}`;
+  } else {
+    return { message: "Paramiter missing!" };
+  }
 
   const headers = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${OPENAI_API_KEY}`,
   };
-
   // Note the change in the data structure for the Chat Completion API
   const data = {
     model: "gpt-3.5-turbo", // Ensure this is a chat model
@@ -17,7 +28,7 @@ const generateGptContent = async (payload) => {
       },
       {
         role: "user",
-        content: payload?.prompt,
+        content: prompt,
       },
     ],
   };
@@ -29,10 +40,20 @@ const generateGptContent = async (payload) => {
       { headers }
     );
     const gptContent = response.data.choices[0].message.content;
-    // Parse the JSON content
-    const parsedJson = payload?.isText ? gptContent : JSON.parse(gptContent);
+    let sendResponseData = null;
+    // let contentResponse =payload?.isText || payload?.isHtmlFormat? gptContent: JSON.parse(gptContent);
+    // check response
+    if (payload?.isHtmlFormat) {
+      const cleanedHtmlContent = gptContent.replace(/\n/g, " ");
+      sendResponseData = cleanedHtmlContent;
+    } else if (payload?.isJsonFormat) {
+      const parseJsonData = JSON.parse(gptContent);
+      sendResponseData = parseJsonData;
+    } else if (payload?.isTextFormat) {
+      sendResponseData = gptContent;
+    }
     // return response.data.choices[0].message.content;
-    return parsedJson;
+    return sendResponseData;
   } catch (error) {
     // Error handling remains unchanged
     if (error.response) {
@@ -49,24 +70,3 @@ const generateGptContent = async (payload) => {
 module.exports = {
   generateGptContent,
 };
-
-// const formatHtmlResponse = (content) => {
-//   // Extracting list items and formatting them
-//   const listRegex = /\d+\.\s(.+?)(?=\n|$)/g;
-//   let listItems = [];
-//   let match;
-
-//   while ((match = listRegex.exec(content))) {
-//     listItems.push(`<li>${match[1]}</li>`);
-//   }
-
-//   // If list items are found, wrap them in <ul>
-//   if (listItems.length > 0) {
-//     content = content.replace(listRegex, "").trim(); // Remove list from content
-//     const listHtml = `<ul>${listItems.join("\n")}</ul>`;
-//     content = content.replace(/\\n\\n/g, "</p><p>") + listHtml; // Adding listHtml to content
-//   }
-
-//   // Default paragraph wrap
-//   return `<p>${content}</p>`;
-// };
