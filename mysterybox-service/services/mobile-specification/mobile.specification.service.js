@@ -3,6 +3,10 @@ const {
 } = require("../../db-query/mobile-specification/lookup/combain-mobile-content-lookup");
 const MobileSpecificationContentModel = require("../../models/mobile-specification/mobile.specification.model");
 const {
+  startResponseConsumer,
+  processResponseData,
+} = require("../../utils/rabbitMQConnection/consumer/responseConsumer");
+const {
   connectRabbitMQ,
 } = require("../../utils/rabbitMQConnection/rabbitmqConnection");
 const sendQueue = require("../../utils/rabbitMQConnection/sendQueue");
@@ -218,12 +222,27 @@ const updateMobileStatusService = async (id, status) => {
               "mobileSpecificationDataQueue",
               combainContentResponse?.data
             );
-            return {
-              isSuccess: true,
-              response: combainContentResponse?.data,
-              message:
-                "Updated successfull and Succcessfully published mobile spacification",
-            };
+            // start  consumer
+            await startResponseConsumer();
+            // response  consumer
+            const publishedResponse = processResponseData();
+            if (publishedResponse?.isSuccess) {
+              return {
+                isSuccess: true,
+                response: combainContentResponse?.data,
+                message:
+                  "Updated successfull and Succcessfully published mobile spacification",
+              };
+            } else {
+              await MobileSpecificationContentModel.updateOne(
+                { _id: id },
+                { $set: { status: "draft" } }
+              );
+              return {
+                isSuccess: false,
+                message: "The data is not published and the status is set to draft!",
+              };
+            }
           } else {
             await MobileSpecificationContentModel.updateOne(
               { _id: id },

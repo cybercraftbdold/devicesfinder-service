@@ -1,3 +1,4 @@
+const sendQueue = require("../../utils/rabbitMQ/sendQueue");
 const ComparisonModel = require("../../models/specification-model/comparison.model");
 const MobileSpecificationModel = require("../../models/specification-model/specification.model");
 const UserReviewModel = require("../../models/specification-model/user-review.model");
@@ -31,15 +32,37 @@ async function startMobileSpecificationConsumer() {
           comparison.specificationId = specificationResponse?._id;
           userReviews.specificationId = specificationResponse?._id;
           // user review model
-          await UserReviewModel.create(userReviews);
+          const reviewResponse = await UserReviewModel.create(userReviews);
           // comparison model
-          await ComparisonModel.create(comparison);
+          const comparisonResponse = await ComparisonModel.create(comparison);
+
+          if (reviewResponse && comparisonResponse) {
+            const resQueue = {
+              message: "Data Published Successfully Completed",
+              isSuccess: true,
+            };
+            // send response queue to consumer
+            await sendQueue("responseQueue", resQueue);
+          } else {
+            const resQueue = {
+              message: "Review data or Comparison data not published",
+              isSuccess: false,
+            };
+            // send response queue to consumer
+            await sendQueue("responseQueue", resQueue);
+          }
         }
         console.log("Data saved to database successfully.");
       } catch (error) {
         console.error("Failed to save data:", error);
       }
       channel.ack(message);
+    } else {
+      const resQueue = {
+        message: "Content published failed",
+        isSuccess: false,
+      };
+      await sendQueue("responseQueue", resQueue);
     }
   });
 }
