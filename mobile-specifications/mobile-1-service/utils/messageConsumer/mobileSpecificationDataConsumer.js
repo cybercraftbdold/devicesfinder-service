@@ -11,10 +11,8 @@ async function startMobileSpecificationConsumer() {
     if (message) {
       const mobileSpecificationData = JSON.parse(message.content.toString())[0];
       // const website = mobileSpecificationData?.websiteInfo;
-      channel.ack(message);
       await saveSpecificationToDb(mobileSpecificationData);
       channel.ack(message);
-      channel.close()
     } else {
       const resQueue = {
         message: "Content published failed",

@@ -20,7 +20,6 @@ const saveSpecificationToDb = async ( mobileSpecificationData ) => {
     const specificationResponse = await MobileSpecificationModel.create(
       specificationData
     );
-    console.log(specificationResponse);
     if (specificationResponse?._id) {
       const userReviews = mobileSpecificationData?.userReviews[0];
       const comparison = mobileSpecificationData?.mobileComparisons[0];
@@ -30,7 +29,9 @@ const saveSpecificationToDb = async ( mobileSpecificationData ) => {
       const reviewResponse = await UserReviewModel.create(userReviews);
       // comparison model
       const comparisonResponse = await ComparisonModel.create(comparison);
+   
       if (reviewResponse && comparisonResponse) {
+        console.log("working")
         const resQueue = {
           message: "Data Published Successfully Completed",
           isSuccess: true,
