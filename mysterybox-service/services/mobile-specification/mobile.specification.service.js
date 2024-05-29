@@ -226,6 +226,7 @@ const updateMobileStatusService = async (id, status) => {
             await startResponseConsumer();
             // response  consumer
             const publishedResponse = processResponseData();
+            console.log(publishedResponse)
             if (publishedResponse?.isSuccess) {
               return {
                 isSuccess: true,
