@@ -114,6 +114,11 @@ const updateMobileStatusController = async (req, res) => {
         isSuccess: result.isSuccess,
         data: result?.response,
       });
+    } else {
+      res.status(400).json({
+        message: result?.message,
+        isSuccess: result.isSuccess,
+      });
     }
   } catch (error) {
     res.status(500).json({

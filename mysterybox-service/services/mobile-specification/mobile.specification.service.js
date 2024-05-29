@@ -197,20 +197,43 @@ const updateMobileStatusService = async (id, status) => {
           id
         );
         if (combainContentResponse?.isSuccess) {
-          // published content to database
-          const websiteInfo = isExisting?.websiteInfo;
-          combainContentResponse.data[0].websiteInfo = websiteInfo;
-          // rabbit mq connection for sending data into mobile service
-          await sendQueue(
-            "mobileSpecificationDataQueue",
-            combainContentResponse?.data
-          );
-          return {
-            isSuccess: true,
-            response: combainContentResponse?.data,
-            message:
-              "Updated successfull and Succcessfully published mobile spacification",
-          };
+          const data = combainContentResponse?.data[0];
+          const allFieldsRequired = [
+            "mobileComparisons",
+            "mobileReview",
+            "faqs",
+            "buyingGuide",
+            "userReviews",
+            "mobileImage",
+          ].every((field) => data[field]?.length > 0)
+            ? "complete"
+            : "incomplete";
+          // check all data is exsit
+          if (allFieldsRequired === "complete") {
+            // published content to database
+            const websiteInfo = isExisting?.websiteInfo;
+            combainContentResponse.data[0].websiteInfo = websiteInfo;
+            // rabbit mq connection for sending data into mobile service
+            await sendQueue(
+              "mobileSpecificationDataQueue",
+              combainContentResponse?.data
+            );
+            return {
+              isSuccess: true,
+              response: combainContentResponse?.data,
+              message:
+                "Updated successfull and Succcessfully published mobile spacification",
+            };
+          } else {
+            await MobileSpecificationContentModel.updateOne(
+              { _id: id },
+              { $set: { status: "draft" } }
+            );
+            return {
+              isSuccess: false,
+              message: "Required fields are incomplete, status set to draft",
+            };
+          }
         } else {
           await MobileSpecificationContentModel.updateOne(
             { _id: id },
