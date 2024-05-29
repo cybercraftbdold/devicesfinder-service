@@ -6,7 +6,7 @@ const mobileBuyingGuideSchema = new Schema(
       required: true,
     },
     description: {
-      type: String,
+      type: Schema.Types.Mixed,
       required: true,
     },
     mobileInfo: {
