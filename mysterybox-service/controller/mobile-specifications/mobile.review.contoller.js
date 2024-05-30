@@ -2,6 +2,7 @@ const {
   generateMobileReviewService,
   createMobileReviewService,
   getMobileReviewService,
+  deleteMobileReviewService,
 } = require("../../services/mobile-specification/mobile.review.service");
 
 // create mobile review controller
@@ -91,9 +92,34 @@ const getMobileReviewController = async (req, res) => {
     });
   }
 };
-
+// delete mobile review data
+const deleteMobileReviewController = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const result = await deleteMobileReviewService(id);
+    if (result?.isSuccess) {
+      res.status(200).json({
+        message: result?.message,
+        isSuccess: result?.isSuccess,
+        response: result?.response,
+      });
+    } else {
+      res.status(404).json({
+        message: result?.message,
+        isSuccess: false,
+        response: result?.response,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: error?.message,
+      isSuccess: false,
+    });
+  }
+};
 module.exports = {
   createMobileReviewController,
   generateMobileReviewController,
   getMobileReviewController,
+  deleteMobileReviewController,
 };

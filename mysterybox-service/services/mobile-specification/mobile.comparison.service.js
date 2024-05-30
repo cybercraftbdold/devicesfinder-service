@@ -1,3 +1,4 @@
+const deleteItem = require("../../helpers/deleteItem");
 const MobileComparisonModel = require("../../models/mobile-specification/mobile.comparison.model");
 
 // create mobile comparison  mobile comparison content
@@ -94,7 +95,12 @@ const getMobileComparisonService = async (
   }
 };
 
+const deleteMobileComparisonService = async (id) => {
+  return await deleteItem(id, MobileComparisonModel);
+};
+
 module.exports = {
   createMobileComparisonService,
   getMobileComparisonService,
+  deleteMobileComparisonService,
 };

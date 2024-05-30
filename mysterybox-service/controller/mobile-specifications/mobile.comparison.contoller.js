@@ -1,6 +1,7 @@
 const {
   createMobileComparisonService,
   getMobileComparisonService,
+  deleteMobileComparisonService,
 } = require("../../services/mobile-specification/mobile.comparison.service");
 
 // create mobile comparison controller
@@ -69,8 +70,33 @@ const getMobileComparisonController = async (req, res) => {
     });
   }
 };
-
+// delete mobile comparison
+const deleteMobileComparisonController = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const result = await deleteMobileComparisonService(id);
+    if (result?.isSuccess) {
+      res.status(200).json({
+        message: result?.message,
+        isSuccess: result?.isSuccess,
+        response: result?.response,
+      });
+    } else {
+      res.status(404).json({
+        message: result?.message,
+        isSuccess: false,
+        response: result?.response,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: error?.message,
+      isSuccess: false,
+    });
+  }
+};
 module.exports = {
   createMobileComparisonController,
   getMobileComparisonController,
+  deleteMobileComparisonController,
 };

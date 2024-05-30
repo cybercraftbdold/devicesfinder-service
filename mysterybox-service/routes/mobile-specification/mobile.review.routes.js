@@ -3,6 +3,7 @@ const {
   createMobileReviewController,
   generateMobileReviewController,
   getMobileReviewController,
+  deleteMobileReviewController,
 } = require("../../controller/mobile-specifications/mobile.review.contoller");
 const mobileReviewRouter = Router();
 // base path
@@ -23,5 +24,10 @@ mobileReviewRouter.post(
 mobileReviewRouter.get(
   `${baseRoute}/get-mobile-reviews`,
   getMobileReviewController
+);
+// delete mobile review
+mobileReviewRouter.delete(
+  `${baseRoute}/delete-mobile-review/:id`,
+  deleteMobileReviewController
 );
 module.exports = mobileReviewRouter;
