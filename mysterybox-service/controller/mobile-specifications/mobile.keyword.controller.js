@@ -4,6 +4,7 @@ const {
   getMobileBlogKeywordService,
   createMobileBlogKeywordService,
   deleteMobileProfileKeywordService,
+  updateMobileProfileKeywordService,
 } = require("../../services/mobile-specification/mobile.keyword.service");
 
 // create mobile profile keyword controller
@@ -159,10 +160,37 @@ const deleteMobileProfileKeywordController = async (req, res) => {
     });
   }
 };
+// update mobile profile keyword
+const updateProfileKeywordController = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const data = req.body;
+    const result = await updateMobileProfileKeywordService(id, data);
+    if (result?.isSuccess) {
+      res.status(200).json({
+        message: result?.message,
+        isSuccess: result?.isSuccess,
+        response: result?.response,
+      });
+    } else {
+      res.status(400).json({
+        message: result?.message,
+        isSuccess: result?.isSuccess,
+        response: result?.response,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: error?.message,
+      isSuccess: false,
+    });
+  }
+};
 module.exports = {
   createMobileProfileKeywordController,
   getMobileProfileKeywordController,
   getMobileBlogKeywordController,
   createMobileBlogKeywordController,
   deleteMobileProfileKeywordController,
+  updateProfileKeywordController,
 };

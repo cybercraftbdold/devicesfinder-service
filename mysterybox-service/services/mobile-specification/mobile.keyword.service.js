@@ -1,6 +1,8 @@
 const {
   countMobileKeywordLookup,
 } = require("../../db-query/mobile-specification/mobileKeywordLookup");
+const deleteItem = require("../../helpers/deleteItem");
+const updateItem = require("../../helpers/serviceHelper/updateItem");
 const {
   MobileProfileKeywordModel,
   MobileBlogKeywordModel,
@@ -179,23 +181,12 @@ const getMobileBlogKeywordService = async (
 
 // delete mobile profile keyword
 const deleteMobileProfileKeywordService = async (id) => {
-  try {
-    const res = await MobileProfileKeywordModel.findByIdAndDelete({ _id: id });
-    if (res) {
-      return {
-        isSuccess: true,
-        response: res,
-        message: "Delete Sucessfully Completed",
-      };
-    } else {
-      return { isSuccess: false, message: "Data Not Found" };
-    }
-  } catch (error) {
-    return {
-      isSuccess: false,
-      message: error.message,
-    };
-  }
+  return await deleteItem(id, MobileProfileKeywordModel);
+};
+
+// update mobile profile keyword
+const updateMobileProfileKeywordService = async (id, data) => {
+  return await updateItem(id, MobileProfileKeywordModel, data);
 };
 
 module.exports = {
@@ -204,4 +195,5 @@ module.exports = {
   getMobileProfileKeywordService,
   getMobileBlogKeywordService,
   deleteMobileProfileKeywordService,
+  updateMobileProfileKeywordService,
 };

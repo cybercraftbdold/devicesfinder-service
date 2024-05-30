@@ -5,6 +5,7 @@ const {
   getMobileBlogKeywordController,
   createMobileBlogKeywordController,
   deleteMobileProfileKeywordController,
+  updateProfileKeywordController,
 } = require("../../controller/mobile-specifications/mobile.keyword.controller");
 const requestValidator = require("../../middleware/request-validator");
 const {
@@ -41,10 +42,14 @@ mobileProfileKywordRoutes.get(
 );
 
 // delete mobile profile keyword
-// get all blogs keyword
 mobileProfileKywordRoutes.delete(
   `${baseRoute}/delete-mobile-profile-keyword/:id`,
   deleteMobileProfileKeywordController
+);
+// updste profile keyword
+mobileProfileKywordRoutes.patch(
+  `${baseRoute}/update-mobile-profile-keyword/:id`,
+  updateProfileKeywordController
 );
 
 module.exports = mobileProfileKywordRoutes;
