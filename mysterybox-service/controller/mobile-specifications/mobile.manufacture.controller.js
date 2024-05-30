@@ -2,6 +2,7 @@ const {
   createMobileManufactureService,
   getMobileManufactureService,
   deleteMobileManufactureService,
+  updateManufactureService,
 } = require("../../services/mobile-specification/mobile.manufacture.service");
 
 // create mobile manufacture controller
@@ -96,8 +97,35 @@ const deleteMobileManufactureController = async (req, res) => {
   }
 };
 
+const updateManufactureController = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const data = req.body;
+    const result = await updateManufactureService(id, data);
+    if (result?.isSuccess) {
+      res.status(200).json({
+        message: result?.message,
+        isSuccess: result?.isSuccess,
+        response: result?.response,
+      });
+    } else {
+      res.status(400).json({
+        message: result?.message,
+        isSuccess: result?.isSuccess,
+        response: result?.response,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: error?.message,
+      isSuccess: false,
+    });
+  }
+};
+
 module.exports = {
   createMobileManufactureController,
   getMobileManufactureController,
   deleteMobileManufactureController,
+  updateManufactureController,
 };

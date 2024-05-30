@@ -4,6 +4,7 @@ const {
   createMobileManufactureController,
   getMobileManufactureController,
   deleteMobileManufactureController,
+  updateManufactureController,
 } = require("../../controller/mobile-specifications/mobile.manufacture.controller");
 const {
   mobileManufactureSchema,
@@ -27,6 +28,11 @@ mobileManufactureRoute.get(
 mobileManufactureRoute.delete(
   `${baseRoute}/delete-mobile-manufacture/:id`,
   deleteMobileManufactureController
+);
+// update  manufacture
+mobileManufactureRoute.patch(
+  `${baseRoute}/update-mobile-manufacture/:id`,
+  updateManufactureController
 );
 
 module.exports = mobileManufactureRoute;

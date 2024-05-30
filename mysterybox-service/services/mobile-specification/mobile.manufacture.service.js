@@ -1,3 +1,4 @@
+const updateItem = require("../../helpers/serviceHelper/updateItem");
 const MobileManufactureModel = require("../../models/mobile-specification/mobile.manufacture.model");
 
 const createMobileManufactureService = async (payload) => {
@@ -97,8 +98,14 @@ const deleteMobileManufactureService = async (id) => {
   }
 };
 
+// update manufacture
+const updateManufactureService = async (id, data) => {
+  return await updateItem(id, MobileManufactureModel, data);
+};
+
 module.exports = {
   createMobileManufactureService,
   getMobileManufactureService,
   deleteMobileManufactureService,
+  updateManufactureService,
 };
