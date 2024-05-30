@@ -1,9 +1,9 @@
 const { Router } = require("express");
-const reviewRouter = require("./review/review.router");
 const specificationRouter = require("./specification-routes/specification.routes");
 const comparisonRouter = require("./comparison-routes/comparison.routes");
+const userReviewRouter = require("./user-review-routes/user-review.routes");
 const mobileSpecification = Router();
-mobileSpecification.use(reviewRouter);
+mobileSpecification.use(userReviewRouter);
 mobileSpecification.use(specificationRouter);
 mobileSpecification.use(comparisonRouter);
 module.exports = mobileSpecification;
