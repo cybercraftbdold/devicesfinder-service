@@ -1,3 +1,7 @@
+/**
+ * @param jwt screet exipre time
+ * @param payload add basic information stored in jwt token
+ */
 const jwt = require("jsonwebtoken");
 
 const createToken = (payload, secret, expireTime) => {
