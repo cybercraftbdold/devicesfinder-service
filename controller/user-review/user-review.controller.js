@@ -1,5 +1,7 @@
 const {
   getUserReviewsService,
+  createUserReviewService,
+  deleteUserReviewService,
 } = require("../../services/user-review/user-review.service");
 
 // get all review controller
@@ -47,5 +49,54 @@ const getUserReviewsController = async (req, res) => {
     });
   }
 };
-
-module.exports = { getUserReviewsController };
+// create  user review controller
+const createUserReviewController = async (req, res, next) => {
+  try {
+    const payload = req.body;
+    const result = await createUserReviewService(payload);
+    if (result.isSuccess) {
+      res.json({
+        message: result.message,
+        isSuccess: result.isSuccess,
+        data: result?.response,
+      });
+    } else {
+      res.json({
+        message: result.message,
+        isSuccess: false,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+// delete user reivew
+const deleteUserReviewController = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const result = await deleteUserReviewService(id);
+    if (result?.isSuccess) {
+      res.status(200).json({
+        message: result?.message,
+        isSuccess: result?.isSuccess,
+        response: result?.response,
+      });
+    } else {
+      res.status(404).json({
+        message: result?.message,
+        isSuccess: false,
+        response: result?.response,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: error?.message,
+      isSuccess: false,
+    });
+  }
+};
+module.exports = {
+  getUserReviewsController,
+  createUserReviewController,
+  deleteUserReviewController,
+};

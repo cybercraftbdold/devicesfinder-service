@@ -1,3 +1,6 @@
+const { default: mongoose } = require("mongoose");
+const deleteItem = require("../../helpers/service-helpers/deleteItem");
+const MobileSpecificationModel = require("../../models/specification-model/specification.model");
 const UserReviewModel = require("../../models/specification-model/user-review.model");
 
 // get all user review service and filter by specificationid
@@ -53,6 +56,62 @@ const getUserReviewsService = async (
     };
   }
 };
+
+// create user review
+const createUserReviewService = async (payload) => {
+  let { name, email, rating, description, specificationId } = payload;
+
+  if (specificationId) {
+    const objectId = new mongoose.Types.ObjectId(specificationId);
+
+    const exsitingSpecification = await MobileSpecificationModel.findById(
+      objectId
+    );
+    if (!exsitingSpecification) {
+      return {
+        isSuccess: false,
+        message:
+          "Specification id not allowed. Please input currect specification id",
+      };
+    }
+  } else {
+    return {
+      isSuccess: false,
+      message: "Specification id  is required",
+    };
+  }
+  try {
+    // Proceed to create a new BlogModel instance with the updated metaInformation
+    const userReviewModel = new UserReviewModel({
+      name,
+      email,
+      rating,
+      description,
+      specificationId,
+    });
+    // Attempt to save the new blog post to the database
+    const res = await userReviewModel.save();
+    if (res) {
+      return {
+        isSuccess: true,
+        response: res,
+        message: "User review create successfull",
+      };
+    }
+  } catch (error) {
+    return {
+      isSuccess: false,
+      message: error?.message,
+    };
+  }
+};
+
+// delete user review
+const deleteUserReviewService = async (id) => {
+  return await deleteItem(id, UserReviewModel);
+};
 module.exports = {
   getUserReviewsService,
+  createUserReviewService,
+  deleteUserReviewService,
 };

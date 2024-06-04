@@ -4,11 +4,26 @@ const Schema = mongoose.Schema;
 // Define the main schema for Mobile Specification
 const reivewSchema = new Schema(
   {
-    specificationId: String,
-    name: String,
-    email: String,
-    rating: Number,
-    description: String,
+    specificationId: {
+      type: String,
+      require: true,
+    },
+    name: {
+      type: String,
+      require: true,
+    },
+    email: {
+      type: String,
+      require: true,
+    },
+    rating: {
+      type: Number,
+      require: true,
+    },
+    description: {
+      type: String,
+      require: true,
+    },
   },
   { timestamps: true }
 );
