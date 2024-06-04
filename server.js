@@ -17,7 +17,6 @@ app.get("/", (req, res) => {
   res.status(200).send("mobile server is running");
 });
 mongoose
-  // .connect("mongodb://mongo:27017/android-applications")
   .connect(`${envConfig.MONGODB_URI}`)
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("Could not connect to MongoDB:", err));
