@@ -16,7 +16,7 @@ const createBrandController = async (req, res) => {
         data: result?.response,
       });
     } else {
-      res.status(500).json({
+      res.status(400).json({
         message: result.message,
         isSuccess: false,
       });

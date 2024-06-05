@@ -5,6 +5,15 @@ const createBrandService = async (payload) => {
   let { title, image } = payload;
 
   try {
+    const duplicateBrand = BrandModel.find({ title: { title } });
+
+    // Checking for duplicate brand
+    if (duplicateBrand)
+      return {
+        isSuccess: false,
+        message: "Already have a brand with the same name.",
+      };
+
     // Proceed to create a new BrandModel instance with the provided payload
     const brand = new BrandModel({
       title,
