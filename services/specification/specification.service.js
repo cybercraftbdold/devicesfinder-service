@@ -79,9 +79,22 @@ const getSingleSpecificationService = async (identifier, searchBy) => {
 
     const res = await MobileSpecificationModel.aggregate(pipeline);
     if (res.length > 0) {
+      const specification = res[0];
+
+      // Increment viewCount
+      await MobileSpecificationModel.updateOne(
+        { _id: specification._id },
+        { $inc: { viewCount: 1 } }
+      );
+
+      // Return the updated document
+      const updatedSpecification = await MobileSpecificationModel.findById(
+        specification._id
+      );
+
       return {
         isSuccess: true,
-        response: res[0],
+        response: updatedSpecification,
         message: "Data fetching successful",
       };
     } else {

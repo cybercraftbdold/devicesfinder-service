@@ -56,12 +56,13 @@ const mobileSpecificationSchema = new Schema(
     },
     images: {
       type: Schema.Types.Mixed,
-      require:true
+      require: true,
     },
     metaInformation: metaInfoSchema,
     mobileReview: [reviewSchema],
     faqs: [faqSchema],
     buyingGuide: [buyingGuideSchema],
+    viewCount: { type: Number, default: 0 },
   },
   { timestamps: true }
 );
