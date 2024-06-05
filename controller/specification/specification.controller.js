@@ -2,6 +2,7 @@ const determineSearchType = require("../../helpers/determineSearchType");
 const {
   getSpecificationService,
   getSingleSpecificationService,
+  getTopPopularSpecificationsService,
 } = require("../../services/specification/specification.service");
 
 //get all mobile specification
@@ -75,7 +76,33 @@ const getSingleSpecificationController = async (req, res) => {
     });
   }
 };
+
+//get all mobile specification
+const getTopPopularSpecificationsController = async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit) || 10;
+    const result = await getTopPopularSpecificationsService(limit);
+    if (result && result.isSuccess) {
+      res.status(200).json({
+        message: result?.message,
+        isSuccess: result.isSuccess,
+        data: result?.response,
+      });
+    } else {
+      res.status(400).json({
+        message: result?.message,
+        isSuccess: result.isSuccess,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+      isSuccess: false,
+    });
+  }
+};
 module.exports = {
   getSpecificationController,
   getSingleSpecificationController,
+  getTopPopularSpecificationsController,
 };

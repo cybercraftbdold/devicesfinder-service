@@ -111,4 +111,35 @@ const getSingleSpecificationService = async (identifier, searchBy) => {
   }
 };
 
-module.exports = { getSpecificationService, getSingleSpecificationService };
+// get top populer specification
+const getTopPopularSpecificationsService = async (limit) => {
+  try {
+    // Define the pipeline for aggregation
+    const pipeline = [
+      { $sort: { viewCount: -1 } }, // Sort by viewCount in descending order
+      { $limit: limit }, // Limit the results to the specified number
+    ];
+
+    // Execute the aggregation pipeline
+    const topSpecifications = await MobileSpecificationModel.aggregate(
+      pipeline
+    );
+
+    return {
+      isSuccess: true,
+      response: topSpecifications,
+      message: "Top popular specifications fetched successfully",
+    };
+  } catch (error) {
+    return {
+      isSuccess: false,
+      message: error.message,
+    };
+  }
+};
+
+module.exports = {
+  getSpecificationService,
+  getSingleSpecificationService,
+  getTopPopularSpecificationsService,
+};
