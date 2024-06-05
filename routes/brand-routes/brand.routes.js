@@ -2,6 +2,7 @@ const { Router } = require("express");
 const {
   createBrandController,
   getAllBrandsController,
+  updateBrandController,
   deleteBrandController,
 } = require("../../controller/brand/brand.controller");
 const { baseRoute } = require("../../utils/constant");
@@ -16,6 +17,7 @@ brandRouter.post(
   createBrandController
 );
 brandRouter.get(`${baseRoute}/get-brands`, getAllBrandsController);
+brandRouter.patch(`${baseRoute}/update-brand/:id`, updateBrandController);
 brandRouter.delete(`${baseRoute}/delete-brand/:id`, deleteBrandController);
 
 module.exports = brandRouter;

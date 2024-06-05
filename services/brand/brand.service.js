@@ -83,9 +83,43 @@ const getAllBrandService = async (
   }
 };
 
+// Update Brand Service
+const updateBrandService = async (id, payload) => {
+  try {
+    const updatedBrand = await BrandModel.findByIdAndUpdate(
+      id,
+      { $set: payload },
+      { new: true }
+    );
+
+    if (!updatedBrand) {
+      return {
+        isSuccess: false,
+        message: "Brand update failed!",
+      };
+    }
+
+    return {
+      isSuccess: true,
+      response: updatedBrand,
+      message: "Brand Updated Successfully",
+    };
+  } catch (error) {
+    return {
+      isSuccess: false,
+      message: error.message,
+    };
+  }
+};
+
 // Delete Brand Service
 const deleteBrandService = async (id) => {
   return await deleteItem(id, BrandModel);
 };
 
-module.exports = { createBrandService, getAllBrandService, deleteBrandService };
+module.exports = {
+  createBrandService,
+  getAllBrandService,
+  updateBrandService,
+  deleteBrandService,
+};
