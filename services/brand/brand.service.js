@@ -1,4 +1,5 @@
 const BrandModel = require("../../models/brand-model/brand-model");
+const deleteItem = require("../../helpers/service-helpers/deleteItem");
 
 // Create Brand
 const createBrandService = async (payload) => {
@@ -82,4 +83,9 @@ const getAllBrandService = async (
   }
 };
 
-module.exports = { createBrandService, getAllBrandService };
+// Delete Brand Service
+const deleteBrandService = async (id) => {
+  return await deleteItem(id, BrandModel);
+};
+
+module.exports = { createBrandService, getAllBrandService, deleteBrandService };

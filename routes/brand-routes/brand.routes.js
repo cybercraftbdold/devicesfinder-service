@@ -2,6 +2,7 @@ const { Router } = require("express");
 const {
   createBrandController,
   getAllBrandsController,
+  deleteBrandController,
 } = require("../../controller/brand/brand.controller");
 const { baseRoute } = require("../../utils/constant");
 const { brandValidator } = require("../../validators/brand.validator");
@@ -15,5 +16,6 @@ brandRouter.post(
   createBrandController
 );
 brandRouter.get(`${baseRoute}/get-brands`, getAllBrandsController);
+brandRouter.delete(`${baseRoute}/delete-brand/:id`, deleteBrandController);
 
 module.exports = brandRouter;
