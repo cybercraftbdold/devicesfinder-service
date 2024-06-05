@@ -2,6 +2,7 @@ const determineSearchType = require("../../helpers/determineSearchType");
 const {
   getComparisonService,
   getSingleComparisonService,
+  getTopPopularComparisonService,
 } = require("../../services/comparison/comparison.service");
 
 //get all comparison
@@ -75,7 +76,33 @@ const getSingleComparisonController = async (req, res) => {
     });
   }
 };
+
+//get all mobile specification
+const getTopPopularComparisonController = async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit) || 10;
+    const result = await getTopPopularComparisonService(limit);
+    if (result && result.isSuccess) {
+      res.status(200).json({
+        message: result?.message,
+        isSuccess: result.isSuccess,
+        data: result?.response,
+      });
+    } else {
+      res.status(400).json({
+        message: result?.message,
+        isSuccess: result.isSuccess,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+      isSuccess: false,
+    });
+  }
+};
 module.exports = {
   getComparisonController,
   getSingleComparisonController,
+  getTopPopularComparisonController,
 };

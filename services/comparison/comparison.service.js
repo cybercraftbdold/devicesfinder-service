@@ -79,9 +79,18 @@ const getSingleComparisonService = async (identifier, searchBy) => {
 
     const res = await ComparisonModel.aggregate(pipeline);
     if (res.length > 0) {
+      const comparison = res[0];
+      // Increment viewCount
+      await ComparisonModel.updateOne(
+        { _id: comparison._id },
+        { $inc: { viewCount: 1 } }
+      );
+
+      // Return the updated document
+      const updatedComparison = await ComparisonModel.findById(comparison._id);
       return {
         isSuccess: true,
-        response: res[0],
+        response: updatedComparison,
         message: "Data fetching successful",
       };
     } else {
@@ -98,7 +107,33 @@ const getSingleComparisonService = async (identifier, searchBy) => {
   }
 };
 
+// get top populer comparison
+const getTopPopularComparisonService = async (limit) => {
+  try {
+    // Define the pipeline for aggregation
+    const pipeline = [
+      { $sort: { viewCount: -1 } }, // Sort by viewCount in descending order
+      { $limit: limit }, // Limit the results to the specified number
+    ];
+
+    // Execute the aggregation pipeline
+    const topComparisons = await ComparisonModel.aggregate(pipeline);
+
+    return {
+      isSuccess: true,
+      response: topComparisons,
+      message: "Top popular comparison fetched successfully",
+    };
+  } catch (error) {
+    return {
+      isSuccess: false,
+      message: error.message,
+    };
+  }
+};
+
 module.exports = {
   getComparisonService,
   getSingleComparisonService,
+  getTopPopularComparisonService,
 };

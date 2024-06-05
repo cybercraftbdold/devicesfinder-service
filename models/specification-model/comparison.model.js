@@ -6,6 +6,7 @@ const comparisonSchema = new Schema(
   {
     title: String,
     specificationId: String,
+    viewCount: { type: Number, default: 0 },
     phones: [
       {
         // specificationId: String,
