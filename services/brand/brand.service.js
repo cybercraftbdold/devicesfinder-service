@@ -6,7 +6,8 @@ const createBrandService = async (payload) => {
   let { title, image } = payload;
 
   try {
-    const duplicateBrand = BrandModel.find({ title: { title } });
+    const duplicateBrand = await BrandModel.findOne({ title });
+    console.log(duplicateBrand);
 
     // Checking for duplicate brand
     if (duplicateBrand)
