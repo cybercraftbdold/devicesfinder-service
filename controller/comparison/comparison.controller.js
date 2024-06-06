@@ -13,6 +13,7 @@ const getComparisonController = async (req, res) => {
     const skip = (page - 1) * limit;
     const searchText = req?.query?.searchText;
     const status = req?.query?.status;
+    const specificationId = req?.query?.specificationId;
     const sortField = req?.query?.sortField || "createdAt";
     const sortOrder = req?.query?.sortOrder || "desc";
     // filters
@@ -20,6 +21,9 @@ const getComparisonController = async (req, res) => {
 
     if (status) {
       filters.status = status;
+    }
+    if (specificationId) {
+      filters.specificationId = specificationId;
     }
     const result = await getComparisonService(
       limit,

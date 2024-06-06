@@ -19,6 +19,10 @@ const getComparisonService = async (
       if (filters.status) {
         query.status = filters.status;
       }
+
+      if (filters.specificationId) {
+        query.specificationId = filters.specificationId;
+      }
     }
 
     // Determine sort order
