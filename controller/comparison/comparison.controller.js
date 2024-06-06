@@ -3,6 +3,7 @@ const {
   getComparisonService,
   getSingleComparisonService,
   getTopPopularComparisonService,
+  compareMobilesService,
 } = require("../../services/comparison/comparison.service");
 
 //get all comparison
@@ -105,8 +106,34 @@ const getTopPopularComparisonController = async (req, res) => {
     });
   }
 };
+
+const compareMobilesController = async (req, res) => {
+  const comparisonId = req.params.id;
+  try {
+    const result = await compareMobilesService(comparisonId);
+    if (result && result.isSuccess) {
+      res.status(200).json({
+        message: result?.message,
+        isSuccess: result.isSuccess,
+        data: result?.response,
+      });
+    } else {
+      res.status(404).json({
+        message: result.message,
+        isSuccess: result.isSuccess,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+      isSuccess: false,
+    });
+  }
+};
+
 module.exports = {
   getComparisonController,
   getSingleComparisonController,
   getTopPopularComparisonController,
+  compareMobilesController,
 };
