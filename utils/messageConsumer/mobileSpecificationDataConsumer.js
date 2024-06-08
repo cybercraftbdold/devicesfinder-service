@@ -6,21 +6,28 @@ const connectRabbitMQ = require("../rabbitmqConnection");
 const saveSpecificationToDb = require("../../helpers/database/saveToDatabase");
 
 async function startMobileSpecificationConsumer() {
-  const channel = await connectRabbitMQ();
-  channel.consume("mobileSpecificationDataQueue", async (message) => {
-    if (message) {
-      const mobileSpecificationData = JSON.parse(message.content.toString())[0];
-      // const website = mobileSpecificationData?.websiteInfo;
-      await saveSpecificationToDb(mobileSpecificationData);
-      channel.ack(message);
-    } else {
-      const resQueue = {
-        message: "Content published failed",
-        isSuccess: false,
-      };
-      await sendQueue("responseQueue", resQueue);
-    }
-  });
+  try {
+    const channel = await connectRabbitMQ();
+    channel.consume("mobileSpecificationDataQueue", async (message) => {
+      if (message) {
+        const mobileSpecificationData = JSON.parse(
+          message.content.toString()
+        )[0];
+        // const website = mobileSpecificationData?.websiteInfo;
+        await saveSpecificationToDb(mobileSpecificationData);
+        channel.ack(message);
+      } else {
+        channel.nack(message, false, false); // Do not requeue the message
+        const resQueue = {
+          message: "Content published failed",
+          isSuccess: false,
+        };
+        await sendQueue("responseQueue", resQueue);
+      }
+    });
+  } catch (error) {
+    console.error("Failed to start consumer:", error);
+  }
 }
 module.exports = { startMobileSpecificationConsumer };
 
