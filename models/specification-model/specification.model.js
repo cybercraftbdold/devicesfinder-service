@@ -54,6 +54,14 @@ const mobileSpecificationSchema = new Schema(
     specification: {
       type: Schema.Types.Mixed,
     },
+    cons: {
+      type: String,
+      default: "",
+    },
+    pros: {
+      type: String,
+      default: "",
+    },
     images: {
       type: Schema.Types.Mixed,
       require: true,

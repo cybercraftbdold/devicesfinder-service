@@ -11,6 +11,8 @@ const saveSpecificationToDb = async (mobileSpecificationData) => {
     const specificationData = {
       title: mobileSpecificationData?.title,
       specification: mobileSpecificationData?.specification,
+      cons: mobileSpecificationData?.cons || "",
+      pros: mobileSpecificationData?.pros || "",
       metaInformation: mobileSpecificationData?.metaInformation,
       mobileReview: mobileSpecificationData?.mobileReview[0],
       images: mobileSpecificationData?.mobileImage[0],
