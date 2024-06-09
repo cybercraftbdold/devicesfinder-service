@@ -1,11 +1,11 @@
+const BlogModel = require("../../models/blog-model/blog.model");
 const ComparisonModel = require("../../models/specification-model/comparison.model");
 const MobileSpecificationModel = require("../../models/specification-model/specification.model");
 const UserReviewModel = require("../../models/specification-model/user-review.model");
 const sendQueue = require("../../utils/rabbitMQ/sendQueue");
 
-const saveSpecificationToDb = async ( mobileSpecificationData ) => {
+const saveSpecificationToDb = async (mobileSpecificationData) => {
   // console.log(mobileSpecificationData);
-
   try {
     // Save each specification to the database
     const specificationData = {
@@ -23,15 +23,20 @@ const saveSpecificationToDb = async ( mobileSpecificationData ) => {
     if (specificationResponse?._id) {
       const userReviews = mobileSpecificationData?.userReviews[0];
       const comparison = mobileSpecificationData?.mobileComparisons[0];
+      const mobileBlog = mobileSpecificationData?.mobileBlog[0];
       comparison.specificationId = specificationResponse?._id;
       userReviews.specificationId = specificationResponse?._id;
+      mobileBlog.specificationId = specificationResponse?._id;
+      comparison.images = specificationResponse?.images;
+      mobileBlog.images = specificationResponse?.images;
       // user review model
       const reviewResponse = await UserReviewModel.create(userReviews);
       // comparison model
       const comparisonResponse = await ComparisonModel.create(comparison);
-   
-      if (reviewResponse && comparisonResponse) {
-        console.log("working")
+      const mobileresponse = await BlogModel.create(mobileBlog);
+
+      if (reviewResponse && comparisonResponse && mobileresponse) {
+        console.log("working");
         const resQueue = {
           message: "Data Published Successfully Completed",
           isSuccess: true,
