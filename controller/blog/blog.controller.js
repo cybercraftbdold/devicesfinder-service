@@ -1,5 +1,10 @@
-const { getBlogService } = require("../../services/blog/blog.service");
+const determineSearchType = require("../../helpers/determineSearchType");
+const {
+  getBlogService,
+  getSingleBlogService,
+} = require("../../services/blog/blog.service");
 
+// Get All Blogs
 const getAllBlogsController = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
@@ -7,6 +12,7 @@ const getAllBlogsController = async (req, res) => {
     const skip = (page - 1) * limit;
     const searchText = req?.query?.searchText;
     const status = req?.query?.status;
+    const specificationId = req?.query?.specificationId;
     const sortField = req?.query?.sortField || "createdAt";
     const sortOrder = req?.query?.sortOrder || "desc";
     // filters
@@ -14,6 +20,9 @@ const getAllBlogsController = async (req, res) => {
 
     if (status) {
       filters.status = status;
+    }
+    if (specificationId) {
+      filters.specificationId = specificationId;
     }
 
     const result = await getBlogService(
@@ -46,4 +55,31 @@ const getAllBlogsController = async (req, res) => {
   }
 };
 
-module.exports = { getAllBlogsController };
+// Get Single Blog
+const getSingleBlogController = async (req, res) => {
+  const identifier = req.params.id;
+  const searchBy = determineSearchType(identifier);
+
+  try {
+    const result = await getSingleBlogService(identifier, searchBy);
+    if (result && result.isSuccess) {
+      res.status(200).json({
+        message: result?.message,
+        isSuccess: result.isSuccess,
+        data: result?.response,
+      });
+    } else {
+      res.status(404).json({
+        message: result.message,
+        isSuccess: result.isSuccess,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+      isSuccess: false,
+    });
+  }
+};
+
+module.exports = { getAllBlogsController, getSingleBlogController };
