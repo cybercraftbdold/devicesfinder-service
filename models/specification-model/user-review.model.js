@@ -17,7 +17,7 @@ const reivewSchema = new Schema(
       require: true,
     },
     rating: {
-      type: Number,
+      type: Double,
       require: true,
     },
     description: {

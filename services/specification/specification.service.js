@@ -14,7 +14,7 @@ const getSpecificationService = async (
     if (searchText) {
       query.$or = [{ title: { $regex: searchText, $options: "i" } }];
     }
-    // apply filters if they are provided
+    // Apply filters if they are provided
     if (filters) {
       if (filters.status) {
         query.status = filters.status;
@@ -27,8 +27,31 @@ const getSpecificationService = async (
 
     const res = await MobileSpecificationModel.aggregate([
       { $match: query },
-      // { $sort: { createdAt: -1 } },
       { $sort: sort },
+      {
+        $addFields: {
+          specificationIdStr: { $toString: "$_id" }, // Convert ObjectId _id to string
+        },
+      },
+      {
+        $lookup: {
+          from: "user-reviews",
+          localField: "specificationIdStr",
+          foreignField: "specificationId",
+          as: "reviews",
+        },
+      },
+      {
+        $addFields: {
+          averageRating: { $avg: "$reviews.rating" },
+        },
+      },
+      {
+        $project: {
+          reviews: 0,
+          specificationIdStr: 0,
+        },
+      },
       {
         $facet: {
           data: [{ $skip: skip }, { $limit: limit }],
@@ -36,11 +59,12 @@ const getSpecificationService = async (
         },
       },
     ]);
+
     if (res) {
       return {
         isSuccess: true,
         response: res,
-        message: "Data getting successfull",
+        message: "Data getting successful",
       };
     }
   } catch (error) {
@@ -50,6 +74,7 @@ const getSpecificationService = async (
     };
   }
 };
+
 // get mobile specification
 const getSingleSpecificationService = async (identifier, searchBy) => {
   try {
