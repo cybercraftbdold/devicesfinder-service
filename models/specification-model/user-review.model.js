@@ -1,3 +1,4 @@
+const { Double } = require("mongodb");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
@@ -17,7 +18,9 @@ const reivewSchema = new Schema(
       require: true,
     },
     rating: {
-      type: Double,
+      type: Number,
+      min: 0,
+      max: 5,
       require: true,
     },
     description: {
