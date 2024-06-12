@@ -59,7 +59,7 @@ const getUserReviewsService = async (
 
 // create user review
 const createUserReviewService = async (payload) => {
-  let { name, email, rating, description, specificationId } = payload;
+  let { name, email, rating, description, deviceId, specificationId } = payload;
 
   if (specificationId) {
     const objectId = new mongoose.Types.ObjectId(specificationId);
@@ -87,6 +87,7 @@ const createUserReviewService = async (payload) => {
       email,
       rating,
       description,
+      deviceId,
       specificationId,
     });
     // Attempt to save the new blog post to the database

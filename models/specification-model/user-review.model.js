@@ -17,6 +17,10 @@ const reivewSchema = new Schema(
       type: String,
       require: true,
     },
+    deviceId: {
+      type: String,
+      require: true,
+    },
     rating: {
       type: Number,
       min: 0,
