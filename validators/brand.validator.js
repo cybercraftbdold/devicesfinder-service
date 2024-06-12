@@ -1,10 +1,8 @@
 const Joi = require("joi");
 
-const brandValidator = Joi.object({
+const brandSchemaValidator = Joi.object({
   title: Joi.string().required(),
   image: Joi.string().required(),
 });
 
-module.exports = {
-  brandValidator,
-};
+module.exports = brandSchemaValidator;

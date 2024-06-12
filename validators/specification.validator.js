@@ -1,24 +1,16 @@
 const Joi = require("joi");
-
-// Define the Joi schema for metaInformation
-const metaInfoSchema = Joi.object({
-  canonicalUrl: Joi.string().uri().optional(),
-  mainKeyword: Joi.string().optional(),
-  metaDescription: Joi.string().optional(),
-  metaTitle: Joi.string().optional(),
-  seedKeyword: Joi.array().items(Joi.string()).optional(),
-});
+const metaInformationSchemaValidator = require("./meta-information.validator");
 
 // Define the Joi schema for the specification schema
-const specificationValidatorSchema = Joi.object({
+const specificationSchemaValidator = Joi.object({
   title: Joi.string().required(),
   deviceId: Joi.string().required(),
-  specification: Joi.any().optional(), // Schema.Types.Mixed can be any type
+  specification: Joi.any().required(),
   cons: Joi.string().default(""),
   pros: Joi.string().default(""),
-  images: Joi.any().required(), // Schema.Types.Mixed can be any type
-  metaInformation: metaInfoSchema.optional(),
+  images: Joi.any().required(),
+  metaInformation: metaInformationSchemaValidator.required(),
   viewCount: Joi.number().default(0),
 });
 
-module.exports = specificationValidatorSchema;
+module.exports = specificationSchemaValidator;
