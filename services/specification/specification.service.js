@@ -1,5 +1,52 @@
 const { ObjectId } = require("mongodb");
 const MobileSpecificationModel = require("../../models/specification-model/specification.model");
+
+// create mobile specification
+const createSpecificationService = async (payload) => {
+  let { title, deviceId, specification, cons, pros, images, metaInformation } =
+    payload;
+
+  try {
+    const duplicateSpecification = await MobileSpecificationModel.findOne({
+      deviceId,
+    });
+
+    // Checking for duplicate brand
+    if (duplicateSpecification)
+      return {
+        isSuccess: false,
+        message: "Already have a brand with the same name.",
+      };
+
+    // Proceed to create a new SpecificationModel instance with the provided payload
+    const specificationInstance = new MobileSpecificationModel({
+      title,
+      deviceId,
+      specification,
+      cons,
+      pros,
+      images,
+      metaInformation,
+    });
+
+    // Attempt to save the new specification post to the database
+    const newSpecification = await specificationInstance.save();
+
+    if (newSpecification) {
+      return {
+        isSuccess: true,
+        response: newSpecification,
+        message: "Specification created successfully",
+      };
+    }
+  } catch (error) {
+    return {
+      isSuccess: false,
+      message: error?.message,
+    };
+  }
+};
+
 // get mobile specification
 const getSpecificationService = async (
   limit,
@@ -164,6 +211,7 @@ const getTopPopularSpecificationsService = async (limit) => {
 };
 
 module.exports = {
+  createSpecificationService,
   getSpecificationService,
   getSingleSpecificationService,
   getTopPopularSpecificationsService,
