@@ -15,7 +15,7 @@ const createSpecificationService = async (payload) => {
     if (duplicateSpecification)
       return {
         isSuccess: false,
-        message: "Already have a brand with the same name.",
+        message: "Already have a specification with same deviceId.",
       };
 
     // Proceed to create a new SpecificationModel instance with the provided payload

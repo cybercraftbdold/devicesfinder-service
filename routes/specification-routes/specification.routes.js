@@ -7,13 +7,13 @@ const {
 } = require("../../controller/specification/specification.controller");
 const { baseRoute } = require("../../utils/constant");
 const requestValidator = require("../../middleware/request-validator");
-const specificationValidatorSchema = require("../../validators/specification.validator");
+const specificationSchemaValidator = require("../../validators/specification.validator");
 const specificationRouter = Router();
 
 // create specification route
 specificationRouter.post(
   `${baseRoute}/create-specifications`,
-  requestValidator(specificationValidatorSchema),
+  requestValidator(specificationSchemaValidator),
   createSpecificationController
 );
 
