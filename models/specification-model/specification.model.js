@@ -79,7 +79,7 @@ const metaInfoSchema = new Schema(
 const mobileSpecificationSchema = new Schema(
   {
     title: String,
-    deviceId: { type: String, require: true },
+    deviceId: { type: String },
     specification: {
       type: Schema.Types.Mixed,
     },

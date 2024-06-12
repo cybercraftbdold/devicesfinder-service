@@ -8,7 +8,6 @@ const comparisonSchema = new Schema(
     specificationId: String,
     deviceId: {
       type: String,
-      required: true,
     },
     images: Schema.Types.Mixed,
     viewCount: { type: Number, default: 0 },
