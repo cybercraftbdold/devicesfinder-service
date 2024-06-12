@@ -12,7 +12,7 @@ const specificationRouter = Router();
 
 // create specification route
 specificationRouter.post(
-  `${baseRoute}/create-specifications`,
+  `${baseRoute}/create-specification`,
   requestValidator(specificationSchemaValidator),
   createSpecificationController
 );
