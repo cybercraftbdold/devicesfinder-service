@@ -6,12 +6,16 @@ const comparisonSchema = new Schema(
   {
     title: String,
     specificationId: String,
+    deviceId: {
+      type: String,
+      required: true,
+    },
     images: Schema.Types.Mixed,
     viewCount: { type: Number, default: 0 },
     phones: [
       {
-        // specificationId: String,
         title: String,
+        image: String,
         specification: Schema.Types.Mixed,
       },
     ],

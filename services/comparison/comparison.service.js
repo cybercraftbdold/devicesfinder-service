@@ -1,6 +1,42 @@
 const { ObjectId } = require("mongodb");
 const ComparisonModel = require("../../models/specification-model/comparison.model");
 const compareSpecs = require("../../helpers/compare/compareSpecs");
+// create mobile comparison service
+const createComparisonService = async (payload) => {
+  let { title, phones, metaInformation, deviceId } = payload;
+  try {
+    //TODO: add unique canonical url
+    
+    // const uniqueCanonicalUrl = await generateUniqueIdentifier(
+    //   MobileComparisonModel,
+    //   metaInformation.canonicalUrl,
+    //   "metaInformation.canonicalUrl"
+    // );
+    // // Update metaInformation with the unique canonical URL
+    // metaInformation.canonicalUrl = uniqueCanonicalUrl;
+
+    const comparisonModel = new ComparisonModel({
+      title,
+      phones,
+      deviceId,
+      metaInformation,
+    });
+
+    const res = await comparisonModel.save();
+    if (res) {
+      return {
+        isSuccess: true,
+        response: res,
+        message: "Mobile comparison create successfull",
+      };
+    }
+  } catch (error) {
+    return {
+      isSuccess: false,
+      message: error?.message,
+    };
+  }
+};
 // get comparison
 const getComparisonService = async (
   limit,
@@ -137,6 +173,7 @@ const getTopPopularComparisonService = async (limit) => {
   }
 };
 
+// compare mobiles service
 const compareMobilesService = async (id) => {
   try {
     // // Fetch the document containing both mobiles
@@ -248,4 +285,5 @@ module.exports = {
   getSingleComparisonService,
   getTopPopularComparisonService,
   compareMobilesService,
+  createComparisonService,
 };

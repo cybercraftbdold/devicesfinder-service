@@ -4,8 +4,30 @@ const {
   getSingleComparisonService,
   getTopPopularComparisonService,
   compareMobilesService,
+  createComparisonService,
 } = require("../../services/comparison/comparison.service");
 
+// create  comparison controller
+const createComparisonController = async (req, res, next) => {
+  try {
+    const payload = req.body;
+    const result = await createComparisonService(payload);
+    if (result.isSuccess) {
+      res.json({
+        message: result.message,
+        isSuccess: result.isSuccess,
+        data: result?.response,
+      });
+    } else {
+      res.json({
+        message: result.message,
+        isSuccess: false,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
 //get all comparison
 const getComparisonController = async (req, res) => {
   try {
@@ -136,4 +158,5 @@ module.exports = {
   getSingleComparisonController,
   getTopPopularComparisonController,
   compareMobilesController,
+  createComparisonController,
 };
