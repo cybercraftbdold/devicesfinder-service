@@ -3,14 +3,27 @@ const {
   getSpecificationController,
   getSingleSpecificationController,
   getTopPopularSpecificationsController,
+  createSpecificationController,
 } = require("../../controller/specification/specification.controller");
 const { baseRoute } = require("../../utils/constant");
+const requestValidator = require("../../middleware/request-validator");
+const specificationValidatorSchema = require("../../validators/specification.validator");
 const specificationRouter = Router();
 
+// create specification route
+specificationRouter.post(
+  `${baseRoute}/create-specifications`,
+  requestValidator(specificationValidatorSchema),
+  createSpecificationController
+);
+
+// get all specification route
 specificationRouter.get(
   `${baseRoute}/get-specifications`,
   getSpecificationController
 );
+
+// get single specification route
 specificationRouter.get(
   `${baseRoute}/get-single-specification/:identifier`,
   getSingleSpecificationController
