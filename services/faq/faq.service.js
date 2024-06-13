@@ -1,4 +1,4 @@
-const FaqModel = require("../../models/faq/faq.model");
+const FaqModel = require("../../models/faq-model/faq.model");
 
 // Create Faq
 const createFaqService = async (payload) => {
