@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 const deviceReviewSchema = new Schema(
   {
     title: String,
+    deviceId: String,
     description: String,
     metaInformation: {
       canonicalUrl: String,

@@ -6,8 +6,8 @@ const deviceReviewSchemaValidator = Joi.object({
   title: Joi.string().required(),
   deviceId: Joi.string().optional(),
   websiteBase: Joi.string().optional(),
-  description: Joi.string().required(),
-  metaInformation: metaInformationSchemaValidator.required(),
+  question: Joi.string().required(),
+  answer: Joi.string().required(),
 });
 
 module.exports = deviceReviewSchemaValidator;

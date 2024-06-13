@@ -1,12 +1,12 @@
-const DeviceReviewModel = require("../../models/device-review-model/device-review.model");
+const FaqModel = require("../../models/faq-model/faq.model");
 
-// Create Device Review
-const createDeviceReviewService = async (payload) => {
+// Create Faq
+const createFaqService = async (payload) => {
   let { title, deviceId, description, metaInformation } = payload;
 
   try {
     // Proceed to create a new DeviceReviewModel instance with the provided payload
-    const deviceReview = new DeviceReviewModel({
+    const faq = new FaqModel({
       title,
       deviceId,
       description,
@@ -14,13 +14,13 @@ const createDeviceReviewService = async (payload) => {
     });
 
     // Attempt to save the new blog post to the database
-    const newDeviceReview = await deviceReview.save();
+    const newFaq = await faq.save();
 
-    if (newDeviceReview) {
+    if (newFaq) {
       return {
         isSuccess: true,
-        response: newDeviceReview,
-        message: "Device Review created successfully",
+        response: newFaq,
+        message: "Device Faq created successfully",
       };
     }
   } catch (error) {
@@ -32,5 +32,5 @@ const createDeviceReviewService = async (payload) => {
 };
 
 module.exports = {
-  createDeviceReviewService,
+  createFaqService,
 };
