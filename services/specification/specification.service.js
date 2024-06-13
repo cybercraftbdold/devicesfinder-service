@@ -1,5 +1,8 @@
 const { ObjectId } = require("mongodb");
 const MobileSpecificationModel = require("../../models/specification-model/specification.model");
+const {
+  combainMobileSpecificationLookup,
+} = require("../../db-query/lookup/combain-specification-lookup");
 
 // create mobile specification
 const createSpecificationService = async (payload) => {
@@ -75,30 +78,7 @@ const getSpecificationService = async (
     const res = await MobileSpecificationModel.aggregate([
       { $match: query },
       { $sort: sort },
-      {
-        $addFields: {
-          specificationIdStr: { $toString: "$_id" }, // Convert ObjectId _id to string
-        },
-      },
-      {
-        $lookup: {
-          from: "user-reviews",
-          localField: "specificationIdStr",
-          foreignField: "specificationId",
-          as: "reviews",
-        },
-      },
-      {
-        $addFields: {
-          averageRating: { $avg: "$reviews.rating" },
-        },
-      },
-      {
-        $project: {
-          reviews: 0,
-          specificationIdStr: 0,
-        },
-      },
+      ...combainMobileSpecificationLookup(),
       {
         $facet: {
           data: [{ $skip: skip }, { $limit: limit }],
@@ -106,12 +86,17 @@ const getSpecificationService = async (
         },
       },
     ]);
-
     if (res) {
       return {
         isSuccess: true,
-        response: res,
+        response: res[0], // Extract first element of the result which contains the facet structure
         message: "Data getting successful",
+      };
+    } else {
+      return {
+        isSuccess: true,
+        response: [],
+        message: "No data found",
       };
     }
   } catch (error) {
@@ -121,6 +106,80 @@ const getSpecificationService = async (
     };
   }
 };
+
+// const getSpecificationService = async (
+//   limit,
+//   skip,
+//   searchText,
+//   filters,
+//   sortField = "createdAt",
+//   sortOrder = "desc"
+// ) => {
+//   try {
+//     let query = {};
+//     if (searchText) {
+//       query.$or = [{ title: { $regex: searchText, $options: "i" } }];
+//     }
+//     // Apply filters if they are provided
+//     if (filters) {
+//       if (filters.status) {
+//         query.status = filters.status;
+//       }
+//     }
+
+//     // Determine sort order
+//     const sort = {};
+//     sort[sortField] = sortOrder.toLowerCase() === "asc" ? 1 : -1;
+
+//     const res = await MobileSpecificationModel.aggregate([
+//       { $match: query },
+//       { $sort: sort },
+//       {
+//         $addFields: {
+//           specificationIdStr: { $toString: "$_id" }, // Convert ObjectId _id to string
+//         },
+//       },
+//       {
+//         $lookup: {
+//           from: "user-reviews",
+//           localField: "specificationIdStr",
+//           foreignField: "specificationId",
+//           as: "reviews",
+//         },
+//       },
+//       {
+//         $addFields: {
+//           averageRating: { $avg: "$reviews.rating" },
+//         },
+//       },
+//       {
+//         $project: {
+//           reviews: 0,
+//           specificationIdStr: 0,
+//         },
+//       },
+//       {
+//         $facet: {
+//           data: [{ $skip: skip }, { $limit: limit }],
+//           totalCount: [{ $count: "value" }],
+//         },
+//       },
+//     ]);
+
+//     if (res) {
+//       return {
+//         isSuccess: true,
+//         response: res,
+//         message: "Data getting successful",
+//       };
+//     }
+//   } catch (error) {
+//     return {
+//       isSuccess: false,
+//       message: error.message,
+//     };
+//   }
+// };
 
 // get mobile specification
 const getSingleSpecificationService = async (identifier, searchBy) => {
