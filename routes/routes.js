@@ -8,6 +8,7 @@ const deviceReviewRouter = require("./device-review-routes/device-review.routes"
 const buyingGuideRouter = require("./buying-guide-routes/buying-guide.routes");
 const faqRouter = require("./faq-routes/faq.routes");
 const prosRouter = require("./pros-routes/pros.routes");
+const consRouter = require("./cons-routes/cons.routes");
 
 const mobileSpecification = Router();
 
@@ -20,5 +21,6 @@ mobileSpecification.use(deviceReviewRouter);
 mobileSpecification.use(buyingGuideRouter);
 mobileSpecification.use(faqRouter);
 mobileSpecification.use(prosRouter);
+mobileSpecification.use(consRouter);
 
 module.exports = mobileSpecification;
