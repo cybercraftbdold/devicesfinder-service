@@ -4,10 +4,7 @@ const Schema = mongoose.Schema;
 // Define the main schema for Mobile Specification
 const blogSchema = new Schema(
   {
-    specificationId: {
-      type: String,
-      require: true,
-    },
+    deviceId: String,
     title: {
       type: String,
       require: true,

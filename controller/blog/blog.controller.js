@@ -1,8 +1,37 @@
 const determineSearchType = require("../../helpers/determineSearchType");
 const {
+  createBolgService,
   getBlogService,
   getSingleBlogService,
 } = require("../../services/blog/blog.service");
+
+// Create Blog
+const createBlogController = async (req, res) => {
+  try {
+    const payload = req.body;
+
+    const result = await createBolgService(payload);
+
+    if (result.isSuccess) {
+      res.status(201).json({
+        message: result.message,
+        isSuccess: result.isSuccess,
+        data: result?.response,
+      });
+    } else {
+      res.status(400).json({
+        message: result.message,
+        isSuccess: false,
+      });
+    }
+  } catch (error) {
+    console.error(error.message);
+    res.status(400).json({
+      message: result.message,
+      isSuccess: false,
+    });
+  }
+};
 
 // Get All Blogs
 const getAllBlogsController = async (req, res) => {
@@ -82,4 +111,8 @@ const getSingleBlogController = async (req, res) => {
   }
 };
 
-module.exports = { getAllBlogsController, getSingleBlogController };
+module.exports = {
+  createBlogController,
+  getAllBlogsController,
+  getSingleBlogController,
+};
