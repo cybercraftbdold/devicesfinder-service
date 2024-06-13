@@ -7,8 +7,6 @@ const specificationSchemaValidator = Joi.object({
   deviceId: Joi.string().optional(),
   websiteBase: Joi.string().optional(),
   specification: Joi.any().required(),
-  cons: Joi.string().default(""),
-  pros: Joi.string().default(""),
   images: Joi.any().required(),
   metaInformation: metaInformationSchemaValidator.required(),
   viewCount: Joi.number().default(0),
