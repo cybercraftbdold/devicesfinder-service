@@ -2,12 +2,13 @@ const DeviceReviewModel = require("../../models/device-review-model/device-revie
 
 // Create Device Review
 const createDeviceReviewService = async (payload) => {
-  let { title, description, metaInformation } = payload;
+  let { title, deviceId, description, metaInformation } = payload;
 
   try {
     // Proceed to create a new DeviceReviewModel instance with the provided payload
     const deviceReview = new DeviceReviewModel({
       title,
+      deviceId,
       description,
       metaInformation,
     });
