@@ -179,6 +179,15 @@ const combainMobileSpecificationLookup = () => [
       as: "blogs",
     },
   },
+  // device reivw
+  {
+    $lookup: {
+      from: "devicereviews",
+      localField: "deviceId",
+      foreignField: "deviceId",
+      as: "deviceReview",
+    },
+  },
   {
     $addFields: {
       averageRating: { $avg: "$reviews.rating" },
