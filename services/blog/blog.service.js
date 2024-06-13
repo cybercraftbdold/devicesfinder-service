@@ -1,6 +1,37 @@
 const { ObjectId } = require("mongodb");
 const BlogModel = require("../../models/blog-model/blog.model");
 
+const createBolgService = async (payload) => {
+  let { title, deviceId, description, images, metaInformation } = payload;
+
+  try {
+    // Proceed to create a new BlogModel instance with the provided payload
+    const blog = new BlogModel({
+      title,
+      deviceId,
+      description,
+      images,
+      metaInformation,
+    });
+
+    // Attempt to save the new blog post to the database
+    const newBlog = await blog.save();
+
+    if (newBlog) {
+      return {
+        isSuccess: true,
+        response: newBlog,
+        message: "Device Blog created successfully",
+      };
+    }
+  } catch (error) {
+    return {
+      isSuccess: false,
+      message: error?.message,
+    };
+  }
+};
+
 // Get All Blog
 const getBlogService = async (
   limit,
@@ -115,4 +146,4 @@ const getSingleBlogService = async (identifier, searchBy) => {
   }
 };
 
-module.exports = { getBlogService, getSingleBlogService };
+module.exports = { createBolgService, getBlogService, getSingleBlogService };
