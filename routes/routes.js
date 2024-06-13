@@ -6,6 +6,7 @@ const brandRouter = require("./brand-routes/brand.routes");
 const blogRouter = require("./blog-routes/blog.routes");
 const deviceReviewRouter = require("./device-review-routes/device-review.routes");
 const buyingGuideRouter = require("./buying-guide-routes/buying-guide.routes");
+const faqRouter = require("./faq-routes/faq.routes");
 
 const mobileSpecification = Router();
 
@@ -16,5 +17,6 @@ mobileSpecification.use(brandRouter);
 mobileSpecification.use(blogRouter);
 mobileSpecification.use(deviceReviewRouter);
 mobileSpecification.use(buyingGuideRouter);
+mobileSpecification.use(faqRouter);
 
 module.exports = mobileSpecification;
