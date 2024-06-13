@@ -204,6 +204,9 @@ const getSingleSpecificationService = async (identifier, searchBy) => {
       };
     }
 
+    // Append lookup and related aggregation stages before limiting the results
+    pipeline = pipeline.concat(combainMobileSpecificationLookup());
+
     pipeline.push({
       $limit: 1,
     });
@@ -212,20 +215,16 @@ const getSingleSpecificationService = async (identifier, searchBy) => {
     if (res.length > 0) {
       const specification = res[0];
 
-      // Increment viewCount
+      // Increment viewCount, this is done separately as it should not affect the output from the aggregate
       await MobileSpecificationModel.updateOne(
         { _id: specification._id },
         { $inc: { viewCount: 1 } }
       );
 
-      // Return the updated document
-      const updatedSpecification = await MobileSpecificationModel.findById(
-        specification._id
-      );
-
+      // No need to fetch again since aggregate should return the necessary data
       return {
         isSuccess: true,
-        response: updatedSpecification,
+        response: specification,
         message: "Data fetching successful",
       };
     } else {
