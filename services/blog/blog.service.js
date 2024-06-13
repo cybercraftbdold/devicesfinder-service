@@ -51,8 +51,8 @@ const getBlogService = async (
       if (filters.status) {
         query.status = filters.status;
       }
-      if (filters.specificationId) {
-        query.specificationId = filters.specificationId;
+      if (filters.deviceId) {
+        query.deviceId = filters.deviceId;
       }
     }
 

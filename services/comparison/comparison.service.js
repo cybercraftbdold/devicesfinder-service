@@ -57,8 +57,8 @@ const getComparisonService = async (
         query.status = filters.status;
       }
 
-      if (filters.specificationId) {
-        query.specificationId = filters.specificationId;
+      if (filters.deviceId) {
+        query.deviceId = filters.deviceId;
       }
     }
 
@@ -186,7 +186,7 @@ const compareMobilesService = async (id) => {
     // }
     const specs = {
       title: "iPhone 11 Pro Max",
-      specificationId: "665ff4cee210861dacbe5983",
+      deviceId: "665ff4cee210861dacbe5983",
       phones: [
         {
           title: "iPhone 11 Pro Max",
