@@ -59,27 +59,8 @@ const getUserReviewsService = async (
 
 // create user review
 const createUserReviewService = async (payload) => {
-  let { name, email, rating, description, deviceId, specificationId } = payload;
+  let { name, email, rating, description, deviceId } = payload;
 
-  if (specificationId) {
-    const objectId = new mongoose.Types.ObjectId(specificationId);
-
-    const exsitingSpecification = await MobileSpecificationModel.findById(
-      objectId
-    );
-    if (!exsitingSpecification) {
-      return {
-        isSuccess: false,
-        message:
-          "Specification id not allowed. Please input currect specification id",
-      };
-    }
-  } else {
-    return {
-      isSuccess: false,
-      message: "Specification id  is required",
-    };
-  }
   try {
     // Proceed to create a new BlogModel instance with the updated metaInformation
     const userReviewModel = new UserReviewModel({
@@ -88,7 +69,6 @@ const createUserReviewService = async (payload) => {
       rating,
       description,
       deviceId,
-      specificationId,
     });
     // Attempt to save the new blog post to the database
     const res = await userReviewModel.save();
