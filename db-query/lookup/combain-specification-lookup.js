@@ -111,15 +111,72 @@ const combainMobileContentLookup = () => [
 const combainMobileSpecificationLookup = () => [
   {
     $addFields: {
-      specificationIdStr: { $toString: "$_id" },
+      deviceIdStr: { $toString: "$_id" },
     },
   },
+  // user reviws
   {
     $lookup: {
       from: "user-reviews",
-      localField: "specificationIdStr",
-      foreignField: "specificationId",
+      localField: "deviceId",
+      foreignField: "deviceId",
       as: "reviews",
+    },
+  },
+  // buying guide
+  {
+    $lookup: {
+      from: "buying-guides",
+      localField: "deviceId",
+      foreignField: "deviceId",
+      as: "buyingGuides",
+    },
+  },
+  // comparisons
+  {
+    $lookup: {
+      from: "comparisons",
+      localField: "deviceId",
+      foreignField: "deviceId",
+      as: "comparisons",
+    },
+  },
+
+  // cons
+  {
+    $lookup: {
+      from: "cons",
+      localField: "deviceId",
+      foreignField: "deviceId",
+      as: "cons",
+    },
+  },
+  // pros
+  {
+    $lookup: {
+      from: "pros",
+      localField: "deviceId",
+      foreignField: "deviceId",
+      as: "pros",
+    },
+  },
+  // faq
+  {
+    $lookup: {
+      from: "faqs",
+      localField: "deviceId",
+      foreignField: "deviceId",
+      as: "faq",
+    },
+  },
+
+  // blogs
+  {
+    $lookup: {
+      from: "blogs",
+      localField: "deviceId",
+      foreignField: "deviceId",
+      as: "blogs",
     },
   },
   {
@@ -129,9 +186,9 @@ const combainMobileSpecificationLookup = () => [
   },
   {
     $project: {
-      specificationIdStr: 0,
+      deviceIdStr: 0,
       "reviews._id": 0,
-      "reviews.specificationId": 0,
+      "reviews.deviceId": 0,
     },
   },
 ];
