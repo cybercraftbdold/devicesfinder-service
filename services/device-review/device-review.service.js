@@ -5,6 +5,14 @@ const createDeviceReviewService = async (payload) => {
   let { title, deviceId, description, metaInformation } = payload;
 
   try {
+    const duplicateDeviceReview = await DeviceReviewModel.findOne({ deviceId });
+
+    if (duplicateDeviceReview)
+      return {
+        isSuccess: false,
+        message: "Device Review for this id is already created.",
+      };
+
     // Proceed to create a new DeviceReviewModel instance with the provided payload
     const deviceReview = new DeviceReviewModel({
       title,
