@@ -14,7 +14,15 @@ const comparisonSchema = new Schema(
     phones: [
       {
         title: String,
-        image: String,
+        image: {
+          imageUrl: {
+            type: string,
+            required: true,
+          },
+          altText: String,
+          caption: String,
+          description: String,
+        },
         specification: Schema.Types.Mixed,
       },
     ],
