@@ -5,6 +5,16 @@ const createProsService = async (payload) => {
   let { title, deviceId, description } = payload;
 
   try {
+    const duplicatePros = await ProsModel.findOne({
+      deviceId,
+    });
+
+    // Checking for duplicate brand
+    if (duplicatePros)
+      return {
+        isSuccess: false,
+        message: "Already have a pros with same deviceId.",
+      };
     // Proceed to create a new ProsModel instance with the provided payload
     const pros = new ProsModel({
       title,
