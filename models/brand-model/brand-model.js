@@ -5,7 +5,13 @@ const Schema = mongoose.Schema;
 const brandSchema = new Schema(
   {
     title: String,
-    image: String,
+    image: {
+      imageUrl: String,
+      title: String,
+      altText: String,
+      caption: String,
+      description: String,
+    },
     metaInformation: {
       canonicalUrl: String,
       mainKeyword: String,
