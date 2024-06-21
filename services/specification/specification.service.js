@@ -6,8 +6,16 @@ const {
 
 // create mobile specification
 const createSpecificationService = async (payload) => {
-  let { title, deviceId, specification, cons, pros, images, metaInformation } =
-    payload;
+  let {
+    title,
+    deviceId,
+    specification,
+    cons,
+    pros,
+    images,
+    brandInfo,
+    metaInformation,
+  } = payload;
 
   try {
     const duplicateSpecification = await MobileSpecificationModel.findOne({
@@ -29,6 +37,7 @@ const createSpecificationService = async (payload) => {
       cons,
       pros,
       images,
+      brandInfo,
       metaInformation,
     });
 

@@ -12,68 +12,18 @@ const metaInfoSchema = new Schema(
   },
   { _id: false }
 );
-
-// // Define schema for the reviews
-// const reviewSchema = new Schema(
-//   {
-//     title: String,
-//     description: String,
-//     metaInformation: metaInfoSchema,
-//   },
-//   { _id: false }
-// );
-
-// // Define schema for the FAQs
-// const faqSchema = new Schema(
-//   {
-//     title: String,
-//     faqList: [
-//       {
-//         question: String,
-//         answer: String,
-//       },
-//     ],
-//   },
-//   { _id: false }
-// );
-
-// // Define schema for the buying guide
-// const buyingGuideSchema = new Schema({
-//   title: String,
-//   description: String,
-// });
-
-// // Define the main schema for Mobile Specification
-// const mobileSpecificationSchema = new Schema(
-//   {
-//     // _id: String,
-//     title: String,
-//     mobileInfo: {
-//       phoneId: String,
-//     },
-//     specification: {
-//       type: Schema.Types.Mixed,
-//     },
-//     cons: {
-//       type: String,
-//       default: "",
-//     },
-//     pros: {
-//       type: String,
-//       default: "",
-//     },
-//     images: {
-//       type: Schema.Types.Mixed,
-//       require: true,
-//     },
-//     metaInformation: metaInfoSchema,
-//     mobileReview: [reviewSchema],
-//     faqs: [faqSchema],
-//     buyingGuide: [buyingGuideSchema],
-//     viewCount: { type: Number, default: 0 },
-//   },
-//   { timestamps: true }
-// );
+// Define schema for the brand information
+const brandInfoSchema = new Schema(
+  {
+    manufactureName: String,
+    manufactureWebsite: String,
+    manufacturePhone: String,
+    manufactureSocial: [String],
+    manufactureEmail: [String],
+    image: String,
+  },
+  { _id: false }
+);
 
 // Define the main schema for Mobile Specification
 const mobileSpecificationSchema = new Schema(
@@ -88,6 +38,7 @@ const mobileSpecificationSchema = new Schema(
       require: true,
     },
     metaInformation: metaInfoSchema,
+    brandInfo: brandInfoSchema,
     viewCount: { type: Number, default: 0 },
   },
   { timestamps: true }
