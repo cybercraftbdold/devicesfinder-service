@@ -16,7 +16,7 @@ const comparisonSchema = new Schema(
         title: String,
         image: {
           imageUrl: {
-            type: string,
+            type: String,
             required: true,
           },
           altText: String,
