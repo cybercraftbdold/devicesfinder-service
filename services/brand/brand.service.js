@@ -3,11 +3,10 @@ const deleteItem = require("../../helpers/service-helpers/deleteItem");
 
 // Create Brand
 const createBrandService = async (payload) => {
-  let { title, image } = payload;
+  let { title, image, metaInformation } = payload;
 
   try {
     const duplicateBrand = await BrandModel.findOne({ title });
-    console.log(duplicateBrand);
 
     // Checking for duplicate brand
     if (duplicateBrand)
@@ -20,6 +19,7 @@ const createBrandService = async (payload) => {
     const brand = new BrandModel({
       title,
       image,
+      metaInformation,
     });
     // Attempt to save the new blog post to the database
     const newBrand = await brand.save();

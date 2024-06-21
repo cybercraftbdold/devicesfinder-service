@@ -6,6 +6,13 @@ const brandSchema = new Schema(
   {
     title: String,
     image: String,
+    metaInformation: {
+      canonicalUrl: String,
+      mainKeyword: String,
+      metaDescription: String,
+      metaTitle: String,
+      seedKeyword: [String],
+    },
   },
   { timestamps: true }
 );
