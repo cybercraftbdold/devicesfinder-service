@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 const brandSchema = new Schema(
   {
     title: String,
+    description: String,
     image: {
       imageUrl: String,
       title: String,
