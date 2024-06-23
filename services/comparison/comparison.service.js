@@ -3,10 +3,10 @@ const ComparisonModel = require("../../models/specification-model/comparison.mod
 const compareSpecs = require("../../helpers/compare/compareSpecs");
 // create mobile comparison service
 const createComparisonService = async (payload) => {
-  let { title, phones, metaInformation, deviceId } = payload;
+  let { title, ratings, phones, metaInformation, deviceId } = payload;
   try {
     //TODO: add unique canonical url
-    
+
     // const uniqueCanonicalUrl = await generateUniqueIdentifier(
     //   MobileComparisonModel,
     //   metaInformation.canonicalUrl,
@@ -17,6 +17,7 @@ const createComparisonService = async (payload) => {
 
     const comparisonModel = new ComparisonModel({
       title,
+      ratings,
       phones,
       deviceId,
       metaInformation,
