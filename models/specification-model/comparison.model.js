@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const comparisonSchema = new Schema(
   {
     title: String,
-    ratings: [String],
+    ratings: [Object],
     specificationId: String,
     deviceId: {
       type: String,
