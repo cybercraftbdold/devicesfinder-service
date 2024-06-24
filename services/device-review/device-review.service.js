@@ -2,7 +2,7 @@ const DeviceReviewModel = require("../../models/device-review-model/device-revie
 
 // Create Device Review
 const createDeviceReviewService = async (payload) => {
-  let { title, deviceId, description, metaInformation } = payload;
+  let { title, deviceId, image, description, metaInformation } = payload;
 
   try {
     const duplicateDeviceReview = await DeviceReviewModel.findOne({ deviceId });
@@ -17,6 +17,7 @@ const createDeviceReviewService = async (payload) => {
     const deviceReview = new DeviceReviewModel({
       title,
       deviceId,
+      image,
       description,
       metaInformation,
     });
