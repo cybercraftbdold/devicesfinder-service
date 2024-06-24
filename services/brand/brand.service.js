@@ -1,5 +1,6 @@
 const BrandModel = require("../../models/brand-model/brand-model");
 const deleteItem = require("../../helpers/service-helpers/deleteItem");
+const { message } = require("../../validators/brand.validator");
 
 // Create Brand
 const createBrandService = async (payload) => {
@@ -85,6 +86,34 @@ const getAllBrandService = async (
   }
 };
 
+// Get Single Brand
+const getSingleBrandService = async (params) => {
+  try {
+    const brand = await BrandModel.findOne({
+      "metaInformation.canonicalUrl": params,
+    });
+
+    // checking if brand exists!
+    if (!brand)
+      return {
+        isSuccess: false,
+        message: "Cannot find brand with the given params",
+      };
+
+    // returning data
+    return {
+      isSuccess: true,
+      message: "Data getting successfully",
+      data: brand,
+    };
+  } catch (error) {
+    return {
+      isSuccess: false,
+      message: error.message,
+    };
+  }
+};
+
 // Update Brand Service
 const updateBrandService = async (id, payload) => {
   try {
@@ -124,4 +153,5 @@ module.exports = {
   getAllBrandService,
   updateBrandService,
   deleteBrandService,
+  getSingleBrandService,
 };

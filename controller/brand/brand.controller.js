@@ -3,6 +3,7 @@ const {
   getAllBrandService,
   updateBrandService,
   deleteBrandService,
+  getSingleBrandService,
 } = require("../../services/brand/brand.service");
 
 // Create Brand
@@ -60,6 +61,34 @@ const getAllBrandsController = async (req, res) => {
         data: result?.response[0].data,
       });
     }
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+      isSuccess: false,
+    });
+  }
+};
+
+// Get Single Brand
+const getSingleBrandController = async (req, res) => {
+  try {
+    const params = req.params.id;
+
+    const result = await getSingleBrandService(params);
+
+    // Error response
+    if (!result.isSuccess)
+      return res.status(404).json({
+        isSuccess: result?.isSuccess,
+        message: result?.message,
+      });
+
+    // success response
+    return res.status(200).json({
+      message: result?.message,
+      isSuccess: result.isSuccess,
+      data: result?.data,
+    });
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -127,4 +156,5 @@ module.exports = {
   getAllBrandsController,
   updateBrandController,
   deleteBrandController,
+  getSingleBrandController,
 };

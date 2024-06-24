@@ -4,6 +4,7 @@ const {
   getAllBrandsController,
   updateBrandController,
   deleteBrandController,
+  getSingleBrandController,
 } = require("../../controller/brand/brand.controller");
 const { baseRoute } = require("../../utils/constant");
 const brandSchemaValidator = require("../../validators/brand.validator");
@@ -17,6 +18,7 @@ brandRouter.post(
   createBrandController
 );
 brandRouter.get(`${baseRoute}/get-brands`, getAllBrandsController);
+brandRouter.get(`${baseRoute}/get-brand/:id`, getSingleBrandController);
 brandRouter.patch(`${baseRoute}/update-brand/:id`, updateBrandController);
 brandRouter.delete(`${baseRoute}/delete-brand/:id`, deleteBrandController);
 
