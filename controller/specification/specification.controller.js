@@ -38,6 +38,7 @@ const getSpecificationController = async (req, res) => {
     const searchText = req?.query?.searchText;
     const status = req?.query?.status;
     const brand = req?.query?.brand;
+    const deviceId = req?.query?.deviceId;
     const sortField = req?.query?.sortField || "createdAt";
     const sortOrder = req?.query?.sortOrder || "desc";
     // filters
@@ -48,6 +49,9 @@ const getSpecificationController = async (req, res) => {
     }
     if (brand) {
       filters.brand = brand;
+    }
+    if (deviceId) {
+      filters.deviceId = deviceId;
     }
     const result = await getSpecificationService(
       limit,

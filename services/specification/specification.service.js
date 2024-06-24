@@ -81,6 +81,9 @@ const getSpecificationService = async (
       if (filters.brand) {
         query["brandInfo.manufactureName"] = filters.brand;
       }
+      if (filters.deviceId) {
+        query.deviceId = filters.deviceId;
+      }
     }
 
     // Determine sort order
