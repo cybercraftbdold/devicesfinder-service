@@ -2,7 +2,7 @@ const DeviceReviewModel = require("../../models/device-review-model/device-revie
 
 // Create Device Review
 const createDeviceReviewService = async (payload) => {
-  let { title, deviceId, description, metaInformation } = payload;
+  let { title, deviceId, image, description, metaInformation } = payload;
 
   try {
     const duplicateDeviceReview = await DeviceReviewModel.findOne({ deviceId });
@@ -17,6 +17,7 @@ const createDeviceReviewService = async (payload) => {
     const deviceReview = new DeviceReviewModel({
       title,
       deviceId,
+      image,
       description,
       metaInformation,
     });
@@ -39,6 +40,61 @@ const createDeviceReviewService = async (payload) => {
   }
 };
 
+// Get Device Review
+const getDeviceReviewService = async (
+  limit,
+  skip,
+  searchText,
+  filters,
+  sortField = "createdAt",
+  sortOrder = "desc"
+) => {
+  try {
+    let query = {};
+    if (searchText) {
+      query.$or = [{ title: { $regex: searchText, $options: "i" } }];
+    }
+
+    // Apply filters if they are provided
+    if (filters) {
+    }
+
+    // Determine sort order
+    const sort = {};
+    sort[sortField] = sortOrder.toLowerCase() === "asc" ? 1 : -1;
+
+    const res = await DeviceReviewModel.aggregate([
+      { $match: query },
+      { $sort: sort },
+      {
+        $facet: {
+          data: [{ $skip: skip }, { $limit: limit }],
+          totalCount: [{ $count: "value" }],
+        },
+      },
+    ]);
+    if (res) {
+      return {
+        isSuccess: true,
+        response: res[0],
+        message: "Data getting successful",
+      };
+    } else {
+      return {
+        isSuccess: true,
+        response: [],
+        message: "No data found",
+      };
+    }
+  } catch (error) {
+    return {
+      isSuccess: false,
+      message: error.message,
+    };
+  }
+};
+
 module.exports = {
   createDeviceReviewService,
+  getDeviceReviewService,
 };
