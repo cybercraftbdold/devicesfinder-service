@@ -1,9 +1,12 @@
 const { ObjectId } = require("mongodb");
 const ComparisonModel = require("../../models/specification-model/comparison.model");
 const compareSpecs = require("../../helpers/compare/compareSpecs");
+const updateWithDeviceIdService = require("../../helpers/service-helpers/updateWithDeviceId");
+
 // create mobile comparison service
 const createComparisonService = async (payload) => {
-  let { title, ratings, phones, metaInformation, deviceId } = payload;
+  let { title, reviewStatus, ratings, phones, metaInformation, deviceId } =
+    payload;
   try {
     //TODO: add unique canonical url
 
@@ -15,8 +18,19 @@ const createComparisonService = async (payload) => {
     // // Update metaInformation with the unique canonical URL
     // metaInformation.canonicalUrl = uniqueCanonicalUrl;
 
+    const duplicateComparison = await ComparisonModel.findOne({ deviceId });
+
+    // If comparison exists update that
+    if (duplicateComparison)
+      return await updateWithDeviceIdService(
+        payload,
+        ComparisonModel,
+        "Comparison"
+      );
+
     const comparisonModel = new ComparisonModel({
       title,
+      reviewStatus,
       ratings,
       phones,
       deviceId,
@@ -28,7 +42,7 @@ const createComparisonService = async (payload) => {
       return {
         isSuccess: true,
         response: res,
-        message: "Mobile comparison create successfull",
+        message: "Mobile comparison published successfully",
       };
     }
   } catch (error) {
@@ -38,6 +52,7 @@ const createComparisonService = async (payload) => {
     };
   }
 };
+
 // get comparison
 const getComparisonService = async (
   limit,

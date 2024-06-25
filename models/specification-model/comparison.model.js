@@ -5,10 +5,18 @@ const Schema = mongoose.Schema;
 const comparisonSchema = new Schema(
   {
     title: String,
-    ratings: [Object],
+    ratings: {
+      type: [Object],
+      required: true,
+    },
     specificationId: String,
     deviceId: {
       type: String,
+      required: true,
+    },
+    reviewStatus: {
+      type: String,
+      required: true,
     },
     images: Schema.Types.Mixed,
     viewCount: { type: Number, default: 0 },
