@@ -9,6 +9,8 @@ const createSpecificationService = async (payload) => {
   let {
     title,
     deviceId,
+    deviceType,
+    deviceSubType,
     specification,
     cons,
     pros,
@@ -33,6 +35,8 @@ const createSpecificationService = async (payload) => {
     const specificationInstance = new MobileSpecificationModel({
       title,
       deviceId,
+      deviceType,
+      deviceSubType,
       specification,
       cons,
       pros,

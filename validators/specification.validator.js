@@ -4,7 +4,9 @@ const metaInformationSchemaValidator = require("./meta-information.validator");
 // Define the Joi schema for the specification schema
 const specificationSchemaValidator = Joi.object({
   title: Joi.string().required(),
-  deviceId: Joi.string().optional(),
+  deviceId: Joi.string().required(),
+  deviceType: Joi.string().required(),
+  deviceSubType: Joi.string().required(),
   websiteBase: Joi.string().optional(),
   specification: Joi.any().required(),
   images: Joi.any().required(),
