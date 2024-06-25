@@ -4,6 +4,9 @@ const {
   combainMobileSpecificationLookup,
 } = require("../../db-query/lookup/combain-specification-lookup");
 const updateWithDeviceIdService = require("../../helpers/service-helpers/updateWithDeviceId");
+const {
+  generateUniqueIdentifier,
+} = require("../../helpers/generateUniqueCanonicalUrl");
 
 // create mobile specification
 const createSpecificationService = async (payload) => {
@@ -22,6 +25,15 @@ const createSpecificationService = async (payload) => {
   } = payload;
 
   try {
+    // Generate a unique canonical URL for the specification post
+    const uniqueCanonicalUrl = await generateUniqueIdentifier(
+      MobileSpecificationModel,
+      metaInformation.canonicalUrl,
+      "metaInformation.canonicalUrl"
+    );
+    // Update metaInformation with the unique canonical URL
+    metaInformation.canonicalUrl = uniqueCanonicalUrl;
+
     const duplicateSpecification = await MobileSpecificationModel.findOne({
       deviceId,
     });

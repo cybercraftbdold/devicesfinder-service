@@ -1,10 +1,21 @@
 const { ObjectId } = require("mongodb");
 const BlogModel = require("../../models/blog-model/blog.model");
+const {
+  generateUniqueIdentifier,
+} = require("../../helpers/generateUniqueCanonicalUrl");
 
 const createBolgService = async (payload) => {
   let { title, deviceId, description, images, metaInformation } = payload;
 
   try {
+    // Generate a unique canonical URL for the specification post
+    const uniqueCanonicalUrl = await generateUniqueIdentifier(
+      BlogModel,
+      metaInformation.canonicalUrl,
+      "metaInformation.canonicalUrl"
+    );
+    // Update metaInformation with the unique canonical URL
+    metaInformation.canonicalUrl = uniqueCanonicalUrl;
     // Proceed to create a new BlogModel instance with the provided payload
     const blog = new BlogModel({
       title,
