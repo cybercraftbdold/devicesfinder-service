@@ -1,4 +1,4 @@
-const updateWithDeviceidService = async (payload, model, serviceName) => {
+const updateWithDeviceIdService = async (payload, model, serviceName) => {
   try {
     const updatedData = await model.findOneAndUpdate(
       { deviceId: payload.deviceId },
@@ -26,4 +26,4 @@ const updateWithDeviceidService = async (payload, model, serviceName) => {
   }
 };
 
-module.exports = updateWithDeviceidService;
+module.exports = updateWithDeviceIdService;

@@ -11,8 +11,10 @@ const faqListItemSchema = Joi.object({
 const deviceReviewSchemaValidator = Joi.object({
   title: Joi.string().required(),
   deviceId: Joi.string().optional(),
+  reviewStatus: Joi.string().required(),
   websiteBase: Joi.string().optional(),
   faqList: Joi.array().items(faqListItemSchema).required(),
+  metaInformation: metaInformationSchemaValidator,
 });
 
 module.exports = deviceReviewSchemaValidator;
