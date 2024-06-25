@@ -30,6 +30,7 @@ const mobileSpecificationSchema = new Schema(
   {
     title: String,
     deviceId: { type: String },
+    reviewStatus: String,
     specification: {
       type: Schema.Types.Mixed,
     },
