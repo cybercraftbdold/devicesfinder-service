@@ -1,8 +1,10 @@
 const updateWithDeviceIdService = async (payload, model, serviceName) => {
   try {
+    const { deviceId, ...updatePayload } = payload;
+
     const updatedData = await model.findOneAndUpdate(
-      { deviceId: payload.deviceId },
-      { $set: payload },
+      { deviceId },
+      { $set: updatePayload },
       { new: true }
     );
 

@@ -28,6 +28,7 @@ const createComparisonController = async (req, res, next) => {
     next(error);
   }
 };
+
 //get all comparison
 const getComparisonController = async (req, res) => {
   try {
