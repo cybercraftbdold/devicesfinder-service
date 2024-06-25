@@ -30,6 +30,8 @@ const mobileSpecificationSchema = new Schema(
   {
     title: String,
     deviceId: { type: String },
+    deviceType: { type: String, require: true },
+    deviceSubType: { type: String, require: true },
     specification: {
       type: Schema.Types.Mixed,
     },
