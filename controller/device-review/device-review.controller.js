@@ -38,10 +38,15 @@ const getDeviceReviewController = async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
     const searchText = req?.query?.searchText;
+    const deviceId = req?.query?.deviceId;
     const sortField = req?.query?.sortField || "createdAt";
     const sortOrder = req?.query?.sortOrder || "desc";
     // filters
     const filters = {};
+
+    if (deviceId) {
+      filters.deviceId = deviceId;
+    }
 
     const result = await getDeviceReviewService(
       limit,

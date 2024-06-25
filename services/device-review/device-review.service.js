@@ -1,3 +1,4 @@
+const updateWithDeviceIdService = require("../../helpers/service-helpers/updateWithDeviceId");
 const DeviceReviewModel = require("../../models/device-review-model/device-review.model");
 
 // Create Device Review
@@ -7,11 +8,13 @@ const createDeviceReviewService = async (payload) => {
   try {
     const duplicateDeviceReview = await DeviceReviewModel.findOne({ deviceId });
 
+    // If device review exists update that
     if (duplicateDeviceReview)
-      return {
-        isSuccess: false,
-        message: "Device Review for this id is already created.",
-      };
+      return await updateWithDeviceIdService(
+        payload,
+        DeviceReviewModel,
+        "Device Review"
+      );
 
     // Proceed to create a new DeviceReviewModel instance with the provided payload
     const deviceReview = new DeviceReviewModel({
@@ -29,7 +32,7 @@ const createDeviceReviewService = async (payload) => {
       return {
         isSuccess: true,
         response: newDeviceReview,
-        message: "Device Review created successfully",
+        message: "Device Review published successfully",
       };
     }
   } catch (error) {
@@ -57,6 +60,9 @@ const getDeviceReviewService = async (
 
     // Apply filters if they are provided
     if (filters) {
+      if (filters.deviceId) {
+        query.deviceId = filters.deviceId;
+      }
     }
 
     // Determine sort order
