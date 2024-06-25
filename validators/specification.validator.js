@@ -5,6 +5,7 @@ const metaInformationSchemaValidator = require("./meta-information.validator");
 const specificationSchemaValidator = Joi.object({
   title: Joi.string().required(),
   deviceId: Joi.string().optional(),
+  reviewStatus: Joi.string().required(),
   websiteBase: Joi.string().optional(),
   specification: Joi.any().required(),
   images: Joi.any().required(),
