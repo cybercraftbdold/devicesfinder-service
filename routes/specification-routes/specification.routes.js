@@ -4,6 +4,7 @@ const {
   getSingleSpecificationController,
   getTopPopularSpecificationsController,
   createSpecificationController,
+  getSingleSpecificationByDeviceIdController,
 } = require("../../controller/specification/specification.controller");
 const { baseRoute } = require("../../utils/constant");
 const requestValidator = require("../../middleware/request-validator");
@@ -27,6 +28,12 @@ specificationRouter.get(
 specificationRouter.get(
   `${baseRoute}/get-single-specification/:identifier`,
   getSingleSpecificationController
+);
+
+// get single specification by device id route
+specificationRouter.get(
+  `${baseRoute}/get-single-specification-by-deviceId/:deviceId`,
+  getSingleSpecificationByDeviceIdController
 );
 
 // get top view populer specification

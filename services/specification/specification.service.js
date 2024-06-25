@@ -10,6 +10,7 @@ const createSpecificationService = async (payload) => {
   let {
     title,
     deviceId,
+    reviewStatus,
     specification,
     cons,
     pros,
@@ -36,6 +37,7 @@ const createSpecificationService = async (payload) => {
     const specificationInstance = new MobileSpecificationModel({
       title,
       deviceId,
+      reviewStatus,
       specification,
       cons,
       pros,
@@ -259,6 +261,32 @@ const getSingleSpecificationService = async (identifier, searchBy) => {
   }
 };
 
+// get speicification by device id
+const getSingleSpecificationByDeviceIdService = async (deviceId) => {
+  try {
+    const specificationByDeviceId = await MobileSpecificationModel.findOne({
+      deviceId,
+    });
+
+    if (!specificationByDeviceId)
+      return {
+        isSuccess: false,
+        message: "No specification found with the given device id!",
+      };
+
+    return {
+      isSuccess: true,
+      message: "Data getting successfully",
+      response: specificationByDeviceId,
+    };
+  } catch (error) {
+    return {
+      isSuccess: false,
+      message: error.message,
+    };
+  }
+};
+
 // get top populer specification
 const getTopPopularSpecificationsService = async (limit) => {
   try {
@@ -291,4 +319,5 @@ module.exports = {
   getSpecificationService,
   getSingleSpecificationService,
   getTopPopularSpecificationsService,
+  getSingleSpecificationByDeviceIdService,
 };
