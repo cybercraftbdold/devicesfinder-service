@@ -17,6 +17,7 @@ const deviceReviewSchema = new Schema(
   {
     title: String,
     deviceId: String,
+    reviewStatus: String,
     image: mobileReviewImageSchema,
     description: String,
     metaInformation: {

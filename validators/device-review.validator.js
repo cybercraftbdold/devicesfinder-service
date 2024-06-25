@@ -13,6 +13,7 @@ const deviceReviewImageSchemaValidator = Joi.object({
 const deviceReviewSchemaValidator = Joi.object({
   title: Joi.string().required(),
   deviceId: Joi.string().optional(),
+  reviewStatus: Joi.string().required(),
   image: deviceReviewImageSchemaValidator,
   websiteBase: Joi.string().optional(),
   description: Joi.string().required(),

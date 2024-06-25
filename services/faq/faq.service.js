@@ -37,6 +37,65 @@ const createFaqService = async (payload) => {
   }
 };
 
+// Get All FAQ
+const getAllFaqService = async (
+  limit,
+  skip,
+  searchText,
+  filters,
+  sortField = "createdAt",
+  sortOrder = "desc"
+) => {
+  try {
+    let query = {};
+
+    if (searchText) {
+      query.$or = [{ title: { $regex: searchText, $options: "i" } }];
+    }
+
+    // Apply filters if they are provided
+    if (filters) {
+      if (filters.deviceId) {
+        query.deviceId = filters.deviceId;
+      }
+    }
+
+    // Determine sort order
+    const sort = {};
+    sort[sortField] = sortOrder.toLowerCase() === "asc" ? 1 : -1;
+
+    const res = await FaqModel.aggregate([
+      { $match: query },
+      { $sort: sort },
+      {
+        $facet: {
+          data: [{ $skip: skip }, { $limit: limit }],
+          totalCount: [{ $count: "value" }],
+        },
+      },
+    ]);
+    if (res) {
+      return {
+        isSuccess: true,
+        response: res[0],
+        message: "Data getting successful",
+      };
+    } else {
+      return {
+        isSuccess: true,
+        response: [],
+        message: "No data found",
+      };
+    }
+  } catch (error) {
+    return {
+      isSuccess: false,
+      message: error.message,
+    };
+  }
+};
+
 module.exports = {
   createFaqService,
+  getAllFaqService,
 };
