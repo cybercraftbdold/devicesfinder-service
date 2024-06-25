@@ -1,5 +1,8 @@
 const { Router } = require("express");
-const { createFaqController } = require("../../controller/faq/faq.controller");
+const {
+  createFaqController,
+  getAllFaqController,
+} = require("../../controller/faq/faq.controller");
 const { baseRoute } = require("../../utils/constant");
 const requestValidator = require("../../middleware/request-validator");
 const faqSchemaValidator = require("../../validators/faq.validator");
@@ -12,5 +15,8 @@ faqRouter.post(
   requestValidator(faqSchemaValidator),
   createFaqController
 );
+
+// get all faq route
+faqRouter.get(`${baseRoute}/get-faqs`, getAllFaqController);
 
 module.exports = faqRouter;
