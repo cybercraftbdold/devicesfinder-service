@@ -4,6 +4,7 @@ const {
   getSpecificationService,
   getSingleSpecificationService,
   getTopPopularSpecificationsService,
+  getSingleSpecificationByDeviceIdService,
 } = require("../../services/specification/specification.service");
 
 // create mobile specification
@@ -106,6 +107,32 @@ const getSingleSpecificationController = async (req, res) => {
   }
 };
 
+const getSingleSpecificationByDeviceIdController = async (req, res) => {
+  try {
+    const deviceId = req.params.deviceId;
+
+    const result = await getSingleSpecificationByDeviceIdService(deviceId);
+
+    if (result && result.isSuccess) {
+      res.status(200).json({
+        message: result?.message,
+        isSuccess: result.isSuccess,
+        data: result?.response,
+      });
+    } else {
+      res.status(404).json({
+        message: result.message,
+        isSuccess: result.isSuccess,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+      isSuccess: false,
+    });
+  }
+};
+
 //get all mobile specification
 const getTopPopularSpecificationsController = async (req, res) => {
   try {
@@ -136,4 +163,5 @@ module.exports = {
   getSpecificationController,
   getSingleSpecificationController,
   getTopPopularSpecificationsController,
+  getSingleSpecificationByDeviceIdController,
 };

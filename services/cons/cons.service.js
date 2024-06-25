@@ -3,7 +3,7 @@ const ConsModel = require("../../models/cons-model/cons.model");
 
 // Create Device Review
 const createConsService = async (payload) => {
-  let { title, deviceId, description } = payload;
+  let { title, deviceId, reviewStatus, description } = payload;
 
   try {
     const duplicateCons = await ConsModel.findOne({
@@ -18,6 +18,7 @@ const createConsService = async (payload) => {
     const cons = new ConsModel({
       title,
       deviceId,
+      reviewStatus,
       description,
     });
 

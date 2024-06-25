@@ -3,7 +3,7 @@ const FaqModel = require("../../models/faq-model/faq.model");
 
 // Create Faq
 const createFaqService = async (payload) => {
-  let { title, deviceId, faqList } = payload;
+  let { title, deviceId, reviewStatus, faqList } = payload;
 
   try {
     const duplicateFaq = await FaqModel.findOne({ deviceId });
@@ -16,6 +16,7 @@ const createFaqService = async (payload) => {
     const faq = new FaqModel({
       title,
       deviceId,
+      reviewStatus,
       faqList,
     });
 
