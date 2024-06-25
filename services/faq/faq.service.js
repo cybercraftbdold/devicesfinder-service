@@ -1,3 +1,4 @@
+const updateWithDeviceIdService = require("../../helpers/service-helpers/updateWithDeviceId");
 const FaqModel = require("../../models/faq-model/faq.model");
 
 // Create Faq
@@ -7,11 +8,9 @@ const createFaqService = async (payload) => {
   try {
     const duplicateFaq = await FaqModel.findOne({ deviceId });
 
+    // updating faq if faq already exists
     if (duplicateFaq)
-      return {
-        isSuccess: false,
-        message: "Faq for this device is already created",
-      };
+      return await updateWithDeviceIdService(payload, FaqModel, "Faq");
 
     // Proceed to create a new DeviceReviewModel instance with the provided payload
     const faq = new FaqModel({
@@ -20,14 +19,14 @@ const createFaqService = async (payload) => {
       faqList,
     });
 
-    // Attempt to save the new blog post to the database
+    // Attempt to save the new faq to the database
     const newFaq = await faq.save();
 
     if (newFaq) {
       return {
         isSuccess: true,
         response: newFaq,
-        message: "Device Faq created successfully",
+        message: "Device Faq published successfully",
       };
     }
   } catch (error) {

@@ -1,17 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const metaInforamtionSchema = require("../../helpers/common-schema/metaInformationSchema");
 
-// Define schema for the meta information
-const metaInfoSchema = new Schema(
-  {
-    canonicalUrl: String,
-    mainKeyword: String,
-    metaDescription: String,
-    metaTitle: String,
-    seedKeyword: [String],
-  },
-  { _id: false }
-);
 // Define schema for the brand information
 const brandInfoSchema = new Schema(
   {
@@ -38,7 +28,7 @@ const mobileSpecificationSchema = new Schema(
       type: Schema.Types.Mixed,
       require: true,
     },
-    metaInformation: metaInfoSchema,
+    metaInformation: metaInforamtionSchema,
     brandInfo: brandInfoSchema,
     viewCount: { type: Number, default: 0 },
   },

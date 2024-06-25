@@ -3,7 +3,7 @@ const MobileSpecificationModel = require("../../models/specification-model/speci
 const {
   combainMobileSpecificationLookup,
 } = require("../../db-query/lookup/combain-specification-lookup");
-const updateWithDeviceidService = require("../../helpers/service-helpers/updateWithDeviceId");
+const updateWithDeviceIdService = require("../../helpers/service-helpers/updateWithDeviceId");
 
 // create mobile specification
 const createSpecificationService = async (payload) => {
@@ -25,7 +25,7 @@ const createSpecificationService = async (payload) => {
 
     // update specification if there is duplicate specification
     if (duplicateSpecification) {
-      return await updateWithDeviceidService(
+      return await updateWithDeviceIdService(
         payload,
         MobileSpecificationModel,
         "Specification"
