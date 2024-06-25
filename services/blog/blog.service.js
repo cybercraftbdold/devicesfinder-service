@@ -5,7 +5,7 @@ const {
 } = require("../../helpers/generateUniqueCanonicalUrl");
 
 const createBolgService = async (payload) => {
-  let { title, deviceId, description, images, metaInformation } = payload;
+  let { title, deviceId, description, image, metaInformation } = payload;
 
   try {
     // Generate a unique canonical URL for the specification post
@@ -21,7 +21,7 @@ const createBolgService = async (payload) => {
       title,
       deviceId,
       description,
-      images,
+      image,
       metaInformation,
     });
 

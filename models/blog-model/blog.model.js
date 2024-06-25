@@ -13,7 +13,14 @@ const blogSchema = new Schema(
       type: String,
       require: true,
     },
-    images: Schema.Types.Mixed,
+    // images: Schema.Types.Mixed,
+    image: {
+      imageUrl: { type: String, default: "" },
+      title: { type: String, default: "" },
+      altText: { type: String, default: "" },
+      caption: { type: String, default: "" },
+      description: { type: String, default: "" },
+    },
 
     metaInformation: {
       canonicalUrl: String,
