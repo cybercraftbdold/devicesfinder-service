@@ -30,7 +30,7 @@ const createBuyingGuideService = async (payload) => {
       return {
         isSuccess: true,
         response: newBuyingGuide,
-        message: "Buying Guide created successfully",
+        message: "Buying Guide published successfully",
       };
     }
   } catch (error) {
