@@ -336,10 +336,57 @@ const getTopPopularSpecificationsService = async (limit) => {
   }
 };
 
+
+// generate device types and sub types
+const getUsedUniqueTypsService = async () => {
+  try {
+    // Fetch unique used device types and subtypes from the database
+    let usedDeviceTypes = await MobileSpecificationModel.distinct("deviceType");
+    let usedDeviceSubTypes = await MobileSpecificationModel.aggregate([
+      {
+        $group: {
+          _id: "$deviceType",
+          subTypes: { $addToSet: "$deviceSubType" },
+        },
+      },
+    ]);
+
+    // Map the device types and subtypes to the desired format
+    let types = usedDeviceTypes.map((type) => {
+      // Find subtypes for the current device type
+      let subTypes =
+        usedDeviceSubTypes.find((item) => item._id === type)?.subTypes || [];
+      return {
+        deviceType: {
+          name: type,
+          slug: `/${type.toLowerCase().replace(/\s+/g, "-")}`,
+        },
+        deviceSubType: subTypes.map((subType) => ({
+          name: subType,
+          slug: `/${type.toLowerCase().replace(/\s+/g, "-")}/${subType
+            .toLowerCase()
+            .replace(/\s+/g, "-")}`,
+        })),
+      };
+    });
+
+    return {
+      isSuccess: true,
+      response: types,
+    };
+  } catch (error) {
+    return {
+      isSuccess: false,
+      message: error.message,
+    };
+  }
+};
+
 module.exports = {
   createSpecificationService,
   getSpecificationService,
   getSingleSpecificationService,
   getTopPopularSpecificationsService,
   getSingleSpecificationByDeviceIdService,
+  getUsedUniqueTypsService,
 };

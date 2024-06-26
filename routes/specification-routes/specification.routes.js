@@ -5,6 +5,7 @@ const {
   getTopPopularSpecificationsController,
   createSpecificationController,
   getSingleSpecificationByDeviceIdController,
+  getUsedUniqueTypsController,
 } = require("../../controller/specification/specification.controller");
 const { baseRoute } = require("../../utils/constant");
 const requestValidator = require("../../middleware/request-validator");
@@ -40,6 +41,11 @@ specificationRouter.get(
 specificationRouter.get(
   `${baseRoute}/get-top-specification`,
   getTopPopularSpecificationsController
+);
+// get top view populer specification
+specificationRouter.get(
+  `${baseRoute}/get-unique-types`,
+  getUsedUniqueTypsController
 );
 
 module.exports = specificationRouter;
