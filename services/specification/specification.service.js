@@ -106,10 +106,10 @@ const getSpecificationService = async (
         query.deviceId = filters.deviceId;
       }
       if (filters.deviceType) {
-        query.deviceType = filters.deviceType;
+        query["deviceType.name"] = filters.deviceType;
       }
       if (filters.deviceSubType) {
-        query.deviceSubType = filters.deviceSubType;
+        query["deviceSubType.name"] = filters.deviceSubType;
       }
     }
 
@@ -339,12 +339,15 @@ const getTopPopularSpecificationsService = async (limit) => {
 const getUsedUniqueTypsService = async () => {
   try {
     // Fetch all documents to get complete device type and subtype information
-    let devices = await MobileSpecificationModel.find({}, 'deviceType deviceSubType');
+    let devices = await MobileSpecificationModel.find(
+      {},
+      "deviceType deviceSubType"
+    );
 
     // Initialize a map to group subtypes under their respective types
     let typesMap = new Map();
 
-    devices.forEach(device => {
+    devices.forEach((device) => {
       let { deviceType, deviceSubType } = device;
 
       // Ensure deviceType is an object and has the required fields
@@ -354,9 +357,9 @@ const getUsedUniqueTypsService = async () => {
             deviceType: {
               name: deviceType.name,
               slug: deviceType.slug,
-              description: deviceType.description
+              description: deviceType.description,
             },
-            deviceSubType: []
+            deviceSubType: [],
           });
         }
 
@@ -365,11 +368,11 @@ const getUsedUniqueTypsService = async () => {
           let subTypes = typesMap.get(deviceType.name).deviceSubType;
 
           // Avoid adding duplicate subtypes
-          if (!subTypes.some(sub => sub.name === deviceSubType.name)) {
+          if (!subTypes.some((sub) => sub.name === deviceSubType.name)) {
             subTypes.push({
               name: deviceSubType.name,
               slug: deviceSubType.slug,
-              description: deviceSubType.description
+              description: deviceSubType.description,
             });
           }
         }
@@ -381,16 +384,15 @@ const getUsedUniqueTypsService = async () => {
 
     return {
       isSuccess: true,
-      response: types
+      response: types,
     };
   } catch (error) {
     return {
       isSuccess: false,
-      message: error.message
+      message: error.message,
     };
   }
 };
-
 
 module.exports = {
   createSpecificationService,
