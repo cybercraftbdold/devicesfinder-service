@@ -3,7 +3,7 @@ const FaqModel = require("../../models/faq-model/faq.model");
 
 // Create Faq
 const createFaqService = async (payload) => {
-  let { title, deviceId, reviewStatus, faqList } = payload;
+  let { title, deviceId, reviewStatus, faqList, metaInformation } = payload;
 
   try {
     const duplicateFaq = await FaqModel.findOne({ deviceId });
@@ -18,6 +18,7 @@ const createFaqService = async (payload) => {
       deviceId,
       reviewStatus,
       faqList,
+      metaInformation,
     });
 
     // Attempt to save the new faq to the database
