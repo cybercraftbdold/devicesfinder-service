@@ -39,6 +39,8 @@ const getSpecificationController = async (req, res) => {
     const searchText = req?.query?.searchText;
     const status = req?.query?.status;
     const brand = req?.query?.brand;
+    const deviceSubType = req?.query?.deviceSubType;
+    const deviceType = req?.query?.deviceType;
     const deviceId = req?.query?.deviceId;
     const sortField = req?.query?.sortField || "createdAt";
     const sortOrder = req?.query?.sortOrder || "desc";
@@ -53,6 +55,12 @@ const getSpecificationController = async (req, res) => {
     }
     if (deviceId) {
       filters.deviceId = deviceId;
+    }
+    if (deviceSubType) {
+      filters.deviceSubType = deviceSubType;
+    }
+    if (deviceType) {
+      filters.deviceType = deviceType;
     }
     const result = await getSpecificationService(
       limit,

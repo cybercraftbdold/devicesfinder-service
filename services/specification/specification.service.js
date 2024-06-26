@@ -105,6 +105,12 @@ const getSpecificationService = async (
       if (filters.deviceId) {
         query.deviceId = filters.deviceId;
       }
+      if (filters.deviceType) {
+        query.deviceType = filters.deviceType;
+      }
+      if (filters.deviceSubType) {
+        query.deviceSubType = filters.deviceSubType;
+      }
     }
 
     // Determine sort order
