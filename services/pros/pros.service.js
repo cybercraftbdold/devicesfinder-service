@@ -3,7 +3,7 @@ const ProsModel = require("../../models/pros-model/pros.model");
 
 // Create Device Review
 const createProsService = async (payload) => {
-  let { title, deviceId, reviewStatus, description } = payload;
+  let { title, deviceId, reviewStatus, description, metaInformation } = payload;
 
   try {
     const duplicatePros = await ProsModel.findOne({
@@ -20,6 +20,7 @@ const createProsService = async (payload) => {
       deviceId,
       reviewStatus,
       description,
+      metaInformation,
     });
 
     // Attempt to save the new pros to the database
