@@ -336,51 +336,61 @@ const getTopPopularSpecificationsService = async (limit) => {
   }
 };
 
-
-// generate device types and sub types
 const getUsedUniqueTypsService = async () => {
   try {
-    // Fetch unique used device types and subtypes from the database
-    let usedDeviceTypes = await MobileSpecificationModel.distinct("deviceType");
-    let usedDeviceSubTypes = await MobileSpecificationModel.aggregate([
-      {
-        $group: {
-          _id: "$deviceType",
-          subTypes: { $addToSet: "$deviceSubType" },
-        },
-      },
-    ]);
+    // Fetch all documents to get complete device type and subtype information
+    let devices = await MobileSpecificationModel.find({}, 'deviceType deviceSubType');
 
-    // Map the device types and subtypes to the desired format
-    let types = usedDeviceTypes.map((type) => {
-      // Find subtypes for the current device type
-      let subTypes =
-        usedDeviceSubTypes.find((item) => item._id === type)?.subTypes || [];
-      return {
-        deviceType: {
-          name: type,
-          slug: `/${type.toLowerCase().replace(/\s+/g, "-")}`,
-        },
-        deviceSubType: subTypes.map((subType) => ({
-          name: subType,
-          slug: `/${type.toLowerCase().replace(/\s+/g, "-")}/${subType
-            .toLowerCase()
-            .replace(/\s+/g, "-")}`,
-        })),
-      };
+    // Initialize a map to group subtypes under their respective types
+    let typesMap = new Map();
+
+    devices.forEach(device => {
+      let { deviceType, deviceSubType } = device;
+
+      // Ensure deviceType is an object and has the required fields
+      if (deviceType && deviceType.name && deviceType.slug) {
+        if (!typesMap.has(deviceType.name)) {
+          typesMap.set(deviceType.name, {
+            deviceType: {
+              name: deviceType.name,
+              slug: deviceType.slug,
+              description: deviceType.description
+            },
+            deviceSubType: []
+          });
+        }
+
+        // Ensure deviceSubType is an object and has the required fields
+        if (deviceSubType && deviceSubType.name && deviceSubType.slug) {
+          let subTypes = typesMap.get(deviceType.name).deviceSubType;
+
+          // Avoid adding duplicate subtypes
+          if (!subTypes.some(sub => sub.name === deviceSubType.name)) {
+            subTypes.push({
+              name: deviceSubType.name,
+              slug: deviceSubType.slug,
+              description: deviceSubType.description
+            });
+          }
+        }
+      }
     });
+
+    // Convert map to an array
+    let types = Array.from(typesMap.values());
 
     return {
       isSuccess: true,
-      response: types,
+      response: types
     };
   } catch (error) {
     return {
       isSuccess: false,
-      message: error.message,
+      message: error.message
     };
   }
 };
+
 
 module.exports = {
   createSpecificationService,
