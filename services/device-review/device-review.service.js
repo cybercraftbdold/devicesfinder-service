@@ -1,3 +1,4 @@
+const { pipeline } = require("nodemailer/lib/xoauth2");
 const updateWithDeviceIdService = require("../../helpers/service-helpers/updateWithDeviceId");
 const DeviceReviewModel = require("../../models/device-review-model/device-review.model");
 
@@ -60,27 +61,48 @@ const getDeviceReviewService = async (
       query.$or = [{ title: { $regex: searchText, $options: "i" } }];
     }
 
+    // Determine sort order
+    const sort = {};
+    sort[sortField] = sortOrder.toLowerCase() === "asc" ? 1 : -1;
+
+    // Desclaring Pipeline
+    let pipeline = [{ $match: query }, { $sort: sort }];
+
     // Apply filters if they are provided
     if (filters) {
       if (filters.deviceId) {
         query.deviceId = filters.deviceId;
       }
+
+      if (filters && filters.hasSpecification) {
+        pipeline.push(
+          {
+            $lookup: {
+              from: "mobilespecifications",
+              localField: "deviceId",
+              foreignField: "deviceId",
+              as: "specifications",
+            },
+          },
+          {
+            $match: {
+              "specifications.0": { $exists: true }, // Filter out reviews with no matching specifications
+            },
+          }
+        );
+      }
     }
 
-    // Determine sort order
-    const sort = {};
-    sort[sortField] = sortOrder.toLowerCase() === "asc" ? 1 : -1;
-
-    const res = await DeviceReviewModel.aggregate([
-      { $match: query },
-      { $sort: sort },
-      {
-        $facet: {
-          data: [{ $skip: skip }, { $limit: limit }],
-          totalCount: [{ $count: "value" }],
-        },
+    // Lastly push this stage to the pipeline
+    pipeline.push({
+      $facet: {
+        data: [{ $skip: skip }, { $limit: limit }],
+        totalCount: [{ $count: "value" }],
       },
-    ]);
+    });
+
+    // Getting data from DB
+    const res = await DeviceReviewModel.aggregate(pipeline);
     if (res) {
       return {
         isSuccess: true,

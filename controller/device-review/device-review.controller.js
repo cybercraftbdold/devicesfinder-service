@@ -39,6 +39,7 @@ const getDeviceReviewController = async (req, res) => {
     const skip = (page - 1) * limit;
     const searchText = req?.query?.searchText;
     const deviceId = req?.query?.deviceId;
+    const hasSpecification = req?.query?.hasSpecification;
     const sortField = req?.query?.sortField || "createdAt";
     const sortOrder = req?.query?.sortOrder || "desc";
     // filters
@@ -46,6 +47,9 @@ const getDeviceReviewController = async (req, res) => {
 
     if (deviceId) {
       filters.deviceId = deviceId;
+    }
+    if (hasSpecification) {
+      filters.hasSpecification = hasSpecification;
     }
 
     const result = await getDeviceReviewService(
@@ -56,6 +60,8 @@ const getDeviceReviewController = async (req, res) => {
       sortField,
       sortOrder
     );
+
+    console.log(result);
 
     if (result && result.isSuccess) {
       res.status(200).json({
