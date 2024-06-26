@@ -3,7 +3,7 @@ const BuyingGuideModel = require("../../models/buying-guide-model/buying-guide.m
 
 // Create Buying Guide
 const createBuyingGuideService = async (payload) => {
-  let { title, deviceId, reviewStatus, description } = payload;
+  let { title, deviceId, reviewStatus, description, metaInformation } = payload;
 
   try {
     const duplicateBuyingGuide = await BuyingGuideModel.findOne({ deviceId });
@@ -22,6 +22,7 @@ const createBuyingGuideService = async (payload) => {
       deviceId,
       reviewStatus,
       description,
+      metaInformation,
     });
 
     // Attempt to save the buying guide to the database
