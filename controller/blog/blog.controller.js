@@ -44,6 +44,7 @@ const getAllBlogsController = async (req, res) => {
     const searchText = req?.query?.searchText;
     const status = req?.query?.status;
     const deviceId = req?.query?.deviceId;
+    const keyWordId = req?.query?.keyWordId;
     const sortField = req?.query?.sortField || "createdAt";
     const sortOrder = req?.query?.sortOrder || "desc";
     // filters
@@ -54,6 +55,9 @@ const getAllBlogsController = async (req, res) => {
     }
     if (deviceId) {
       filters.deviceId = deviceId;
+    }
+    if (keyWordId) {
+      filters.keyWordId = keyWordId;
     }
 
     const result = await getBlogService(

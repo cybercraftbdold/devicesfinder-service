@@ -69,6 +69,9 @@ const getBlogService = async (
       if (filters.deviceId) {
         query.deviceId = filters.deviceId;
       }
+      if (filters.keyWordId) {
+        query.keyWordId = filters.keyWordId;
+      }
     }
 
     // Determine sort order
