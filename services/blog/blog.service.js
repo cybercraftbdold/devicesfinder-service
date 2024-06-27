@@ -3,6 +3,8 @@ const BlogModel = require("../../models/blog-model/blog.model");
 const {
   generateUniqueIdentifier,
 } = require("../../helpers/generateUniqueCanonicalUrl");
+const deleteItem = require("../../helpers/service-helpers/deleteItem");
+const updateItem = require("../../helpers/service-helpers/updateItemWithId");
 
 const createBolgService = async (payload) => {
   let { title, deviceId, description, image, metaInformation } = payload;
@@ -157,4 +159,19 @@ const getSingleBlogService = async (identifier, searchBy) => {
   }
 };
 
-module.exports = { createBolgService, getBlogService, getSingleBlogService };
+// Delete blog
+const deleteBlogServiceService = async (id) => {
+  return await deleteItem(id, BlogModel);
+};
+// Update blogs
+const updateBlogService = async (id, updateData) => {
+  return await updateItem(id, BlogModel, updateData);
+};
+
+module.exports = {
+  createBolgService,
+  getBlogService,
+  getSingleBlogService,
+  deleteBlogServiceService,
+  updateBlogService,
+};
