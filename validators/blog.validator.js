@@ -3,7 +3,7 @@ const metaInformationSchemaValidator = require("./meta-information.validator");
 
 const blogSchemaValidator = Joi.object({
   deviceId: Joi.string().required(),
-  keyWordId: Joi.string().required(),
+  keywordId: Joi.string().required(),
   title: Joi.string().required(),
   description: Joi.string().required(),
   image: Joi.object({

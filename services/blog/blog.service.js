@@ -7,7 +7,7 @@ const deleteItem = require("../../helpers/service-helpers/deleteItem");
 const updateItem = require("../../helpers/service-helpers/updateItemWithId");
 
 const createBolgService = async (payload) => {
-  let { title, deviceId, keyWordId, description, image, metaInformation } =
+  let { title, deviceId, keywordId, description, image, metaInformation } =
     payload;
 
   try {
@@ -23,7 +23,7 @@ const createBolgService = async (payload) => {
     const blog = new BlogModel({
       title,
       deviceId,
-      keyWordId,
+      keywordId,
       description,
       image,
       metaInformation,
@@ -69,8 +69,8 @@ const getBlogService = async (
       if (filters.deviceId) {
         query.deviceId = filters.deviceId;
       }
-      if (filters.keyWordId) {
-        query.keyWordId = filters.keyWordId;
+      if (filters.keywordId) {
+        query.keywordId = filters.keywordId;
       }
     }
 

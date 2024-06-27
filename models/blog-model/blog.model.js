@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const blogSchema = new Schema(
   {
     deviceId: String,
-    keyWordId: String,
+    keywordId: String,
     title: {
       type: String,
       require: true,
