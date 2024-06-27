@@ -7,7 +7,8 @@ const deleteItem = require("../../helpers/service-helpers/deleteItem");
 const updateItem = require("../../helpers/service-helpers/updateItemWithId");
 
 const createBolgService = async (payload) => {
-  let { title, deviceId, description, image, metaInformation } = payload;
+  let { title, deviceId, keyWordId, description, image, metaInformation } =
+    payload;
 
   try {
     // Generate a unique canonical URL for the specification post
@@ -22,6 +23,7 @@ const createBolgService = async (payload) => {
     const blog = new BlogModel({
       title,
       deviceId,
+      keyWordId,
       description,
       image,
       metaInformation,
