@@ -6,6 +6,7 @@ const blogSchema = new Schema(
   {
     deviceId: String,
     keywordId: String,
+    categories: [String],
     title: {
       type: String,
       require: true,
