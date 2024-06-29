@@ -15,6 +15,10 @@ const blogSchema = new Schema(
       type: String,
       require: true,
     },
+    reviewStatus: {
+      type: String,
+      required: true,
+    },
     // images: Schema.Types.Mixed,
     image: {
       imageUrl: { type: String, default: "" },
