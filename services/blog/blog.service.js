@@ -15,6 +15,7 @@ const createBolgService = async (payload) => {
     categories,
     image,
     metaInformation,
+    reviewStatus,
   } = payload;
 
   try {
@@ -35,6 +36,7 @@ const createBolgService = async (payload) => {
       image,
       categories,
       metaInformation,
+      reviewStatus,
     });
 
     // Attempt to save the new blog post to the database
