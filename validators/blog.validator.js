@@ -5,6 +5,7 @@ const blogSchemaValidator = Joi.object({
   deviceId: Joi.string().required(),
   keywordId: Joi.string().required(),
   categories: Joi.array().required(),
+  reviewStatus: Joi.string().required(),
   websiteBase: Joi.string().optional(),
   title: Joi.string().required(),
   description: Joi.string().required(),
