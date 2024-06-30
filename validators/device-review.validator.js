@@ -2,7 +2,7 @@ const Joi = require("joi");
 const metaInformationSchemaValidator = require("./meta-information.validator");
 
 const deviceReviewImageSchemaValidator = Joi.object({
-  imageUrl: Joi.string().uri().required(),
+  imageUrl: Joi.string().required(),
   title: Joi.string().required(),
   altText: Joi.string().required(),
   caption: Joi.string().required(),
