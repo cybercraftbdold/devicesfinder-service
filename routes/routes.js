@@ -9,6 +9,7 @@ const buyingGuideRouter = require("./buying-guide-routes/buying-guide.routes");
 const faqRouter = require("./faq-routes/faq.routes");
 const prosRouter = require("./pros-routes/pros.routes");
 const consRouter = require("./cons-routes/cons.routes");
+const collectionStatisticsRouter = require("./collection-statistics/collection-statistics.routes");
 
 const mobileSpecification = Router();
 
@@ -22,5 +23,6 @@ mobileSpecification.use(buyingGuideRouter);
 mobileSpecification.use(faqRouter);
 mobileSpecification.use(prosRouter);
 mobileSpecification.use(consRouter);
+mobileSpecification.use(collectionStatisticsRouter);
 
 module.exports = mobileSpecification;
