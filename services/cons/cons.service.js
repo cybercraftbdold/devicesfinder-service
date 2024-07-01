@@ -1,3 +1,4 @@
+const deleteItem = require("../../helpers/service-helpers/deleteItem");
 const updateWithDeviceIdService = require("../../helpers/service-helpers/updateWithDeviceId");
 const ConsModel = require("../../models/cons-model/cons.model");
 
@@ -99,7 +100,13 @@ const getAllConsService = async (
   }
 };
 
+// delete cons service
+const deleteConsService = async (id) => {
+  return await deleteItem(id, ConsModel);
+};
+
 module.exports = {
   createConsService,
   getAllConsService,
+  deleteConsService,
 };

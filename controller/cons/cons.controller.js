@@ -1,6 +1,7 @@
 const {
   createConsService,
   getAllConsService,
+  deleteConsService,
 } = require("../../services/cons/cons.service");
 
 // Create FAQ
@@ -62,7 +63,7 @@ const getAllConsController = async (req, res) => {
       res.status(200).json({
         message: result?.message,
         isSuccess: result.isSuccess,
-        totalItems: result?.response?.totalCount?.value || 0,
+        totalItems: result?.response?.totalCount[0]?.value || 0,
         totalLength: result?.response.data?.length,
         data: result?.response.data,
       });
@@ -75,7 +76,35 @@ const getAllConsController = async (req, res) => {
   }
 };
 
+// Delete Cons
+const deleteConsController = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const result = await deleteConsService(id);
+
+    if (result?.isSuccess) {
+      res.status(200).json({
+        message: result?.message,
+        isSuccess: result?.isSuccess,
+        response: result?.response,
+      });
+    } else {
+      res.status(404).json({
+        message: result?.message,
+        isSuccess: false,
+        response: result?.response,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: error?.message,
+      isSuccess: false,
+    });
+  }
+};
+
 module.exports = {
   createConsController,
   getAllConsController,
+  deleteConsController,
 };

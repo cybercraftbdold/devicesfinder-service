@@ -5,6 +5,7 @@ const {
   getTopPopularComparisonController,
   compareMobilesController,
   createComparisonController,
+  deleteComparisonController,
 } = require("../../controller/comparison/comparison.controller");
 const { baseRoute } = require("../../utils/constant");
 const comparisonRouter = Router();
@@ -27,6 +28,11 @@ comparisonRouter.get(
 comparisonRouter.get(
   `${baseRoute}/compare-mobile-comparison/:id`,
   compareMobilesController
+);
+//delete compariosn route
+comparisonRouter.delete(
+  `${baseRoute}/delete-mobile-comparison/:id`,
+  deleteComparisonController
 );
 
 module.exports = comparisonRouter;
