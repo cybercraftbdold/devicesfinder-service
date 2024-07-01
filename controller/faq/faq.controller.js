@@ -1,6 +1,7 @@
 const {
   createFaqService,
   getAllFaqService,
+  deleteFaqService,
 } = require("../../services/faq/faq.service");
 
 // Create FAQ
@@ -75,7 +76,35 @@ const getAllFaqController = async (req, res) => {
   }
 };
 
+// Delete FAQ
+const deleteFaqController = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const result = await deleteFaqService(id);
+
+    if (result?.isSuccess) {
+      res.status(200).json({
+        message: result?.message,
+        isSuccess: result?.isSuccess,
+        response: result?.response,
+      });
+    } else {
+      res.status(404).json({
+        message: result?.message,
+        isSuccess: false,
+        response: result?.response,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: error?.message,
+      isSuccess: false,
+    });
+  }
+};
+
 module.exports = {
   createFaqController,
   getAllFaqController,
+  deleteFaqController,
 };
