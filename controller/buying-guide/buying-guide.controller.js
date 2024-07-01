@@ -1,6 +1,7 @@
 const {
   createBuyingGuideService,
   getAllBuyingGuideService,
+  deleteBuyingGuideService,
 } = require("../../services/buying-guide/buying-guide.service");
 
 // Create Device Review
@@ -75,7 +76,35 @@ const getAllBuyingGuideController = async (req, res) => {
   }
 };
 
+// Delete Brand
+const deleteBuyingGuideController = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const result = await deleteBuyingGuideService(id);
+
+    if (result?.isSuccess) {
+      res.status(200).json({
+        message: result?.message,
+        isSuccess: result?.isSuccess,
+        response: result?.response,
+      });
+    } else {
+      res.status(404).json({
+        message: result?.message,
+        isSuccess: false,
+        response: result?.response,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: error?.message,
+      isSuccess: false,
+    });
+  }
+};
+
 module.exports = {
   createBuyingGuideController,
   getAllBuyingGuideController,
+  deleteBuyingGuideController,
 };

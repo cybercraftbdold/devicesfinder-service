@@ -2,6 +2,7 @@ const { Router } = require("express");
 const {
   createBuyingGuideController,
   getAllBuyingGuideController,
+  deleteBuyingGuideController,
 } = require("../../controller/buying-guide/buying-guide.controller");
 const { baseRoute } = require("../../utils/constant");
 const requestValidator = require("../../middleware/request-validator");
@@ -20,6 +21,12 @@ buyingGuideRouter.post(
 buyingGuideRouter.get(
   `${baseRoute}/get-buying-guides`,
   getAllBuyingGuideController
+);
+
+// delete buying guide route
+buyingGuideRouter.delete(
+  `${baseRoute}/delete-buying-guide/:id`,
+  deleteBuyingGuideController
 );
 
 module.exports = buyingGuideRouter;
