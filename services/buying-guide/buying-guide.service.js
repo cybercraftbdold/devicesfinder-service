@@ -102,6 +102,7 @@ const getAllBuyingGuideService = async (
   }
 };
 
+// delete Buying guide
 const deleteBuyingGuideService = async (id) => {
   return await deleteItem(id, BuyingGuideModel);
 };
