@@ -2,6 +2,7 @@ const { Router } = require("express");
 const {
   createConsController,
   getAllConsController,
+  deleteConsController,
 } = require("../../controller/cons/cons.controller");
 const { baseRoute } = require("../../utils/constant");
 const requestValidator = require("../../middleware/request-validator");
@@ -18,5 +19,8 @@ consRouter.post(
 
 // get all cons route
 consRouter.get(`${baseRoute}/get-cons`, getAllConsController);
+
+//delete cons route
+consRouter.delete(`${baseRoute}/delete-mobile-cons/:id`, deleteConsController);
 
 module.exports = consRouter;
