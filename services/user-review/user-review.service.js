@@ -1,6 +1,5 @@
-const { default: mongoose } = require("mongoose");
 const deleteItem = require("../../helpers/service-helpers/deleteItem");
-const MobileSpecificationModel = require("../../models/specification-model/specification.model");
+const updateItem = require("../../helpers/service-helpers/updateItemWithId");
 const UserReviewModel = require("../../models/specification-model/user-review.model");
 
 // get all user review service and filter by specificationid
@@ -57,6 +56,30 @@ const getUserReviewsService = async (
   }
 };
 
+// get single user review service
+const getSingleUserReviewService = async (id) => {
+  try {
+    const userReview = await UserReviewModel.findById(id);
+
+    if (!userReview)
+      return {
+        isSuccess: false,
+        message: "Cannot find any user review with the given id",
+      };
+
+    return {
+      isSuccess: true,
+      message: "Data getting successfully",
+      data: userReview,
+    };
+  } catch (error) {
+    return {
+      isSuccess: false,
+      message: error.message,
+    };
+  }
+};
+
 // create user review
 const createUserReviewService = async (payload) => {
   let { name, email, rating, description, deviceId, reviewStatus } = payload;
@@ -88,12 +111,19 @@ const createUserReviewService = async (payload) => {
   }
 };
 
+// update user reivew service
+const updateUserReviewService = async (id, payload) => {
+  return await updateItem(id, UserReviewModel, payload);
+};
+
 // delete user review
 const deleteUserReviewService = async (id) => {
   return await deleteItem(id, UserReviewModel);
 };
 module.exports = {
   getUserReviewsService,
+  getSingleUserReviewService,
   createUserReviewService,
+  updateUserReviewService,
   deleteUserReviewService,
 };

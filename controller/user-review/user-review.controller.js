@@ -1,6 +1,8 @@
 const {
   getUserReviewsService,
+  getSingleUserReviewService,
   createUserReviewService,
+  updateUserReviewService,
   deleteUserReviewService,
 } = require("../../services/user-review/user-review.service");
 
@@ -50,6 +52,31 @@ const getUserReviewsController = async (req, res) => {
   }
 };
 
+// get single user review controller
+const getSingleUserReviewController = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const result = await getSingleUserReviewService(id);
+
+    if (!result?.isSuccess)
+      res.status(404).json({
+        message: result?.message,
+        isSuccess: result.isSuccess,
+      });
+
+    return res.status(200).json({
+      message: result?.message,
+      isSuccess: result.isSuccess,
+      data: result?.data,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+      isSuccess: false,
+    });
+  }
+};
+
 // create  user review controller
 const createUserReviewController = async (req, res, next) => {
   try {
@@ -71,6 +98,35 @@ const createUserReviewController = async (req, res, next) => {
     next(error);
   }
 };
+
+// update user review controller
+const updateUserReviewController = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const payload = req.body;
+
+    const result = await updateUserReviewService(id, payload);
+
+    if (!result?.isSuccess)
+      res.status(404).json({
+        message: result?.message,
+        isSuccess: false,
+        response: result?.response,
+      });
+
+    return res.status(200).json({
+      message: result?.message,
+      isSuccess: result?.isSuccess,
+      response: result?.response,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error?.message,
+      isSuccess: false,
+    });
+  }
+};
+
 // delete user reivew
 const deleteUserReviewController = async (req, res) => {
   try {
@@ -98,6 +154,8 @@ const deleteUserReviewController = async (req, res) => {
 };
 module.exports = {
   getUserReviewsController,
+  getSingleUserReviewController,
   createUserReviewController,
+  updateUserReviewController,
   deleteUserReviewController,
 };
