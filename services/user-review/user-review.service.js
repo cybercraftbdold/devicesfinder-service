@@ -22,8 +22,8 @@ const getUserReviewsService = async (
     }
     // apply filters if they are provided
     if (filters) {
-      if (filters.specificationId) {
-        query.specificationId = filters.specificationId;
+      if (filters.deviceId) {
+        query.deviceId = filters.deviceId;
       }
     }
 
@@ -59,7 +59,7 @@ const getUserReviewsService = async (
 
 // create user review
 const createUserReviewService = async (payload) => {
-  let { name, email, rating, description, deviceId } = payload;
+  let { name, email, rating, description, deviceId, reviewStatus } = payload;
 
   try {
     // Proceed to create a new BlogModel instance with the updated metaInformation
@@ -69,6 +69,7 @@ const createUserReviewService = async (payload) => {
       rating,
       description,
       deviceId,
+      reviewStatus,
     });
     // Attempt to save the new blog post to the database
     const res = await userReviewModel.save();

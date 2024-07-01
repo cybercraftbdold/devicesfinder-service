@@ -11,14 +11,14 @@ const getUserReviewsController = async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
     const searchText = req?.query?.searchText;
-    const specificationId = req?.query?.specificationId;
+    const deviceId = req?.query?.deviceId;
     const sortField = req?.query?.sortField || "createdAt";
     const sortOrder = req?.query?.sortOrder || "desc";
     // filters
     const filters = {};
     // check type of filters
-    if (specificationId) {
-      filters.specificationId = specificationId;
+    if (deviceId) {
+      filters.deviceId = deviceId;
     }
     const result = await getUserReviewsService(
       limit,
@@ -49,6 +49,7 @@ const getUserReviewsController = async (req, res) => {
     });
   }
 };
+
 // create  user review controller
 const createUserReviewController = async (req, res, next) => {
   try {
