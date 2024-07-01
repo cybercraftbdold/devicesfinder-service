@@ -72,12 +72,11 @@ const getSpecificationController = async (req, res) => {
       sortOrder
     );
 
-    console.log(result);
     if (result && result.isSuccess) {
       res.status(200).json({
         message: result?.message,
         isSuccess: result.isSuccess,
-        totalItems: result?.response?.totalCount?.value || 0,
+        totalItems: result?.response?.totalCount[0]?.value || 0,
         totalLength: result?.response.data?.length,
         data: result?.response.data,
       });
