@@ -38,7 +38,6 @@ const saveSpecificationToDb = async (mobileSpecificationData) => {
       const mobileresponse = await BlogModel.create(mobileBlog);
 
       if (reviewResponse && comparisonResponse && mobileresponse) {
-        console.log("working");
         const resQueue = {
           message: "Data Published Successfully Completed",
           isSuccess: true,

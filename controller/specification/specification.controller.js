@@ -71,8 +71,6 @@ const getSpecificationController = async (req, res) => {
       sortField,
       sortOrder
     );
-
-    console.log(result);
     if (result && result.isSuccess) {
       res.status(200).json({
         message: result?.message,

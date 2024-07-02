@@ -140,10 +140,8 @@ const getSingleBlogService = async (identifier, searchBy) => {
       $limit: 1,
     });
 
-    console.log(pipeline);
 
     const res = await BlogModel.aggregate(pipeline);
-    console.log(res);
     if (res.length > 0) {
       const blog = res[0];
       // Increment viewCount
