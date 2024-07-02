@@ -1,3 +1,4 @@
+const deleteItem = require("../../helpers/service-helpers/deleteItem");
 const updateWithDeviceIdService = require("../../helpers/service-helpers/updateWithDeviceId");
 const BuyingGuideModel = require("../../models/buying-guide-model/buying-guide.model");
 
@@ -101,7 +102,13 @@ const getAllBuyingGuideService = async (
   }
 };
 
+// delete Buying guide
+const deleteBuyingGuideService = async (id) => {
+  return await deleteItem(id, BuyingGuideModel);
+};
+
 module.exports = {
   createBuyingGuideService,
   getAllBuyingGuideService,
+  deleteBuyingGuideService,
 };

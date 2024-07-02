@@ -5,6 +5,7 @@ const {
   getTopPopularComparisonService,
   compareMobilesService,
   createComparisonService,
+  deleteComparisonService,
 } = require("../../services/comparison/comparison.service");
 
 // create  comparison controller
@@ -154,10 +155,38 @@ const compareMobilesController = async (req, res) => {
   }
 };
 
+// Delete comparison
+const deleteComparisonController = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const result = await deleteComparisonService(id);
+
+    if (result?.isSuccess) {
+      res.status(200).json({
+        message: result?.message,
+        isSuccess: result?.isSuccess,
+        response: result?.response,
+      });
+    } else {
+      res.status(404).json({
+        message: result?.message,
+        isSuccess: false,
+        response: result?.response,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: error?.message,
+      isSuccess: false,
+    });
+  }
+};
+
 module.exports = {
   getComparisonController,
   getSingleComparisonController,
   getTopPopularComparisonController,
   compareMobilesController,
   createComparisonController,
+  deleteComparisonController,
 };

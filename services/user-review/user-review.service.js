@@ -1,6 +1,5 @@
-const { default: mongoose } = require("mongoose");
 const deleteItem = require("../../helpers/service-helpers/deleteItem");
-const MobileSpecificationModel = require("../../models/specification-model/specification.model");
+const updateItem = require("../../helpers/service-helpers/updateItemWithId");
 const UserReviewModel = require("../../models/specification-model/user-review.model");
 
 // get all user review service and filter by specificationid
@@ -22,8 +21,8 @@ const getUserReviewsService = async (
     }
     // apply filters if they are provided
     if (filters) {
-      if (filters.specificationId) {
-        query.specificationId = filters.specificationId;
+      if (filters.deviceId) {
+        query.deviceId = filters.deviceId;
       }
     }
 
@@ -57,9 +56,33 @@ const getUserReviewsService = async (
   }
 };
 
+// get single user review service
+const getSingleUserReviewService = async (id) => {
+  try {
+    const userReview = await UserReviewModel.findById(id);
+
+    if (!userReview)
+      return {
+        isSuccess: false,
+        message: "Cannot find any user review with the given id",
+      };
+
+    return {
+      isSuccess: true,
+      message: "Data getting successfully",
+      data: userReview,
+    };
+  } catch (error) {
+    return {
+      isSuccess: false,
+      message: error.message,
+    };
+  }
+};
+
 // create user review
 const createUserReviewService = async (payload) => {
-  let { name, email, rating, description, deviceId } = payload;
+  let { name, email, rating, description, deviceId, reviewStatus } = payload;
 
   try {
     // Proceed to create a new BlogModel instance with the updated metaInformation
@@ -69,6 +92,7 @@ const createUserReviewService = async (payload) => {
       rating,
       description,
       deviceId,
+      reviewStatus,
     });
     // Attempt to save the new blog post to the database
     const res = await userReviewModel.save();
@@ -87,12 +111,19 @@ const createUserReviewService = async (payload) => {
   }
 };
 
+// update user reivew service
+const updateUserReviewService = async (id, payload) => {
+  return await updateItem(id, UserReviewModel, payload);
+};
+
 // delete user review
 const deleteUserReviewService = async (id) => {
   return await deleteItem(id, UserReviewModel);
 };
 module.exports = {
   getUserReviewsService,
+  getSingleUserReviewService,
   createUserReviewService,
+  updateUserReviewService,
   deleteUserReviewService,
 };

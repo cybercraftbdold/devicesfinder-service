@@ -5,6 +5,7 @@ const updateWithDeviceIdService = require("../../helpers/service-helpers/updateW
 const {
   generateUniqueIdentifier,
 } = require("../../helpers/generateUniqueCanonicalUrl");
+const deleteItem = require("../../helpers/service-helpers/deleteItem");
 
 // create mobile comparison service
 const createComparisonService = async (payload) => {
@@ -297,10 +298,17 @@ const compareMobilesService = async (id) => {
     };
   }
 };
+
+// delete comparison service
+const deleteComparisonService = async (id) => {
+  return await deleteItem(id, ComparisonModel);
+};
+
 module.exports = {
   getComparisonService,
   getSingleComparisonService,
   getTopPopularComparisonService,
   compareMobilesService,
   createComparisonService,
+  deleteComparisonService,
 };

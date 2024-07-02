@@ -1,3 +1,4 @@
+const deleteItem = require("../../helpers/service-helpers/deleteItem");
 const updateWithDeviceIdService = require("../../helpers/service-helpers/updateWithDeviceId");
 const FaqModel = require("../../models/faq-model/faq.model");
 
@@ -97,7 +98,13 @@ const getAllFaqService = async (
   }
 };
 
+// delete faq service
+const deleteFaqService = async (id) => {
+  return await deleteItem(id, FaqModel);
+};
+
 module.exports = {
   createFaqService,
   getAllFaqService,
+  deleteFaqService,
 };

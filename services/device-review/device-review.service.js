@@ -1,6 +1,6 @@
-const { pipeline } = require("nodemailer/lib/xoauth2");
 const updateWithDeviceIdService = require("../../helpers/service-helpers/updateWithDeviceId");
 const DeviceReviewModel = require("../../models/device-review-model/device-review.model");
+const deleteItem = require("../../helpers/service-helpers/deleteItem");
 
 // Create Device Review
 const createDeviceReviewService = async (payload) => {
@@ -124,7 +124,13 @@ const getDeviceReviewService = async (
   }
 };
 
+// delete Device Review
+const deleteDeviceReviewService = async (id) => {
+  return await deleteItem(id, DeviceReviewModel);
+};
+
 module.exports = {
   createDeviceReviewService,
   getDeviceReviewService,
+  deleteDeviceReviewService,
 };
