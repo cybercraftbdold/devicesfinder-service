@@ -111,6 +111,13 @@ const getSpecificationService = async (
       if (filters.deviceSubType) {
         query["deviceSubType.name"] = filters.deviceSubType;
       }
+      // min and max pricing filter
+      if (filters.priceRange) {
+        query["specification.prices.bangladesh"] = {
+          $gte: filters.priceRange.min,
+          $lte: filters.priceRange.max,
+        };
+      }
     }
 
     // Determine sort order

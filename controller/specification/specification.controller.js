@@ -45,6 +45,9 @@ const getSpecificationController = async (req, res) => {
     const deviceId = req?.query?.deviceId;
     const sortField = req?.query?.sortField || "createdAt";
     const sortOrder = req?.query?.sortOrder || "desc";
+    const minPrice = req?.query?.minPrice || 0;
+    const maxPrice = req?.query?.maxPrice || Infinity;
+
     // filters
     const filters = {};
 
@@ -62,6 +65,14 @@ const getSpecificationController = async (req, res) => {
     }
     if (deviceType) {
       filters.deviceType = deviceType;
+    }
+
+    // price range
+    if (minPrice && maxPrice) {
+      filters.priceRange = {
+        min: minPrice,
+        max: maxPrice,
+      };
     }
     const result = await getSpecificationService(
       limit,
