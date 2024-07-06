@@ -8,7 +8,7 @@ const {
 const deleteItem = require("../../helpers/service-helpers/deleteItem");
 
 // create mobile comparison service
-const createComparisonService = async (payload) => {
+const createComparisonService = async (payload, isUpdate) => {
   let { title, reviewStatus, ratings, phones, metaInformation, deviceId } =
     payload;
   try {
@@ -23,12 +23,12 @@ const createComparisonService = async (payload) => {
     const duplicateComparison = await ComparisonModel.findOne({ deviceId });
 
     // If comparison exists update that
-    // if (duplicateComparison)
-    //   return await updateWithDeviceIdService(
-    //     payload,
-    //     ComparisonModel,
-    //     "Comparison"
-    //   );
+    if (duplicateComparison && isUpdate)
+      return await updateWithDeviceIdService(
+        payload,
+        ComparisonModel,
+        "Comparison"
+      );
 
     const comparisonModel = new ComparisonModel({
       title,
