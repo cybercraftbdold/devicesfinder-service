@@ -6,7 +6,7 @@ const imageSchema = Joi.object({
   imageUrl: Joi.string().required(),
   title: Joi.string().required(),
   altText: Joi.string().required(),
-  caption: Joi.string().required(),
+  caption: Joi.string().allow("").optional(),
   description: Joi.string().required(),
 });
 
