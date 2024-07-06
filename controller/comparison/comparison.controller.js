@@ -12,7 +12,7 @@ const {
 const createComparisonController = async (req, res, next) => {
   try {
     const payload = req.body;
-    const isUpdate = req.query?.isUpdate?.toLowerCase() === "true" || true;
+    const isUpdate = req.query?.isUpdate?.toLowerCase() === "true";
     const result = await createComparisonService(payload, isUpdate);
     if (result.isSuccess) {
       res.json({
