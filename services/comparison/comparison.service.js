@@ -23,12 +23,12 @@ const createComparisonService = async (payload) => {
     const duplicateComparison = await ComparisonModel.findOne({ deviceId });
 
     // If comparison exists update that
-    if (duplicateComparison)
-      return await updateWithDeviceIdService(
-        payload,
-        ComparisonModel,
-        "Comparison"
-      );
+    // if (duplicateComparison)
+    //   return await updateWithDeviceIdService(
+    //     payload,
+    //     ComparisonModel,
+    //     "Comparison"
+    //   );
 
     const comparisonModel = new ComparisonModel({
       title,
