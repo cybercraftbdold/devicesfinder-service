@@ -8,7 +8,7 @@ const {
 const deleteItem = require("../../helpers/service-helpers/deleteItem");
 
 // create mobile comparison service
-const createComparisonService = async (payload, isUpdate) => {
+const createComparisonService = async (payload, isUpdate, comparisonId) => {
   let { title, reviewStatus, ratings, phones, metaInformation, deviceId } =
     payload;
   try {
@@ -20,16 +20,33 @@ const createComparisonService = async (payload, isUpdate) => {
     // Update metaInformation with the unique canonical URL
     metaInformation.canonicalUrl = uniqueCanonicalUrl;
 
-    const duplicateComparison = await ComparisonModel.findOne({ deviceId });
+    const duplicateComparison = await ComparisonModel.findOne({
+      _id: new ObjectId(comparisonId),
+    });
 
     // If comparison exists update that
-    if (duplicateComparison && isUpdate)
-      return await updateWithDeviceIdService(
-        payload,
-        ComparisonModel,
-        "Comparison"
+    if (duplicateComparison && isUpdate) {
+      const { deviceId, ...updatePayload } = payload;
+
+      const updatedData = await ComparisonModel.findOneAndUpdate(
+        { _id: new ObjectId(comparisonId) },
+        { $set: updatePayload },
+        { new: true }
       );
 
+      if (!updatedData) {
+        return {
+          isSuccess: false,
+          message: `${serviceName} update failed!`,
+        };
+      }
+
+      return {
+        isSuccess: true,
+        response: updatedData,
+        message: `Comparison Updated Successfully`,
+      };
+    }
     const comparisonModel = new ComparisonModel({
       title,
       reviewStatus,
