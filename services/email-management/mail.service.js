@@ -3,8 +3,14 @@ const { FRONTEND_BASE_URL } = require("../../utils/env.config");
 const MailModel = require("../../models/email-management/mail.model");
 const { sendEmail } = require("../../helpers/sendEmail");
 const { emailCollection } = require("../../utils/constant");
+const {
+  verifyEmailTemplete,
+} = require("../../utils/html-templete/html.templete");
+
+// send contact email
 const sendContactMailService = async (payload) => {
-  const { email, name, place, websiteName, status, subject, html } = payload;
+  const { email, name, place, websiteName, isVerified, subject, html } =
+    payload;
   try {
     const checkExsistingEmail = await MailModel.findOne({
       email: payload?.email,
@@ -30,16 +36,13 @@ const sendContactMailService = async (payload) => {
         email,
         place,
         websiteName,
-        status,
+        isVerified,
         verificationToken: uuidv4(), // Add a verification token
       });
 
       // Send verification email to user
       const verificationLink = `${FRONTEND_BASE_URL}/verify-email?token=${emailResponse.verificationToken}`;
-      const verificationEmailHtml = `
-        <p>Please verify your email by clicking the link below:</p>
-        <a href="${verificationLink}">Verify Email</a>
-      `;
+      const verificationEmailHtml = verifyEmailTemplete(verificationLink);
 
       const emailResponseVerification = await sendEmail(
         email,
@@ -64,6 +67,37 @@ const sendContactMailService = async (payload) => {
   }
 };
 
+// verirfy email address
+const checkVerifyEmailAddressService = async (token) => {
+  try {
+    const emailRecord = await MailModel.findOne({
+      verificationToken: `${token}`,
+    });
+    if (!emailRecord) {
+      return {
+        isSuccess: false,
+        message: "Invalid or expired verification link.",
+      };
+    }
+    await MailModel.updateOne(
+      { verificationToken: `${token}` },
+      { $set: { isVerified: true, verificationToken: null } }
+    );
+
+    return {
+      isSuccess: true,
+      message: "Email verified successfully!",
+    };
+  } catch (error) {
+    return {
+      isSuccess: false,
+      message: error?.message,
+    };
+  }
+};
+
 module.exports = {
   sendContactMailService,
+  checkVerifyEmailAddressService,
+  checkVerifyEmailAddressService,
 };

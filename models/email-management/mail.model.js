@@ -10,7 +10,7 @@ const mailSchema = new Schema(
       type: String,
       required: true,
     },
-    status: {
+    isVerified: {
       type: Boolean, // verified or none verified
       required: true,
     },
@@ -19,7 +19,7 @@ const mailSchema = new Schema(
       required: true,
     },
     verificationToken: {
-      type: String,
+      type: Schema.Types.Mixed,
       required: true,
     },
     place: {
