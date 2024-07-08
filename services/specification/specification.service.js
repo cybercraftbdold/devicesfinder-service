@@ -318,22 +318,30 @@ const getSingleSpecificationByDeviceIdService = async (deviceId) => {
 };
 
 // get top populer specification
-const getTopPopularSpecificationsService = async (limit) => {
+const getTopPopularSpecificationsService = async (limit, skip) => {
   try {
     // Define the pipeline for aggregation
     const pipeline = [
       { $sort: { viewCount: -1 } }, // Sort by viewCount in descending order
-      { $limit: limit }, // Limit the results to the specified number
+      { $skip: skip },
+      { $limit: limit },
     ];
+
+    // Fetch the total count of documents
+    const totalCount = await MobileSpecificationModel.countDocuments();
+    console.log(totalCount);
 
     // Execute the aggregation pipeline
     const topSpecifications = await MobileSpecificationModel.aggregate(
       pipeline
     );
+    const totalCurrentLength = topSpecifications.length;
 
     return {
       isSuccess: true,
       response: topSpecifications,
+      totalCount: totalCount,
+      totalLength: totalCurrentLength,
       message: "Top popular specifications fetched successfully",
     };
   } catch (error) {

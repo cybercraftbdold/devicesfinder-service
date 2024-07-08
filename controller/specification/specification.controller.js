@@ -155,12 +155,17 @@ const getSingleSpecificationByDeviceIdController = async (req, res) => {
 //get top populer specification
 const getTopPopularSpecificationsController = async (req, res) => {
   try {
+    const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
-    const result = await getTopPopularSpecificationsService(limit);
+    const skip = (page - 1) * limit;
+    const result = await getTopPopularSpecificationsService(limit, skip);
+    // console.log(result)s
     if (result && result.isSuccess) {
       res.status(200).json({
         message: result?.message,
         isSuccess: result.isSuccess,
+        totalCount: result.totalCount,
+        totalLength: result.totalLength,
         data: result?.response,
       });
     } else {
