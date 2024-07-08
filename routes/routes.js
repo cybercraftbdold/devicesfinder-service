@@ -10,6 +10,7 @@ const faqRouter = require("./faq-routes/faq.routes");
 const prosRouter = require("./pros-routes/pros.routes");
 const consRouter = require("./cons-routes/cons.routes");
 const collectionStatisticsRouter = require("./collection-statistics/collection-statistics.routes");
+const mailSendRouter = require("./email-management/mail.send.routes");
 
 const mobileSpecification = Router();
 
@@ -24,5 +25,6 @@ mobileSpecification.use(faqRouter);
 mobileSpecification.use(prosRouter);
 mobileSpecification.use(consRouter);
 mobileSpecification.use(collectionStatisticsRouter);
+mobileSpecification.use(mailSendRouter);
 
 module.exports = mobileSpecification;
