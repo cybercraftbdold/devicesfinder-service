@@ -184,20 +184,24 @@ const getSingleComparisonService = async (identifier, searchBy) => {
 };
 
 // get top populer comparison
-const getTopPopularComparisonService = async (limit) => {
+const getTopPopularComparisonService = async (limit, skip) => {
   try {
     // Define the pipeline for aggregation
     const pipeline = [
-      { $sort: { viewCount: -1 } }, // Sort by viewCount in descending order
-      { $limit: limit }, // Limit the results to the specified number
+      { $sort: { viewCount: -1 } },
+      { $skip: skip },
+      { $limit: limit },
     ];
-
+    // Fetch the total count of documents
+    const totalCount = await ComparisonModel.countDocuments();
     // Execute the aggregation pipeline
     const topComparisons = await ComparisonModel.aggregate(pipeline);
-
+    const totalCurrentLength = topComparisons.length;
     return {
       isSuccess: true,
       response: topComparisons,
+      totalCount: totalCount,
+      totalLength: totalCurrentLength,
       message: "Top popular comparison fetched successfully",
     };
   } catch (error) {

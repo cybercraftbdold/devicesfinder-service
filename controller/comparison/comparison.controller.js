@@ -115,12 +115,16 @@ const getSingleComparisonController = async (req, res) => {
 //get all mobile specification
 const getTopPopularComparisonController = async (req, res) => {
   try {
+    const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
-    const result = await getTopPopularComparisonService(limit);
+    const skip = (page - 1) * limit;
+    const result = await getTopPopularComparisonService(limit, skip);
     if (result && result.isSuccess) {
       res.status(200).json({
         message: result?.message,
         isSuccess: result.isSuccess,
+        totalCount: result.totalCount,
+        totalLength: result.totalLength,
         data: result?.response,
       });
     } else {
