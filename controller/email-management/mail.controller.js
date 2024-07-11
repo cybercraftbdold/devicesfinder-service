@@ -7,18 +7,18 @@ const sendContactMailController = async (req, res, next) => {
   try {
     const payload = req.body;
     const result = await sendContactMailService(payload);
-    if (result.isSuccess) {
-      res.json({
-        message: result.message,
-        isSuccess: result.isSuccess,
-        data: result?.response,
-      });
-    } else {
-      res.json({
-        message: result.message,
+
+    if (!result?.isSuccess) {
+      res.status(500).json({
+        message: result?.message,
         isSuccess: false,
       });
     }
+
+    return res.status(201).json({
+      message: result?.message,
+      isSuccess: result?.isSuccess,
+    });
   } catch (error) {
     next(error);
   }
@@ -29,17 +29,17 @@ const checkVerifyEmailAddressController = async (req, res) => {
     const { token } = req.query;
     const result = await checkVerifyEmailAddressService(token);
 
-    if (result.isSuccess) {
-      res.json({
-        message: result.message,
-        isSuccess: result.isSuccess,
-      });
-    } else {
-      res.json({
-        message: result.message,
+    if (!result?.isSuccess) {
+      res.status(500).json({
+        message: result?.message,
         isSuccess: false,
       });
     }
+
+    return res.status(201).json({
+      message: result?.message,
+      isSuccess: result?.isSuccess,
+    });
   } catch (error) {
     res.json({
       message: error.message || "There was a server side error",

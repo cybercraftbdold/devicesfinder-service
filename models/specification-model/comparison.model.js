@@ -33,6 +33,10 @@ const comparisonSchema = new Schema(
           description: String,
         },
         specification: Schema.Types.Mixed,
+        canonicalUrl: {
+          type: String,
+          required: true,
+        },
       },
     ],
     metaInformation: Schema.Types.Mixed,

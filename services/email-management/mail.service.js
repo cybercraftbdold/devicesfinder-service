@@ -1,64 +1,21 @@
-const { v4: uuidv4 } = require("uuid"); // For generating unique tokens
-const { FRONTEND_BASE_URL } = require("../../utils/env.config");
-const MailModel = require("../../models/email-management/mail.model");
-const { sendEmail } = require("../../helpers/sendEmail");
-const { emailCollection } = require("../../utils/constant");
 const {
-  verifyEmailTemplete,
-} = require("../../utils/html-templete/html.templete");
+  FRONTEND_BASE_URL,
+  BOX_SERVER_BASE_URL,
+} = require("../../utils/env.config");
+const { default: axios } = require("axios");
 
 // send contact email
 const sendContactMailService = async (payload) => {
-  const { email, name, place, websiteName, isVerified, subject, html } =
-    payload;
   try {
-    const checkExsistingEmail = await MailModel.findOne({
-      email: payload?.email,
-    });
+    const response = await axios.post(
+      `${BOX_SERVER_BASE_URL}/mystery-box/mail-manage/send-contact`,
+      { ...payload, frontendUrl: FRONTEND_BASE_URL }
+    );
 
-    // Send email
-    const emailSendResponse = await sendEmail(
-      emailCollection.contactEmail,
-      subject,
-      html
-    ); // to, subject, html, from
-    if (checkExsistingEmail && emailSendResponse) {
-      return {
-        isSuccess: false,
-        message: "Email has been sent successfully 📩",
-      };
-    }
-
-    // Save to the database contact information
-    if (emailSendResponse) {
-      const emailResponse = await MailModel.create({
-        name,
-        email,
-        place,
-        websiteName,
-        isVerified,
-        verificationToken: uuidv4(), // Add a verification token
-      });
-
-      // Send verification email to user
-      const verificationLink = `${FRONTEND_BASE_URL}/verify-email?token=${emailResponse.verificationToken}`;
-      const verificationEmailHtml = verifyEmailTemplete(verificationLink);
-
-      const emailResponseVerification = await sendEmail(
-        email,
-        "Email Verification",
-        verificationEmailHtml
-      ); // to, subject, html, from
-
-      if (emailResponseVerification) {
-        return {
-          isSuccess: true,
-          response: emailResponse,
-          message:
-            "Email has been sent successfully. Please check your inbox and verify the email address 📩",
-        };
-      }
-    }
+    return {
+      isSuccess: response?.data?.isSuccess,
+      message: response?.data?.message,
+    };
   } catch (error) {
     return {
       isSuccess: false,
@@ -70,23 +27,23 @@ const sendContactMailService = async (payload) => {
 // verirfy email address
 const checkVerifyEmailAddressService = async (token) => {
   try {
-    const emailRecord = await MailModel.findOne({
-      verificationToken: `${token}`,
-    });
-    if (!emailRecord) {
+    if (!token)
       return {
         isSuccess: false,
-        message: "Invalid or expired verification link.",
+        message: "No Token is provided",
       };
-    }
-    await MailModel.updateOne(
-      { verificationToken: `${token}` },
-      { $set: { isVerified: true, verificationToken: null } }
+
+    const response = await axios.post(
+      `${BOX_SERVER_BASE_URL}/mystery-box/mail-manage/verify-email`,
+      {},
+      {
+        params: { token },
+      }
     );
 
     return {
-      isSuccess: true,
-      message: "Email verified successfully!",
+      isSuccess: response?.data?.isSuccess,
+      message: response?.data?.message,
     };
   } catch (error) {
     return {
@@ -98,6 +55,5 @@ const checkVerifyEmailAddressService = async (token) => {
 
 module.exports = {
   sendContactMailService,
-  checkVerifyEmailAddressService,
   checkVerifyEmailAddressService,
 };
