@@ -12,19 +12,19 @@ const consRouter = require("./cons-routes/cons.routes");
 const collectionStatisticsRouter = require("./collection-statistics/collection-statistics.routes");
 const mailSendRouter = require("./email-management/mail.send.routes");
 
-const mobileSpecification = Router();
+const deviceFinderRoute = Router();
 
-mobileSpecification.use(userReviewRouter);
-mobileSpecification.use(specificationRouter);
-mobileSpecification.use(comparisonRouter);
-mobileSpecification.use(brandRouter);
-mobileSpecification.use(blogRouter);
-mobileSpecification.use(deviceReviewRouter);
-mobileSpecification.use(buyingGuideRouter);
-mobileSpecification.use(faqRouter);
-mobileSpecification.use(prosRouter);
-mobileSpecification.use(consRouter);
-mobileSpecification.use(collectionStatisticsRouter);
-mobileSpecification.use(mailSendRouter);
+deviceFinderRoute.use(userReviewRouter);
+deviceFinderRoute.use(specificationRouter);
+deviceFinderRoute.use(comparisonRouter);
+deviceFinderRoute.use(brandRouter);
+deviceFinderRoute.use(blogRouter);
+deviceFinderRoute.use(deviceReviewRouter);
+deviceFinderRoute.use(buyingGuideRouter);
+deviceFinderRoute.use(faqRouter);
+deviceFinderRoute.use(prosRouter);
+deviceFinderRoute.use(consRouter);
+deviceFinderRoute.use(collectionStatisticsRouter);
+deviceFinderRoute.use(mailSendRouter);
 
-module.exports = mobileSpecification;
+module.exports = deviceFinderRoute;
