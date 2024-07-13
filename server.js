@@ -19,5 +19,5 @@ mongoose
   .catch((err) => console.error("Could not connect to MongoDB:", err));
 
 app.listen(port, () => {
-  console.log(`Mobile is running on port ${port}`);
+  console.log(`Device finder is running on port ${port}`);
 });
