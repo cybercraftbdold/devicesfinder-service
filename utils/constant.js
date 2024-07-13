@@ -1,4 +1,4 @@
-const baseRoute = "/mobile";
+const baseRoute = "/devices-finder";
 
 const emailCollection = {
   infoEmail: "info@nusaiba.com.bd",
