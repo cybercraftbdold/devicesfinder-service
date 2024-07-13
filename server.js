@@ -4,7 +4,7 @@ const cors = require("cors");
 require("dotenv").config();
 const envConfig = require("./utils/env.config");
 const deviceFinderRoute = require("./routes/routes");
-const port = envConfig.PORT || 8004;
+const port = envConfig.PORT;
 
 const app = express();
 app.use(express.json());
