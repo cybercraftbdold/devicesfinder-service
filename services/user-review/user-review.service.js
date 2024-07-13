@@ -1,6 +1,6 @@
 const deleteItem = require("../../helpers/service-helpers/deleteItem");
 const updateItem = require("../../helpers/service-helpers/updateItemWithId");
-const UserReviewModel = require("../../models/specification-model/user-review.model");
+const UserReviewModel = require("../../models/user-review-model/user-review.model");
 
 // get all user review service and filter by specificationid
 const getUserReviewsService = async (
