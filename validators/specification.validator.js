@@ -23,7 +23,7 @@ const specificationSchemaValidator = Joi.object({
   images: Joi.object({
     profileImage: imageSchema,
     contentImages: Joi.array().items(imageSchema).required(),
-  }),
+  }).required(),
   brandInfo: Joi.object().required(),
   metaInformation: metaInformationSchemaValidator.required(),
   viewCount: Joi.number().default(0),

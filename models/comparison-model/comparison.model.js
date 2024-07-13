@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const metaInforamtionSchema = require("../../helpers/common-schema/metaInformationSchema");
 const Schema = mongoose.Schema;
 
 // Define the main schema for Mobile Specification
@@ -39,7 +40,7 @@ const comparisonSchema = new Schema(
         },
       },
     ],
-    metaInformation: Schema.Types.Mixed,
+    metaInformation: metaInforamtionSchema,
   },
   { timestamps: true }
 );
