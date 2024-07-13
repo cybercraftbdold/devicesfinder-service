@@ -33,13 +33,8 @@ const mobileSpecificationSchema = new Schema(
       description: String,
     },
     reviewStatus: String,
-    specification: {
-      type: Schema.Types.Mixed,
-    },
-    images: {
-      type: Schema.Types.Mixed,
-      require: true,
-    },
+    specification: Schema.Types.Mixed,
+    images: Schema.Types.Mixed,
     metaInformation: metaInforamtionSchema,
     brandInfo: brandInfoSchema,
     viewCount: { type: Number, default: 0 },

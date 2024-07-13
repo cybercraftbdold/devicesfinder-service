@@ -1,5 +1,5 @@
 const { ObjectId } = require("mongodb");
-const ComparisonModel = require("../../models/specification-model/comparison.model");
+const ComparisonModel = require("../../models/comparison-model/comparison.model");
 const compareSpecs = require("../../helpers/compare/compareSpecs");
 const updateWithDeviceIdService = require("../../helpers/service-helpers/updateWithDeviceId");
 const {
