@@ -6,6 +6,7 @@ const {
   getTopPopularSpecificationsService,
   getSingleSpecificationByDeviceIdService,
   getUsedUniqueTypsService,
+  getSpecificationByPropartyService,
 } = require("../../services/specification/specification.service");
 
 // create mobile specification
@@ -28,6 +29,77 @@ const createSpecificationController = async (req, res) => {
     }
   } catch (error) {
     next(error);
+  }
+};
+
+//get mobile specification by porparty
+const getSpecificationByPropartyController = async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const skip = (page - 1) * limit;
+  const searchText = req?.query?.searchText;
+  const status = req?.query?.status;
+  const brand = req?.query?.brand;
+  const deviceSubType = req?.query?.deviceSubType;
+  const deviceType = req?.query?.deviceType;
+  const deviceId = req?.query?.deviceId;
+  const sortField = req?.query?.sortField || "createdAt";
+  const sortOrder = req?.query?.sortOrder || "desc";
+  const minPrice = req?.query?.minPrice || 0;
+  const maxPrice = req?.query?.maxPrice || Infinity;
+
+  // filters
+  const filters = {};
+
+  if (status) {
+    filters.status = status;
+  }
+  if (brand) {
+    filters.brand = brand;
+  }
+  if (deviceId) {
+    filters.deviceId = deviceId;
+  }
+  if (deviceSubType) {
+    filters.deviceSubType = deviceSubType;
+  }
+  if (deviceType) {
+    filters.deviceType = deviceType;
+  }
+
+  // price range
+  if (minPrice && maxPrice) {
+    filters.priceRange = {
+      min: minPrice,
+      max: maxPrice,
+    };
+  }
+  try {
+    const result = await getSpecificationByPropartyService(
+      limit,
+      skip,
+      searchText,
+      filters,
+      sortField,
+      sortOrder
+    );
+    if (result && result.isSuccess) {
+      res.status(200).json({
+        message: result?.message,
+        isSuccess: result.isSuccess,
+        data: result?.response,
+      });
+    } else {
+      res.status(404).json({
+        message: result.message,
+        isSuccess: result.isSuccess,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+      isSuccess: false,
+    });
   }
 };
 
@@ -212,4 +284,5 @@ module.exports = {
   getTopPopularSpecificationsController,
   getSingleSpecificationByDeviceIdController,
   getUsedUniqueTypsController,
+  getSpecificationByPropartyController,
 };
