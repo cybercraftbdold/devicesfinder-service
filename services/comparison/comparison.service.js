@@ -191,6 +191,27 @@ const getTopPopularComparisonService = async (limit, skip) => {
       { $sort: { viewCount: -1 } },
       { $skip: skip },
       { $limit: limit },
+      {
+        $project: {
+          metaInformation: 1,
+          phones: {
+            $map: {
+              input: "$phones",
+              as: "phone",
+              in: {
+                title: "$$phone.title",
+                image: "$$phone.image",
+                canonicalUrl: "$$phone.canonicalUrl",
+                specification: {
+                  general: {
+                    brand: "$$phone.specification.general.brand",
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
     ];
     // Fetch the total count of documents
     const totalCount = await ComparisonModel.countDocuments();

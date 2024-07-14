@@ -147,6 +147,8 @@ const getSpecificationByPropartyService = async (
             { $limit: limit },
             {
               $project: {
+                title: 1,
+                "specification.general.launchDate": 1,
                 "images.profileImage": 1,
                 "brandInfo.manufactureName": 1,
                 "specification.released": 1,
