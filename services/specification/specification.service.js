@@ -80,6 +80,114 @@ const createSpecificationService = async (payload) => {
   }
 };
 
+//get mobile specification by proparty
+const getSpecificationByPropartyService = async (
+  limit,
+  skip,
+  searchText,
+  filters,
+  sortField = "createdAt",
+  sortOrder = "desc"
+) => {
+  try {
+    let query = {};
+    if (searchText) {
+      query.$or = [{ title: { $regex: searchText, $options: "i" } }];
+    }
+    // Apply filters if they are provided
+    if (filters) {
+      if (filters.status) {
+        query.status = filters.status;
+      }
+      if (filters.brand) {
+        query["brandInfo.manufactureName"] = filters.brand;
+      }
+      if (filters.deviceId) {
+        query.deviceId = filters.deviceId;
+      }
+      if (filters.deviceType) {
+        query["deviceType.name"] = filters.deviceType;
+      }
+      if (filters.deviceSubType) {
+        query["deviceSubType.name"] = filters.deviceSubType;
+      }
+      // min and max pricing filter
+      if (filters.priceRange) {
+        query["specification.prices.bangladesh"] = {
+          $gte: filters.priceRange.min,
+          $lte: filters.priceRange.max,
+        };
+      }
+    }
+
+    // Determine sort order
+    const sort = {};
+    sort[sortField] = sortOrder.toLowerCase() === "asc" ? 1 : -1;
+
+    const res = await MobileSpecificationModel.aggregate([
+      { $match: query },
+      { $sort: sort },
+      {
+        $lookup: {
+          from: "user-reviews",
+          localField: "deviceId",
+          foreignField: "deviceId",
+          as: "userReviews",
+        },
+      },
+      {
+        $addFields: {
+          userReviewCount: { $size: "$userReviews" },
+        },
+      },
+      {
+        $facet: {
+          data: [
+            { $skip: skip },
+            { $limit: limit },
+            {
+              $project: {
+                "images.profileImage": 1,
+                "brandInfo.manufactureName": 1,
+                "specification.released": 1,
+                metaInformation: 1,
+                deviceId: 1,
+                userReviewCount: 1,
+              },
+            },
+          ],
+          totalCount: [{ $count: "value" }],
+        },
+      },
+    ]);
+
+    if (res && res[0].data.length) {
+      return {
+        isSuccess: true,
+        response: {
+          data: res[0].data,
+          totalCount: res[0].totalCount[0] ? res[0].totalCount[0].value : 0,
+        },
+        message: "Data fetched successfully",
+      };
+    } else {
+      return {
+        isSuccess: true,
+        response: {
+          data: [],
+          totalCount: 0,
+        },
+        message: "No data found",
+      };
+    }
+  } catch (error) {
+    return {
+      isSuccess: false,
+      message: error.message,
+    };
+  }
+};
+
 // get mobile specification
 const getSpecificationService = async (
   limit,
@@ -417,4 +525,5 @@ module.exports = {
   getTopPopularSpecificationsService,
   getSingleSpecificationByDeviceIdService,
   getUsedUniqueTypsService,
+  getSpecificationByPropartyService,
 };

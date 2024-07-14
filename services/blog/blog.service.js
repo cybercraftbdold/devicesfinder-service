@@ -140,7 +140,6 @@ const getSingleBlogService = async (identifier, searchBy) => {
       $limit: 1,
     });
 
-
     const res = await BlogModel.aggregate(pipeline);
     if (res.length > 0) {
       const blog = res[0];

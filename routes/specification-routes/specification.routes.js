@@ -6,6 +6,7 @@ const {
   createSpecificationController,
   getSingleSpecificationByDeviceIdController,
   getUsedUniqueTypsController,
+  getSpecificationByPropartyController,
 } = require("../../controller/specification/specification.controller");
 const { baseRoute } = require("../../utils/constant");
 const requestValidator = require("../../middleware/request-validator");
@@ -17,6 +18,12 @@ specificationRouter.post(
   `${baseRoute}/create-specification`,
   requestValidator(specificationSchemaValidator),
   createSpecificationController
+);
+
+//get specification by proparty
+specificationRouter.get(
+  `${baseRoute}/get-specification-by-proparty`,
+  getSpecificationByPropartyController
 );
 
 // get all specification route
