@@ -5,6 +5,7 @@ const {
 
 const sendContactMailController = async (req, res, next) => {
   try {
+    console.log(req);
     const payload = req.body;
     const result = await sendContactMailService(payload);
 

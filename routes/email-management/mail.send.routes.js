@@ -5,10 +5,13 @@ const {
 } = require("../../controller/email-management/mail.controller");
 const mailSendRouter = Router();
 // base path
-const baseRoute = "/mobile/mail";
+const baseRoute = "/devicesfinder/mail";
 
 // create mobile blog category
 mailSendRouter.post(`${baseRoute}/send-contact`, sendContactMailController);
-mailSendRouter.post(`${baseRoute}/verify-email`, checkVerifyEmailAddressController);
+mailSendRouter.post(
+  `${baseRoute}/verify-email`,
+  checkVerifyEmailAddressController
+);
 
 module.exports = mailSendRouter;
